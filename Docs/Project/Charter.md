@@ -6,7 +6,7 @@ CIS 4496 - Projects in Data Science
 
 February 4th, 2023
 
-<center>Project Charter</center>
+# Project Charter
 
 1.  **Problem Description**:
 
@@ -18,6 +18,7 @@ In training, the "generator" network learns to train fake examples that are iden
 Our task is to build a GAN that generates 7,000 to 10,000 realistic Monet-style images.
 
 ![](Images/gan_diagram.svg)
+
 [https://developers.google.com/machine-learning/gan/gan_structure](https://developers.google.com/machine-learning/gan/gan_structure)
 
 While GANs were initially developed for organic image generation, they have also been revolutionary in many other tasks relating to images, such as style-transfer between images.
@@ -47,7 +48,9 @@ Unlike the Inception Score (IS)&mdash;another common metric for GAN evaluation&m
 Specifically, FID computes the Fréchet distance between two Gaussian distributions fitted to feature representations of the Inception network.
 Here, one uses the Inception network to extract features from an intermediate layer.
 From there, one models the data distribution for these features using a multivariate Gaussian distribution with mean 𝜇 and covariance Σ. As provided by Kaggle, the FID between the real images _r_ and the generated images _g_ is computed as
+
 ![](Images/fid.png)
+
 where _Tr_ is the sum of the diagonal elements.
 
 On top of FID, this Kaggle competition takes into account training sample memorization in the performance metric.
@@ -152,6 +155,7 @@ We discuss related works for this project to emphasize the concept's popularity,
 One almost identical work to this competition was performed by a research team at UC Berkeley, in which they used an 'Unpaired Image-to-Image Translation' technique to turn photographs into Monet-styled paintings, as shown below:
 
 ![](Images/cyclegan_example.png)
+
 [https://petapixel.com/2017/04/03/ai-can-convert-paintings-photos-summer-winter/](https://petapixel.com/2017/04/03/ai-can-convert-paintings-photos-summer-winter/)
 
 While this is the exact task that we are asked to perform in this competition, UC Berkely's algorithm is also capable of a "reverse-Prima" trick of taking the painting and transforming it into a photograph.
@@ -161,6 +165,7 @@ One other related work is DeepDream, a computer vision program created by a Goog
 Understanding the process performed to create images, such as the one below, can potentially lead to new insights that will strengthen our own algorithm.
 
 ![](Images/deepdream_example.png)
+
 [https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg](https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg)
 
 **9. References:**
