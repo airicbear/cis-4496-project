@@ -168,20 +168,22 @@ Understanding the process performed to create images, such as the one below, can
 
 [https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg](https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg)
 
-**9. References:**
+9.  **Link to Best Practices Document:**
 
-- Fréchet Inception Distance, [https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance](https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance)
+[https://docs.google.com/document/d/1ig-onwIWO19tXUDvTn9Mxhr3oqpMHaesN2h0J1rKCw8/edit?usp=sharing](https://docs.google.com/document/d/1ig-onwIWO19tXUDvTn9Mxhr3oqpMHaesN2h0J1rKCw8/edit?usp=sharing)
 
-- A simple explanation of the Inception Score, [https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a](https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a)
+10. **References:**
 
-- Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks, [https://arxiv.org/abs/1703.10593](https://arxiv.org/abs/1703.10593)
+Fréchet Inception Distance, [https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance](https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance)
 
-- Contrastive Learning for Unpaired Image-to-Image Translation, [https://arxiv.org/abs/2007.15651](https://arxiv.org/abs/2007.15651)
+A simple explanation of the Inception Score, [https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a](https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a)
 
-- Benchmarking algorithms for the paper on UVCGAN, [https://github.com/LS4GAN/benchmarking](https://github.com/LS4GAN/benchmarking)
+Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks, [https://arxiv.org/abs/1703.10593](https://arxiv.org/abs/1703.10593)
 
-- DeepDream, [https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg](https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg)
+Benchmarking algorithms for the paper on UVCGAN, [https://github.com/LS4GAN/benchmarking](https://github.com/LS4GAN/benchmarking)
 
-- Demo MiFID metric for Dog image generation comp, [https://www.kaggle.com/wendykan/demo-mifid-metric-for-dog-image-generation-comp](https://www.kaggle.com/wendykan/demo-mifid-metric-for-dog-image-generation-comp)
+DeepDream, [https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg](https://en.wikipedia.org/wiki/DeepDream#/media/File:%22Mona_Lisa%22_with_DeepDream_effect_using_VGG16_network_trained_on_ImageNet.jpg)
 
-- Kaggle Page For "I'm Something Of A Painter Myself", [https://www.kaggle.com/competitions/gan-getting-started](https://www.kaggle.com/competitions/gan-getting-started)
+Demo MiFID metric for Dog image generation comp, [https://www.kaggle.com/wendykan/demo-mifid-metric-for-dog-image-generation-comp](https://www.kaggle.com/wendykan/demo-mifid-metric-for-dog-image-generation-comp)
+
+Kaggle Page For "I'm Something Of A Painter Myself", [https://www.kaggle.com/competitions/gan-getting-started](https://www.kaggle.com/competitions/gan-getting-started)
