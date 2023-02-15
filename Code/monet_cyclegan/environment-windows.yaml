@@ -1,0 +1,15 @@
+name: monet-cyclegan-windows
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.9
+  - pip
+  - ipykernel
+
+  - pip:
+      - tensorflow
+      - tensorflow-addons
+      - matplotlib
+      - pillow
