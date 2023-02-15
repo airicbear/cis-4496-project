@@ -1,7 +1,7 @@
-# Code folder for hosting code for a Data Science Project
+# CIS4496 Project Source Code
 
-This folder hosts all code for a data science project. It has three sub-folders, belonging to 3 stages of the Data Science Lifecycle:
+This folder hosts all code for the project.
 
-1. Data_Acquisition_and_Understanding
-2. Modeling
-3. Deployment
+- `monet_cyclegan`: Python package to train and build the "photo to monet" model
+
+  - `python -m monet_cyclegan.train`: train the model
