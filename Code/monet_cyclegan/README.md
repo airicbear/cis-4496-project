@@ -1,8 +1,18 @@
 # Monet CycleGAN
 
-### Conda Environment Setup
+### Conda Environment Setup (Windows)
 
-Currently, we only have one [Conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) which is made with macOS users in mind: `environment-macos.yaml`.
+- [Install Anaconda](https://www.anaconda.com/)
+- [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (WSL is required for GPU support on Windows)
+
+```
+conda env create -f environment-windows.yaml
+conda activate monet-cyclegan-windows
+```
+
+### Conda Environment Setup (macOS)
+
+- [Install Anaconda](https://www.anaconda.com/)
 
 ```
 conda env create -f environment-macos.yaml
