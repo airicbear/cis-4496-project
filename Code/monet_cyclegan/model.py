@@ -22,7 +22,7 @@ class CycleGan(tf.keras.Model):
         self.identity_loss_fn = identity_loss_fn
     
     @tf.function
-    def train_step(self, batch_data: tuple[tf.Tensor, tf.Tensor]):
+    def train_step(self, batch_data: 'tuple[tf.Tensor, tf.Tensor]'):
         real_monet, real_photo = batch_data
 
         with tf.GradientTape(persistent=True) as tape:
