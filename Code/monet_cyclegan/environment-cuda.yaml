@@ -1,4 +1,4 @@
-name: monet-cyclegan-windows-nvidia
+name: monet-cyclegan-cuda
 
 channels:
   - conda-forge
