@@ -1,8 +1,16 @@
 import tensorflow as tf
 from typing import Callable
 
+
 class CycleGan(tf.keras.Model):
+    """
+    This class is the  CylceGAN model, which initializes and compiles the generators and discriminators
+    """
+    
     def __init__(self, monet_generator: tf.keras.Model, photo_generator: tf.keras.Model, monet_discriminator: tf.keras.Model, photo_discriminator: tf.keras.Model, lambda_cycle: int = 10):
+        """
+        This is the initialization function for the generators, discriminators, and the lambda cycle
+        """
         super(CycleGan, self).__init__()
         self.monet_generator = monet_generator
         self.photo_generator = photo_generator
@@ -11,6 +19,9 @@ class CycleGan(tf.keras.Model):
         self.lambda_cycle = lambda_cycle
     
     def compile(self, monet_generator_optimizer: tf.keras.optimizers.Optimizer, photo_generator_optimizer: tf.keras.optimizers.Optimizer, monet_discriminator_optimizer: tf.keras.optimizers.Optimizer, photo_discriminator_optimizer: tf.keras.optimizers.Optimizer, generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor], discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor], cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float], identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float]):
+        """
+        This function sets the optimizers and the loss functions
+        """
         super(CycleGan, self).compile()
         self.monet_generator_optimizer = monet_generator_optimizer
         self.photo_generator_optimizer = photo_generator_optimizer
@@ -21,8 +32,10 @@ class CycleGan(tf.keras.Model):
         self.cycle_loss_fn = cycle_loss_fn
         self.identity_loss_fn = identity_loss_fn
     
+
+
     @tf.function
-    def train_step(self, batch_data: tuple[tf.Tensor, tf.Tensor]):
+    def train_step(self, batch_data: 'tuple[tf.Tensor, tf.Tensor]'):
         real_monet, real_photo = batch_data
 
         with tf.GradientTape(persistent=True) as tape:
