@@ -1,7 +1,14 @@
 import tensorflow as tf
 from .layers import downsample, upsample
 
+
+
 def Generator(output_channels: int = 3) -> tf.keras.Model:
+    """
+    The Generator applies an encoder-decoder architecture that downsamples the image and then decodes the image
+    through various transpose convolutions." It is inspired by a "U-Net" architecture for image generation, which downsamples
+    an image and then applies 
+    """
     down_stack = [
         downsample(64, 4, apply_instancenorm=False),
         downsample(128, 4),
