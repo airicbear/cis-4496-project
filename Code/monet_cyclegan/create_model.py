@@ -23,11 +23,11 @@ def create_model() -> CycleGan:
         def generator_loss(generated: tf.keras.Model) -> tf.Tensor:
             return tf.keras.losses.BinaryCrossentropy(from_logits=True, reduction=tf.keras.losses.Reduction.NONE)(tf.ones_like(generated), generated)
 
-        def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, LAMBDA: float) -> float:
+        def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, LAMBDA: float) -> tf.Tensor:
             loss1 = tf.reduce_mean(tf.abs(real_image - cycled_image))
             return LAMBDA * loss1
 
-        def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, LAMBDA: float) -> float:
+        def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, LAMBDA: float) -> tf.Tensor:
             loss = tf.reduce_mean(tf.abs(real_image - same_image))
             return LAMBDA * 0.5 * loss
 
