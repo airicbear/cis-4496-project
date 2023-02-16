@@ -1,0 +1,17 @@
+name: monet-cyclegan-cuda
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.9
+  - pip
+  - ipykernel
+  - cudatoolkit
+  - cudnn
+
+  - pip:
+      - tensorflow
+      - tensorflow-addons
+      - matplotlib
+      - pillow
