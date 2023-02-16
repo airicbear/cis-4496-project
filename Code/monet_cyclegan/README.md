@@ -98,8 +98,8 @@
 - Open WSL in this folder and create and activate the Conda environment:
 
   ```sh
-  conda env create -f environment-windows-nvidia.yaml
-  conda activate monet-cyclegan-windows-nvidia
+  conda env create -f environment-cuda.yaml
+  conda activate monet-cyclegan-cuda
   ```
   
 For additional information on setting up CUDA on WSL, see the [CUDA on WSL User Guide](https://docs.nvidia.com/cuda/wsl-user-guide/index.html).
