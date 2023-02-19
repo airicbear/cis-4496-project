@@ -65,9 +65,9 @@ def count_photo_samples():
     return count_data_items(photo_filenames())
 
 
-def get_gan_dataset_basic() -> tf.data.Dataset:
-    monets = monet_dataset().batch(1)
-    photos = photo_dataset().batch(1)
+def get_gan_dataset_basic(batch_size: int = 1) -> tf.data.Dataset:
+    monets = monet_dataset().batch(batch_size, drop_remainder=True)
+    photos = photo_dataset().batch(batch_size, drop_remainder=True)
     return tf.data.Dataset.zip((monets, photos))
 
 
@@ -93,8 +93,8 @@ def get_gan_dataset(augment: Callable[[tf.Tensor], tf.Tensor] = None,
         monets = monets.map(augment, num_parallel_calls=AUTOTUNE)
         photos = photos.map(augment, num_parallel_calls=AUTOTUNE)
 
-    monets = monets.prefetch(AUTOTUNE)
-    photos = photos.prefetch(AUTOTUNE)
+    # monets = monets.prefetch(AUTOTUNE)
+    # photos = photos.prefetch(AUTOTUNE)
 
     gan_dataset = tf.data.Dataset.zip((monets, photos))
 

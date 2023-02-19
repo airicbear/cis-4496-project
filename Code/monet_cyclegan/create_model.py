@@ -2,12 +2,12 @@ import tensorflow as tf
 
 from .consts import strategy
 from .discriminator import discriminator
-from .generator import Generator
+from .generator import generator
 from .losses import generator_loss, discriminator_loss, calc_cycle_loss, identity_loss
 from .model import CycleGan
 
-monet_generator = Generator()
-photo_generator = Generator()
+monet_generator = generator()
+photo_generator = generator()
 monet_discriminator = discriminator()
 photo_discriminator = discriminator()
 

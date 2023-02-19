@@ -92,17 +92,17 @@ class CycleGan(tf.keras.Model, ABC):
             same_monet = self.monet_generator(real_monet, training=True)
             same_photo = self.photo_generator(real_photo, training=True)
 
-            # both_monet = tf.concat([real_monet, fake_monet], axis=0)
-            #
-            # aug_monet = aug_fn(both_monet)
-            #
-            # aug_real_monet = aug_monet[:batch_size]
-            # aug_fake_monet = aug_monet[batch_size:]
+            both_monet = tf.concat([real_monet, fake_monet], axis=0)
 
-            discriminator_real_monet = self.monet_discriminator(real_monet, training=True)
+            aug_monet = aug_fn(both_monet)
+
+            aug_real_monet = aug_monet[:batch_size]
+            aug_fake_monet = aug_monet[batch_size:]
+
+            discriminator_real_monet = self.monet_discriminator(aug_real_monet, training=True)
             discriminator_real_photo = self.photo_discriminator(real_photo, training=True)
 
-            discriminator_fake_monet = self.monet_discriminator(fake_monet, training=True)
+            discriminator_fake_monet = self.monet_discriminator(aug_fake_monet, training=True)
             discriminator_fake_photo = self.photo_discriminator(fake_photo, training=True)
 
             monet_generator_loss = self.generator_loss_fn(discriminator_fake_monet)

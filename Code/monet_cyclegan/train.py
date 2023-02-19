@@ -14,7 +14,7 @@ if __name__ == '__main__':
     #                                shuffle=False,
     #                                batch_size=BATCH_SIZE)
 
-    full_dataset = get_gan_dataset_basic()
+    full_dataset = get_gan_dataset_basic(BATCH_SIZE)
 
     cycle_gan_compile_with_loss_rate(2e-4)
     cycle_gan_model.fit(full_dataset,

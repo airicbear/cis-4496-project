@@ -4,7 +4,7 @@ from typing import List
 from .layers import downsample, upsample
 
 
-def Generator(output_channels: int = 3) -> tf.keras.Model:
+def generator(output_channels: int = 3) -> tf.keras.Model:
     """
     The Generator applies an encoder-decoder architecture that down-samples the image and then decodes the image
     through various transpose convolutions. It is inspired by a "U-Net" architecture for image generation,
