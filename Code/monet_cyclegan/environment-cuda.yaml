@@ -1,3 +1,4 @@
+# Conda environment configuration for Windows users with NVIDIA GPUs:
 name: monet-cyclegan-cuda
 
 channels:

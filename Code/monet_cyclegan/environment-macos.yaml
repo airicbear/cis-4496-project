@@ -1,3 +1,4 @@
+# Conda environment configuration for macOS users:
 name: monet-cyclegan-macos
 
 channels:
