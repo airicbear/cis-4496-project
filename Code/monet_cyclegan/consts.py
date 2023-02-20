@@ -2,6 +2,7 @@ import tensorflow as tf
 
 USING_KAGGLE = False
 AUTOTUNE = tf.data.experimental.AUTOTUNE
+BATCH_SIZE = 32
 
 try:
     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()

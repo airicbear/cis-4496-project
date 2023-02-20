@@ -130,11 +130,9 @@ with strategy.scope():
 
 
     def aug_fn(image: tf.Tensor) -> tf.Tensor:
-        return diff_augment(image,
-                            "color,translation,cutout")
+        return diff_augment(image, "color,translation,cutout")
 
 
 def data_augment_flip(image: tf.Tensor) -> tf.Tensor:
-    print(f'Calling data_augment_flip on {image}')
     image = tf.image.random_flip_left_right(image)
     return image

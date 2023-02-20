@@ -65,10 +65,16 @@ def count_photo_samples():
     return count_data_items(photo_filenames())
 
 
+def get_gan_dataset_basic() -> tf.data.Dataset:
+    monets = monet_dataset().batch(1)
+    photos = photo_dataset().batch(1)
+    return tf.data.Dataset.zip((monets, photos))
+
+
 def get_gan_dataset(augment: Callable[[tf.Tensor], tf.Tensor] = None,
                     repeat: bool = True,
                     shuffle: bool = True,
-                    batch_size: int = 1):
+                    batch_size: int = 1) -> tf.data.Dataset:
     monets = monet_dataset()
     photos = photo_dataset()
 

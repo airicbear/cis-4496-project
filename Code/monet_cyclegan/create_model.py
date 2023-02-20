@@ -1,17 +1,20 @@
 import tensorflow as tf
 
-from .discriminator import Discriminator
+from .consts import strategy
+from .discriminator import discriminator
 from .generator import Generator
 from .losses import generator_loss, discriminator_loss, calc_cycle_loss, identity_loss
 from .model import CycleGan
-from .consts import strategy
 
 monet_generator = Generator()
 photo_generator = Generator()
-monet_discriminator = Discriminator()
-photo_discriminator = Discriminator()
+monet_discriminator = discriminator()
+photo_discriminator = discriminator()
 
-cycle_gan_model = CycleGan(monet_generator, photo_generator, monet_discriminator, photo_discriminator)
+cycle_gan_model = CycleGan(monet_generator=monet_generator,
+                           photo_generator=photo_generator,
+                           monet_discriminator=monet_discriminator,
+                           photo_discriminator=photo_discriminator)
 
 
 def cycle_gan_compile(monet_generator_optimizer: tf.keras.optimizers.Optimizer,

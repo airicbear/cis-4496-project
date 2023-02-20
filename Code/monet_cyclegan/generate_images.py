@@ -17,6 +17,7 @@ if __name__ == '__main__':
     photos = photo_dataset()
 
     # Try to create generator models using create_model.py
+    photos = photo_dataset().batch(1)
     try:
         cycle_gan_model.monet_generator.load_weights(f'photo2monet.h5')
         cycle_gan_model.photo_generator.load_weights(f'monet2photo.h5')
