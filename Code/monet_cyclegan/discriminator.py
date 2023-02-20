@@ -4,7 +4,7 @@ from tensorflow_addons.layers import InstanceNormalization
 from .layers import downsample
 
 
-def Discriminator() -> tf.keras.Model:
+def discriminator() -> tf.keras.Model:
     """
     This is the function to create the Discriminator model for our CycleGAN model.
     First, the input images are down-sampled three times and zero-padded.

@@ -1,16 +1,19 @@
+from typing import List
+
 import tensorflow as tf
 
+from .consts import IMAGE_SIZE
 
-def decode_image(image: tf.io.FixedLenFeature, image_size: 'list[int]' = [256, 256]) -> tf.Tensor:
+
+def decode_image(image: tf.io.FixedLenFeature) -> tf.Tensor:
     """
     Utility function to decode the image
     :param image: the original image
-    :param image_size: the size of the original image
     :return: the decoded image
     """
     image = tf.image.decode_jpeg(image, channels=3)
     image = (tf.cast(image, tf.float32) / 127.5) - 1
-    image = tf.reshape(image, [*image_size, 3])
+    image = tf.reshape(image, [*IMAGE_SIZE, 3])
     return image
 
 
@@ -30,7 +33,7 @@ def read_tfrecord(example: tf.Tensor) -> tf.Tensor:
     return image
 
 
-def read_tfrecords(filenames: 'list[str]') -> tf.data.TFRecordDataset:
+def read_tfrecords(filenames: List[str]) -> tf.data.TFRecordDataset:
     """
     Utility function to read the tensor flow records into a dataset
     :param filenames: the names of the files
