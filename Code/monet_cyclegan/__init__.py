@@ -2,7 +2,6 @@ from . import consts
 from . import datasets
 from . import create_model
 from . import datasets
-from . import diffaugment
 from . import discriminator
 from . import generate_images
 from . import generator

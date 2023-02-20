@@ -1,6 +1,4 @@
 import tensorflow as tf
-import numpy as np
-import re
 
 from .consts import USING_KAGGLE
 from .utils import read_tfrecords
@@ -45,22 +43,6 @@ def photo_dataset():
     :return: the loaded photos in `TFRecordDataset` format.
     """
     return read_tfrecords(photo_filenames())
-
-
-def count_data_items(filenames) -> np.array:
-    n: list
-
-    n = [int(re.compile(r"-([0-9]*)\.").search(filename).group(1)) for filename in filenames]
-
-    return np.sum(n)
-
-
-def count_monet_samples():
-    return count_data_items(monet_filenames())
-
-
-def count_photo_samples():
-    return count_data_items(photo_filenames())
 
 
 def load_dataset(batch_size: int = 1) -> tf.data.Dataset:
