@@ -5,6 +5,9 @@ from .datasets import monet_dataset, photo_dataset
 
 
 if __name__ == '__main__':
+    """
+    Trains the configured model
+    """
     USING_KAGGLE = False
     EPOCHS = 1
 

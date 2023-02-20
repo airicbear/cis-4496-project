@@ -1,18 +1,24 @@
-import tensorflow as tf
 import sys
 from pathlib import Path
-from numpy import uint8
+
 from PIL import Image
+from numpy import uint8
 
-from .datasets import photo_dataset
 from .create_model import create_model
-
+from .datasets import photo_dataset
 
 if __name__ == '__main__':
+    """
+    Generates images from the trained model
+    """
+
     USING_KAGGLE = False
     EPOCHS = 1
 
+    # Get photo data from datasets.py:
     photos = photo_dataset(USING_KAGGLE)
+
+    # Try to create generator models using create_model.py
     try:
         model = create_model()
         model.monet_generator.load_weights(f'photo2monet_epoch{EPOCHS}.h5')

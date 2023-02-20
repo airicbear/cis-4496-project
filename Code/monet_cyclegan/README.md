@@ -144,4 +144,4 @@ Each file in this folder represents a [Python module](https://docs.python.org/3/
 
 - `environment-windows.yaml`: Conda environment configuration for Windows users only using CPU.
 
-- `environment-windows-nvidia.yaml`: Conda environment configuration for Windows users with NVIDIA GPUs.
+- `environment-cuda.yaml`: Conda environment configuration for Windows users with NVIDIA GPUs.

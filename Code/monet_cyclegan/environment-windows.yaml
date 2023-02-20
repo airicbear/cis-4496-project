@@ -1,3 +1,4 @@
+# Conda environment configuration for Windows users only using CPU:
 name: monet-cyclegan-windows
 
 channels:

@@ -3,3 +3,5 @@
 /submission_images
 __pycache__
 *.h5
+*.iml
+*.xml

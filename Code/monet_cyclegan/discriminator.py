@@ -3,7 +3,18 @@ from tensorflow_addons.layers import InstanceNormalization
 
 from .layers import downsample
 
+
 def Discriminator() -> tf.keras.Model:
+    """
+    This is the function to create the Discriminator model for our CycleGAN model.
+    First, the input images are down-sampled three times and zero-padded.
+    Then, a 2D Convolutional Neural Network with stride 1 is applied to the inputs.
+    From there, we apply Instance Normalization with a gamma initializer on the convolution.
+    Leaky ReLU is applied to the normalization, and another zero-padding is performed.
+    Next, the outputs are created from this with another 2D Convolutional Neural Network with stride 1.
+    Finally, the Discriminator model is created and returned with the input and outputs as parameters.
+    :return: Discriminator model with the inputs and outputs as parameters
+    """
     initializer = tf.random_normal_initializer(0., 0.02)
     gamma_init = tf.keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
 
