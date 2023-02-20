@@ -1,6 +1,7 @@
+import tensorflow as tf
 from typing import Callable
 
-import tensorflow as tf
+from .diffaugment import aug_fn
 
 
 class CycleGan(tf.keras.Model):
@@ -24,8 +25,9 @@ class CycleGan(tf.keras.Model):
         self.monet_discriminator = monet_discriminator
         self.photo_discriminator = photo_discriminator
         self.lambda_cycle = lambda_cycle
-
-    def compile(self, monet_generator_optimizer: tf.keras.optimizers.Optimizer,
+    
+    def compile(self,
+                monet_generator_optimizer: tf.keras.optimizers.Optimizer,
                 photo_generator_optimizer: tf.keras.optimizers.Optimizer,
                 monet_discriminator_optimizer: tf.keras.optimizers.Optimizer,
                 photo_discriminator_optimizer: tf.keras.optimizers.Optimizer,
@@ -63,6 +65,7 @@ class CycleGan(tf.keras.Model):
         :return: the loss metrics for all four models
         """
         real_monet, real_photo = batch_data
+        batch_size = tf.shape(real_monet)[0]
 
         with tf.GradientTape(persistent=True) as tape:
             fake_monet = self.monet_generator(real_photo, training=True)
@@ -74,10 +77,17 @@ class CycleGan(tf.keras.Model):
             same_monet = self.monet_generator(real_monet, training=True)
             same_photo = self.photo_generator(real_photo, training=True)
 
-            discriminator_real_monet = self.monet_discriminator(real_monet, training=True)
+            both_monet = tf.concat([real_monet, fake_monet], axis=0)
+
+            aug_monet = aug_fn(both_monet)
+
+            aug_real_monet = aug_monet[:batch_size]
+            aug_fake_monet = aug_monet[batch_size:]
+
+            discriminator_real_monet = self.monet_discriminator(aug_real_monet, training=True)
             discriminator_real_photo = self.photo_discriminator(real_photo, training=True)
 
-            discriminator_fake_monet = self.monet_discriminator(fake_monet, training=True)
+            discriminator_fake_monet = self.monet_discriminator(aug_fake_monet, training=True)
             discriminator_fake_photo = self.photo_discriminator(fake_photo, training=True)
 
             monet_generator_loss = self.generator_loss_fn(discriminator_fake_monet)
