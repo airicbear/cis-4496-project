@@ -2,7 +2,8 @@ import tensorflow as tf
 
 USING_KAGGLE = False
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-BATCH_SIZE = 32
+BATCH_SIZE = 1
+IMAGE_SIZE = [256, 256]
 
 try:
     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()

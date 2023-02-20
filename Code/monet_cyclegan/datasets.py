@@ -1,10 +1,8 @@
-from typing import Callable
-
 import tensorflow as tf
 import numpy as np
 import re
 
-from .consts import USING_KAGGLE, AUTOTUNE
+from .consts import USING_KAGGLE
 from .utils import read_tfrecords
 
 
@@ -65,37 +63,7 @@ def count_photo_samples():
     return count_data_items(photo_filenames())
 
 
-def get_gan_dataset_basic(batch_size: int = 1) -> tf.data.Dataset:
+def load_dataset(batch_size: int = 1) -> tf.data.Dataset:
     monets = monet_dataset().batch(batch_size, drop_remainder=True)
     photos = photo_dataset().batch(batch_size, drop_remainder=True)
     return tf.data.Dataset.zip((monets, photos))
-
-
-def get_gan_dataset(augment: Callable[[tf.Tensor], tf.Tensor] = None,
-                    repeat: bool = True,
-                    shuffle: bool = True,
-                    batch_size: int = 1) -> tf.data.Dataset:
-    monets = monet_dataset()
-    photos = photo_dataset()
-
-    if repeat:
-        monets = monets.repeat()
-        photos = photos.repeat()
-
-    if shuffle:
-        monets = monets.shuffle(2048)
-        photos = photos.shuffle(2048)
-
-    monets = monets.batch(batch_size, drop_remainder=True)
-    photos = photos.batch(batch_size, drop_remainder=True)
-
-    if augment:
-        monets = monets.map(augment, num_parallel_calls=AUTOTUNE)
-        photos = photos.map(augment, num_parallel_calls=AUTOTUNE)
-
-    # monets = monets.prefetch(AUTOTUNE)
-    # photos = photos.prefetch(AUTOTUNE)
-
-    gan_dataset = tf.data.Dataset.zip((monets, photos))
-
-    return gan_dataset

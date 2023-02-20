@@ -3,8 +3,6 @@ from typing import Callable, Tuple
 
 import tensorflow as tf
 
-from .diffaugment import aug_fn
-
 
 class CycleGan(tf.keras.Model, ABC):
     """
@@ -31,14 +29,14 @@ class CycleGan(tf.keras.Model, ABC):
         self.monet_discriminator = monet_discriminator
         self.photo_discriminator = photo_discriminator
         self.lambda_cycle = lambda_cycle
-        self.monet_generator_optimizer: tf.keras.optimizers.Optimizer = None
-        self.photo_generator_optimizer: tf.keras.optimizers.Optimizer = None
-        self.monet_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
-        self.photo_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
-        self.generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor] = None
-        self.discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor] = None
-        self.cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], tf.Tensor] = None
-        self.identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], tf.Tensor] = None
+        self.monet_generator_optimizer = None
+        self.photo_generator_optimizer = None
+        self.monet_discriminator_optimizer = None
+        self.photo_discriminator_optimizer = None
+        self.generator_loss_fn = None
+        self.discriminator_loss_fn = None
+        self.cycle_loss_fn = None
+        self.identity_loss_fn = None
 
     def compile(self,
                 monet_generator_optimizer: tf.keras.optimizers.Optimizer,
@@ -47,8 +45,8 @@ class CycleGan(tf.keras.Model, ABC):
                 photo_discriminator_optimizer: tf.keras.optimizers.Optimizer,
                 generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor],
                 discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor],
-                cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], tf.Tensor],
-                identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], tf.Tensor]):
+                cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float],
+                identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float]):
         """
         Compiler function that sets the optimizers and the loss functions
         :param monet_generator_optimizer: optimizer for monet painting generator model
@@ -71,7 +69,6 @@ class CycleGan(tf.keras.Model, ABC):
         self.cycle_loss_fn = cycle_loss_fn
         self.identity_loss_fn = identity_loss_fn
 
-
     @tf.function
     def train_step(self, batch_data: Tuple[tf.Tensor, tf.Tensor]):
         """
@@ -80,7 +77,6 @@ class CycleGan(tf.keras.Model, ABC):
         :return: the loss metrics for all four models
         """
         real_monet, real_photo = batch_data
-        batch_size = tf.shape(real_monet)[0]
 
         with tf.GradientTape(persistent=True) as tape:
             fake_monet = self.monet_generator(real_photo, training=True)
@@ -92,17 +88,10 @@ class CycleGan(tf.keras.Model, ABC):
             same_monet = self.monet_generator(real_monet, training=True)
             same_photo = self.photo_generator(real_photo, training=True)
 
-            both_monet = tf.concat([real_monet, fake_monet], axis=0)
-
-            aug_monet = aug_fn(both_monet)
-
-            aug_real_monet = aug_monet[:batch_size]
-            aug_fake_monet = aug_monet[batch_size:]
-
-            discriminator_real_monet = self.monet_discriminator(aug_real_monet, training=True)
+            discriminator_real_monet = self.monet_discriminator(real_monet, training=True)
             discriminator_real_photo = self.photo_discriminator(real_photo, training=True)
 
-            discriminator_fake_monet = self.monet_discriminator(aug_fake_monet, training=True)
+            discriminator_fake_monet = self.monet_discriminator(fake_monet, training=True)
             discriminator_fake_photo = self.photo_discriminator(fake_photo, training=True)
 
             monet_generator_loss = self.generator_loss_fn(discriminator_fake_monet)

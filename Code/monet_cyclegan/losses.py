@@ -20,11 +20,11 @@ with strategy.scope():
                                                                                             generated)
 
 
-    def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, alpha: float) -> tf.Tensor:
+    def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, alpha: float) -> float:
         loss1: tf.Tensor = tf.reduce_mean(tf.abs(real_image - cycled_image))
         return loss1 * alpha
 
 
-    def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, alpha: float) -> tf.Tensor:
+    def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, alpha: float) -> float:
         loss: tf.Tensor = tf.reduce_mean(tf.abs(real_image - same_image))
         return alpha * 0.5 * loss
