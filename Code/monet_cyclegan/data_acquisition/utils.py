@@ -1,5 +1,8 @@
+import io
+import zipfile
 from typing import List
 
+import requests
 import tensorflow as tf
 
 from ..consts import IMAGE_SIZE
@@ -54,3 +57,16 @@ def read_tfrecorddataset(filenames: List[str]) -> tf.data.TFRecordDataset:
     dataset = tf.data.TFRecordDataset(filenames)
     dataset = dataset.map(read_tfrecord, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     return dataset
+
+
+def download_extract_zip(url: str, output_dir: str) -> None:
+    """Download and extract a zip file from a URL.
+
+    Args:
+        url: The URL of the zip file.
+        output_dir: The directory where the zip file will be extracted to.
+    """
+
+    r = requests.get(url, stream=True)
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    z.extractall(output_dir)

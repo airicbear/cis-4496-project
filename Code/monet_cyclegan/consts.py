@@ -5,6 +5,8 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 BATCH_SIZE = 1
 IMAGE_SIZE = [256, 256]
 DATA_PATH = '../Sample_Data/Raw'
+KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
+KAGGLE_DATASET_PATH = '../Sample_Data/For_Modeling/Kaggle_Dataset'
 
 if USING_KAGGLE:
     from kaggle_datasets import KaggleDatasets
