@@ -1,4 +1,4 @@
-# Folder for hosting all documents for a Data Science Project
+# Folder for hosting all documents for our Data Science Project
 
 Documents will contain information about the following 
 
