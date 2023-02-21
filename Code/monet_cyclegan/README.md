@@ -1,5 +1,28 @@
 # Monet CycleGAN
 
+A CycleGAN implementation used to translate photos to Monet paintings. 
+
+### Files/Folders
+
+This folder represents a [Python package](https://docs.python.org/3/tutorial/modules.html#packages).
+Each file in this folder represents a [Python module](https://docs.python.org/3/tutorial/modules.html).
+
+- `data_acquisition`: Data storage, processing, exploration, etc.
+
+- `deployment`: Model scoring, performance, monitoring, etc.
+
+- `modeling`: Model tuning, training, evaluation, etc.
+
+- `__init__.py`: Required to represent the folder as a package
+
+- `consts.py`: Constants used throughout the package.
+
+- `environment-macos.yaml`: Conda environment configuration for macOS users.
+
+- `environment-windows.yaml`: Conda environment configuration for Windows users only using CPU.
+
+- `environment-cuda.yaml`: Conda environment configuration for Windows users with NVIDIA GPUs.
+
 ### Setup (macOS)
 
 - Install [Anaconda](https://www.anaconda.com/) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
@@ -104,44 +127,12 @@
   
 For additional information on setting up CUDA on WSL, see the [CUDA on WSL User Guide](https://docs.nvidia.com/cuda/wsl-user-guide/index.html).
 
-### Run modules
+### Usage
 
 Run modules from the parent directory of the package (in this case, from the `/Code` folder).
-Here's an example on running the `monet_cyclegan.train` and `monet_cyclegan.generate_images` modules:
+Here's an example on running the `monet_cyclegan.modeling.train` and `monet_cyclegan.deployment.generate_images` modules:
 
 ```sh
-python -m monet_cyclegan.train
-python -m monet_cyclegan.generate_images
+python -m monet_cyclegan.modeling.train
+python -m monet_cyclegan.deployment.generate_images
 ```
-
-### Files/Folders
-
-This folder represents a [Python package](https://docs.python.org/3/tutorial/modules.html#packages).
-Each file in this folder represents a [Python module](https://docs.python.org/3/tutorial/modules.html).
-
-- `__init__.py`: Required to represent the folder as a package
-
-- `create_model.py`: The configured model.
-  This is where the loss functions and optimizers are defined.
-
-- `datasets.py`: Load the Monet and photo images in `TFRecordDataset` format.
-
-- `discriminator.py`: The discriminator model.
-
-- `generate_images.py`: Generate images from the trained model.
-
-- `generator.py`: The generator model.
-
-- `layers.py`: Common layers used in the models.
-
-- `model.py`: The CycleGAN model.
-
-- `train.py`: Train the configured model.
-
-- `utils.py`: Common utilities used throughout the project.
-
-- `environment-macos.yaml`: Conda environment configuration for macOS users.
-
-- `environment-windows.yaml`: Conda environment configuration for Windows users only using CPU.
-
-- `environment-cuda.yaml`: Conda environment configuration for Windows users with NVIDIA GPUs.
