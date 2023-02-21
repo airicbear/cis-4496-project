@@ -1,10 +1,10 @@
-# Folder for hosting all documents for a Data Science Project
+# Folder for hosting documents related to our Capstone Project
 
 Documents will contain information about the following 
 
 1. System architecture
 2. Data dictionaries
 3. Reports related to data understanding, modeling
-4. Project management and planning docs
-5. Information obtained from a business owner or client about the project
-6. Docs and presentations prepared to share information about the project 
+4. Project management and planning documents
+5. Information obtained fabout the project
+6. Documents and presentations prepared to share information about the project 
