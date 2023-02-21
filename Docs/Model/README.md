@@ -1,1 +1,1 @@
-# Folder for hosting all documents and reports related to modeling
+# Folder for hosting all documents and reports related to our project's Models
