@@ -1,5 +1,6 @@
-import tensorflow as tf
 from typing import List
+
+import tensorflow as tf
 
 from .layers import downsample, upsample
 
@@ -10,9 +11,14 @@ def generator(output_channels: int = 3) -> tf.keras.Model:
     through various transpose convolutions. It is inspired by a "U-Net" architecture for image generation,
     which down-samples an image and then applies up-sampling.
     However, it keeps the information from the old images through the residual blocks (the Concatenate function).
-    :param output_channels: default of 3 output channels
-    :return: Generator model with the inputs (inputs) and outputs (x) as parameters
+
+    Args:
+        output_channels: Default of 3 output channels.
+
+    Returns:
+        Generator model with the inputs (inputs) and outputs (x) as parameters.
     """
+
     down_stack = [
         downsample(64, 4, apply_instancenorm=False),
         downsample(128, 4),

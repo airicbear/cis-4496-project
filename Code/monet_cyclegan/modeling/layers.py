@@ -2,16 +2,18 @@ import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
 
-def downsample(filters: int,
-               size: int,
-               apply_instancenorm: bool = True) -> tf.keras.Sequential:
+def downsample(filters: int, size: int, apply_instancenorm: bool = True) -> tf.keras.Sequential:
+    """Down-sampling layer to be included in the models.
+
+    Args:
+        filters: The number of filters.
+        size: The input size.
+        apply_instancenorm: True if the model should include an `InstanceNormalization` layer before activation.
+
+    Returns:
+        The down-sampling layer.
     """
-    Down-sampling layer function that gets used in the models
-    :param filters: the number of filters
-    :param size: the input size
-    :param apply_instancenorm: True if it should apply InstanceNormalization to result. False, otherwise. Default, True
-    :return: the down-sampled result
-    """
+
     initializer = tf.random_normal_initializer(0., 0.02)
     gamma_init = tf.keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
 
@@ -29,16 +31,18 @@ def downsample(filters: int,
     return result
 
 
-def upsample(filters: int,
-             size: int,
-             apply_dropout: bool = False) -> tf.keras.Sequential:
+def upsample(filters: int, size: int, apply_dropout: bool = False) -> tf.keras.Sequential:
+    """Up-sampling layer to be included in the models.
+
+    Args:
+        filters: The number of filters.
+        size: The input size.
+        apply_dropout: True if the model should include a Dropout layer before activation.
+
+    Returns:
+        The up-sampling layer.
     """
-    Up-sampling layer function that gets used in the models
-    :param filters: the number of filters
-    :param size: the input size
-    :param apply_dropout: True if it should apply dropout to result
-    :return: the up-sampled result
-    """
+
     initializer = tf.random_normal_initializer(0., 0.02)
     gamma_init = tf.keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
 

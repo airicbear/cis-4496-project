@@ -6,7 +6,7 @@ import tensorflow as tf
 
 class CycleGan(tf.keras.Model, ABC):
     """
-    The CycleGAN model that initializes and compiles the generators and discriminators
+    The CycleGAN model that initializes and compiles the generators and discriminators.
     """
 
     def __init__(self,
@@ -16,13 +16,16 @@ class CycleGan(tf.keras.Model, ABC):
                  photo_discriminator: tf.keras.Model,
                  lambda_cycle: int = 10):
         """
-        Initialization function for the generators, discriminators, and the lambda cycle
-        :param monet_generator: the monet painting generator model
-        :param photo_generator: the photo generator model
-        :param monet_discriminator: the monet painting discriminator
-        :param photo_discriminator: the photo discriminator
-        :param lambda_cycle: the lambda cycle
+        Initialization function for the generators, discriminators, and the lambda cycle.
+
+        Args:
+            monet_generator: the monet painting generator model
+            photo_generator: the photo generator model
+            monet_discriminator: the monet painting discriminator
+            photo_discriminator: the photo discriminator
+            lambda_cycle: the lambda cycle
         """
+
         super(CycleGan, self).__init__()
         self.monet_generator = monet_generator
         self.photo_generator = photo_generator
@@ -48,17 +51,19 @@ class CycleGan(tf.keras.Model, ABC):
                 cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float],
                 identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float]):
         """
-        Compiler function that sets the optimizers and the loss functions
-        :param monet_generator_optimizer: optimizer for monet painting generator model
-        :param photo_generator_optimizer: optimizer for photo generator model
-        :param monet_discriminator_optimizer: optimizer for monet painting discriminator model
-        :param photo_discriminator_optimizer: optimizer for photo discriminator model
-        :param generator_loss_fn: loss function for the generator models
-        :param discriminator_loss_fn: loss function for the discriminator models
-        :param cycle_loss_fn: cycleGAN loss function
-        :param identity_loss_fn: identity loss function
-        :return: null
+        Compiler function that sets the optimizers and the loss functions of the CycleGAN.
+
+        Args:
+            monet_generator_optimizer: optimizer for monet painting generator model
+            photo_generator_optimizer: optimizer for photo generator model
+            monet_discriminator_optimizer: optimizer for monet painting discriminator model
+            photo_discriminator_optimizer: optimizer for photo discriminator model
+            generator_loss_fn: loss function for the generator models
+            discriminator_loss_fn: loss function for the discriminator models
+            cycle_loss_fn: cycleGAN loss function
+            identity_loss_fn: identity loss function
         """
+
         super(CycleGan, self).compile()
         self.monet_generator_optimizer = monet_generator_optimizer
         self.photo_generator_optimizer = photo_generator_optimizer
@@ -73,9 +78,14 @@ class CycleGan(tf.keras.Model, ABC):
     def train_step(self, batch_data: Tuple[tf.Tensor, tf.Tensor]):
         """
         Main function for training the generators and discriminators as well as determining the corresponding loss.
-        :param batch_data: the batch data
-        :return: the loss metrics for all four models
+
+        Args:
+            batch_data: the batch data_acquisition
+
+        Returns:
+            The loss metrics for all four models.
         """
+
         real_monet, real_photo = batch_data
 
         with tf.GradientTape(persistent=True) as tape:

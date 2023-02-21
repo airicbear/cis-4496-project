@@ -2,15 +2,19 @@ from typing import List
 
 import tensorflow as tf
 
-from .consts import IMAGE_SIZE
+from ..consts import IMAGE_SIZE
 
 
 def decode_image(image: tf.io.FixedLenFeature) -> tf.Tensor:
+    """Decode a JPEG encoded image to an uint8 `Tensor`.
+
+    Args:
+        image: The JPEG encoded image.
+
+    Returns:
+        The JPEG image decoded as an uint8 `Tensor`.
     """
-    Utility function to decode the image
-    :param image: the original image
-    :return: the decoded image
-    """
+
     image = tf.image.decode_jpeg(image, channels=3)
     image = (tf.cast(image, tf.float32) / 127.5) - 1
     image = tf.reshape(image, [*IMAGE_SIZE, 3])
@@ -18,11 +22,15 @@ def decode_image(image: tf.io.FixedLenFeature) -> tf.Tensor:
 
 
 def read_tfrecord(example: tf.Tensor) -> tf.Tensor:
+    """Decode a TFREC encoded image to an uint8 `Tensor`.
+
+    Args:
+        example: The TFREC encoded image.
+
+    Returns:
+        The TFREC image decoded as an uint8 `Tensor`.
     """
-    Utility function to read the tensor flow record as an image
-    :param example: the tensor flow record
-    :return: the image
-    """
+
     tfrecord_format = {
         'image_name': tf.io.FixedLenFeature([], tf.string),
         'image': tf.io.FixedLenFeature([], tf.string),
@@ -33,12 +41,16 @@ def read_tfrecord(example: tf.Tensor) -> tf.Tensor:
     return image
 
 
-def read_tfrecords(filenames: List[str]) -> tf.data.TFRecordDataset:
+def read_tfrecorddataset(filenames: List[str]) -> tf.data.TFRecordDataset:
+    """Construct a `TFRecordDataset` from a set of TFREC encoded images.
+
+    Args:
+        filenames: The list of filenames of each TFREC encoded image.
+
+    Returns:
+        A `TFRecordDataset` of the TFREC encoded images.
     """
-    Utility function to read the tensor flow records into a dataset
-    :param filenames: the names of the files
-    :return: the dataset of tensor flow records
-    """
+
     dataset = tf.data.TFRecordDataset(filenames)
     dataset = dataset.map(read_tfrecord, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     return dataset
