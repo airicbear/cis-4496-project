@@ -1,7 +1,20 @@
- # CIS 4496 Capstone Project 
+ # CIS 4496 Capstone Project
  
-George Aeillo, Eric Nguyen, Arun Agarwal
+by [George Aeillo](https://github.com/GeorgeFAeillo), [Eric Nguyen](https://github.com/airicbear), [Arun Agarwal](https://github.com/aagarwal17)
 
-This is our Github Page About Our Data Science Project "I'm Something Of A Painter Myself" 
+This repository hosts all code, documentation, and data related our team's solution to the Kaggle competition, [*I'm Something Of A Painter Myself*](https://www.kaggle.com/competitions/gan-getting-started). 
+The challenge of this competition is to translate a photo to a Monet painting.
+Our current approach involves implementing a [CycleGAN](https://junyanz.github.io/CycleGAN/), an unpaired image-to-image translation model.
 
-This project will work on implementing GANs to generate a Monet-style image from an artist. 
+Links: [Project Charter](./Docs/Project/Charter.md)
+
+### Repository Structure
+
+The `Code` directory hosts code related to the project and its corresponding documentation.
+
+The `Docs` directory hosts documentation for the project.
+This directory primarily hosts design documentation, reports, and presentations.
+For code documentation, see the `Code` directory.
+
+The `Sample_Data` directory hosts a small sample of the data needed for the models.
+The full dataset is available by running `download_dataset` in the `Code/monet_cyclegan/data_acquisition` folder and is saved in `Sample_Data/Raw` by default.
