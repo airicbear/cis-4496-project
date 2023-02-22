@@ -5,9 +5,7 @@ import tensorflow as tf
 
 
 class CycleGan(tf.keras.Model, ABC):
-    """
-    The CycleGAN model that initializes and compiles the generators and discriminators.
-    """
+    """The CycleGAN model that initializes and compiles the generators and discriminators."""
 
     def __init__(self,
                  monet_generator: tf.keras.Model,
@@ -15,8 +13,7 @@ class CycleGan(tf.keras.Model, ABC):
                  monet_discriminator: tf.keras.Model,
                  photo_discriminator: tf.keras.Model,
                  lambda_cycle: int = 10):
-        """
-        Initialization function for the generators, discriminators, and the lambda cycle.
+        """Initialization function for the generators, discriminators, and the lambda cycle.
 
         Args:
             monet_generator: the monet painting generator model
@@ -50,8 +47,7 @@ class CycleGan(tf.keras.Model, ABC):
                 discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor],
                 cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float],
                 identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float]):
-        """
-        Compiler function that sets the optimizers and the loss functions of the CycleGAN.
+        """Compiler function that sets the optimizers and the loss functions of the CycleGAN.
 
         Args:
             monet_generator_optimizer: optimizer for monet painting generator model
@@ -76,8 +72,7 @@ class CycleGan(tf.keras.Model, ABC):
 
     @tf.function
     def train_step(self, batch_data: Tuple[tf.Tensor, tf.Tensor]):
-        """
-        Main function for training the generators and discriminators as well as determining the corresponding loss.
+        """Main function for training the generators and discriminators as well as determining the corresponding loss.
 
         Args:
             batch_data: the batch data_acquisition
