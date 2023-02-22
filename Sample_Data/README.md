@@ -4,5 +4,5 @@ The small sample datasets can be used to make your data preprocessing, feature e
 
 In each directory, there is a markdown file, which lists all datasets in each directory. Please provide the link to the full dataset in case one wants to access the full dataset. 
 
-
+Since our data currently does not require processing before entering our model, a link to the full dataset can be found in the Raw directory. Also, the Raw/Small_Dataset directory currently contains 60 Monet Paintings and 352 Photos in Tfrec format. 
 
