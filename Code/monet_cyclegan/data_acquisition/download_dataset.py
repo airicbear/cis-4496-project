@@ -5,16 +5,17 @@ from .utils import download_extract_zip
 from ..consts import KAGGLE_DATASET_PATH, KAGGLE_DATASET_URL
 
 
-def download_kaggle_dataset() -> None:
+def download_kaggle_dataset(url: str = KAGGLE_DATASET_URL,
+                            output_dir: str = KAGGLE_DATASET_PATH) -> None:
     """Download the Kaggle dataset."""
 
-    Path(KAGGLE_DATASET_PATH).mkdir(parents=True, exist_ok=True)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-    if len(os.listdir(KAGGLE_DATASET_PATH)) != 0:
-        print(f'ERROR: Directory "{KAGGLE_DATASET_PATH}" is not empty.')
+    if len(os.listdir(output_dir)) != 0:
+        print(f'ERROR: Directory "{output_dir}" is not empty.')
         return
 
-    download_extract_zip(KAGGLE_DATASET_URL, KAGGLE_DATASET_PATH)
+    download_extract_zip(url, output_dir)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,10 @@ USING_KAGGLE = False
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 BATCH_SIZE = 1
 IMAGE_SIZE = [256, 256]
+CHANNELS = 3
 DATA_PATH = '../Sample_Data/Raw/Small_Dataset'
+MONET_TFREC_DIR = f'{DATA_PATH}/monet_tfrec'
+PHOTO_TFREC_DIR = f'{DATA_PATH}/photo_tfrec'
 KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
 
