@@ -1,3 +1,4 @@
+from . import compile
 from . import create_model
 from . import discriminator
 from . import generator
