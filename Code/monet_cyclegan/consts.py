@@ -10,6 +10,8 @@ MONET_TFREC_DIR = f'{DATA_PATH}/monet_tfrec'
 PHOTO_TFREC_DIR = f'{DATA_PATH}/photo_tfrec'
 KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
+MONET_GENERATOR_WEIGHT_PATH = 'photo2monet.h5'
+PHOTO_GENERATOR_WEIGHT_PATH = 'monet2photo.h5'
 
 if USING_KAGGLE:
     from kaggle_datasets import KaggleDatasets
