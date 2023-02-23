@@ -99,7 +99,7 @@ def calculate_covariance(activations: tf.Tensor):
 
 
 def calculate_trace_covariance_mean(sigma_real: tf.Tensor, sigma_generated: tf.Tensor):
-    """
+    """Calculates the trace covariance mean.
 
     Args:
         sigma_real: The covariance matrix of the real image distribution.
