@@ -14,3 +14,4 @@ dependencies:
       - tensorflow-addons
       - matplotlib
       - pillow
+      - scipy
