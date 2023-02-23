@@ -2,8 +2,6 @@
 Compile and train the CycleGAN model.
 """
 
-import os
-import sys
 from argparse import ArgumentParser
 
 import tensorflow as tf
@@ -53,14 +51,6 @@ def main() -> None:
 
     dataset = load_dataset(monet_dir=args.monet_dir, photo_dir=args.photo_dir, batch_size=BATCH_SIZE)
 
-    if not os.path.isdir(args.monet_dir):
-        print(f"ERROR: Can't find {args.monet_dir}")
-        sys.exit(1)
-
-    if not os.path.isdir(args.photo_dir):
-        print(f"ERROR: Can't find {args.photo_dir}")
-        sys.exit(1)
-
     model = create_cyclegan_model()
 
     train_model(cyclegan_model=model,
@@ -68,6 +58,7 @@ def main() -> None:
                 train_dataset=dataset)
 
     save_weights(cyclegan_model=model)
+
 
 if __name__ == '__main__':
     main()

@@ -34,16 +34,16 @@ def read_image(path: str,
                width: int,
                height: int,
                channels: int) -> tf.Tensor:
-    """Read and decode a JPEG image file to an uint8 `Tensor`
+    """Read and decode an image file to an uint8 `Tensor`
 
     Args:
-        path: Path of the JPEG image.
+        path: Path of the image.
         width: The width of the decoded image.
         height: The height of the decoded image.
         channels: Number of color channels for the decoded image.
 
     Returns:
-        The JPEG image decoded as an uint8 `Tensor`.
+        The image decoded as an uint8 `Tensor`.
     """
 
     image = tf.io.read_file(path)

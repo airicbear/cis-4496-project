@@ -12,8 +12,7 @@ def download_kaggle_dataset(url: str = KAGGLE_DATASET_URL,
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     if len(os.listdir(output_dir)) != 0:
-        print(f'ERROR: Directory "{output_dir}" is not empty.')
-        return
+        raise OSError(f'Directory "{output_dir}" is not empty.')
 
     download_extract_zip(url, output_dir)
 
