@@ -1,4 +1,4 @@
-import sys
+import os
 
 from ..modeling.create_model import create_cyclegan_model
 from ..modeling.model import CycleGan
@@ -16,12 +16,15 @@ def load_cyclegan_model(monet_generator_weights_path: str = 'photo2monet.h5',
         The reconstructed CycleGAN model.
     """
 
+    if not os.path.isfile(monet_generator_weights_path):
+        raise FileNotFoundError(f'Could not find {monet_generator_weights_path}.')
+
+    if not os.path.isfile(photo_generator_weights_path):
+        raise FileNotFoundError(f'Could not find {photo_generator_weights_path}.')
+
     cyclegan_model = create_cyclegan_model()
 
-    try:
-        cyclegan_model.monet_generator.load_weights(monet_generator_weights_path)
-        cyclegan_model.photo_generator.load_weights(photo_generator_weights_path)
-    except ImportError:
-        sys.exit('ERROR: CycleGAN model not trained yet.')
+    cyclegan_model.monet_generator.load_weights(monet_generator_weights_path)
+    cyclegan_model.photo_generator.load_weights(photo_generator_weights_path)
 
     return cyclegan_model
