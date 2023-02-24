@@ -1,12 +1,13 @@
 import os
 
-from ..consts import MONET_GENERATOR_WEIGHT_PATH, PHOTO_GENERATOR_WEIGHT_PATH
+from ..consts import MONET_GENERATOR_WEIGHT_PATH, PHOTO_GENERATOR_WEIGHT_PATH, WEIGHT_OUTPUT_DIR, EPOCHS
 from ..modeling.create_model import create_cyclegan_model
 from ..modeling.model import CycleGan
 
 
-def load_cyclegan_model(monet_generator_weights_path: str = MONET_GENERATOR_WEIGHT_PATH,
-                        photo_generator_weights_path: str = PHOTO_GENERATOR_WEIGHT_PATH) -> CycleGan:
+def load_cyclegan_model(
+        monet_generator_weights_path: str = f'{WEIGHT_OUTPUT_DIR}/epoch{EPOCHS}/{MONET_GENERATOR_WEIGHT_PATH}',
+        photo_generator_weights_path: str = f'{WEIGHT_OUTPUT_DIR}/epoch{EPOCHS}/{PHOTO_GENERATOR_WEIGHT_PATH}') -> CycleGan:
     """Reconstruct a pretrained CycleGAN model given the path to each of its generator's saved weights.
 
     Args:

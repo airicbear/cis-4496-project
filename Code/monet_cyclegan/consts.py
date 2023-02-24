@@ -12,6 +12,10 @@ KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/dow
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
 MONET_GENERATOR_WEIGHT_PATH = 'photo2monet.h5'
 PHOTO_GENERATOR_WEIGHT_PATH = 'monet2photo.h5'
+LOSS_RATE = 2e-4
+EPOCHS = 1
+WEIGHT_OUTPUT_DIR = './weights'
+OUTPUT_DIR = '../submission_images'
 
 if USING_KAGGLE:
     from kaggle_datasets import KaggleDatasets

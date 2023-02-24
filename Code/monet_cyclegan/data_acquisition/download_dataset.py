@@ -1,4 +1,5 @@
 import os
+from argparse import ArgumentParser
 from pathlib import Path
 
 from .utils import download_extract_zip
@@ -23,4 +24,11 @@ def download_kaggle_dataset(url: str = KAGGLE_DATASET_URL,
 
 
 if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('--dir', type=str, default=PHOTO_TFREC_DIR)
+    parser.add_argument('--ext', type=str, default='tfrec')
+    parser.add_argument('--file', '-f', type=str)
+    parser.add_argument('--output', '-o', type=str, default=OUTPUT_DIR)
+    args = parser.parse_args()
+
     download_kaggle_dataset()
