@@ -3,10 +3,6 @@ from typing import Tuple
 import tensorflow as tf
 from scipy.linalg import sqrtm
 
-from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR
-from ..data_acquisition.utils import read_tfrecorddataset, get_filenames
-from ..deployment.load_model import load_cyclegan_model
-
 
 def create_inception_model() -> tf.keras.Model:
     """Create an Inception model.
@@ -108,6 +104,7 @@ def calculate_trace_covariance_mean(sigma_real: tf.Tensor, sigma_generated: tf.T
     Returns:
         The trace of the mean of the covariance matrix
     """
+
     covariance_mean = tf.cast(tf.matmul(sigma_real, sigma_generated), tf.complex64)
     covariance_mean = sqrtm(covariance_mean)
     covariance_mean = tf.cast(tf.math.real(covariance_mean), tf.float32)
@@ -183,6 +180,7 @@ def calculate_frechet_inception_distance(photo_dataset: tf.data.TFRecordDataset,
     Returns:
         The FID score of the Monet painting generator.
     """
+
     fid_model = create_fid_model(monet_generator=monet_generator, inception_model=inception_model)
 
     mu1, sigma1 = calculate_activation_summary(image_dataset=photo_dataset, model=fid_model)
@@ -191,17 +189,3 @@ def calculate_frechet_inception_distance(photo_dataset: tf.data.TFRecordDataset,
     fid_value = calculate_frechet_distance(mu1, sigma1, mu2, sigma2)
 
     return fid_value
-
-
-def main():
-    photo_dataset = read_tfrecorddataset(filenames=get_filenames(image_dir=PHOTO_TFREC_DIR, ext='tfrec')).batch(1)
-    monet_dataset = read_tfrecorddataset(filenames=get_filenames(image_dir=MONET_TFREC_DIR, ext='tfrec')).batch(1)
-    cyclegan_model = load_cyclegan_model()
-    fid = calculate_frechet_inception_distance(photo_dataset=photo_dataset,
-                                               monet_dataset=monet_dataset,
-                                               monet_generator=cyclegan_model.monet_generator)
-    print(fid)
-
-
-if __name__ == '__main__':
-    main()

@@ -5,4 +5,5 @@ from . import generator
 from . import layers
 from . import losses
 from . import model
+from . import predict
 from . import train
