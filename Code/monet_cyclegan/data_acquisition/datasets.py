@@ -2,8 +2,8 @@ import os
 
 import tensorflow as tf
 
-from .utils import read_tfrecorddataset, get_filenames
 from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR
+from ..utils import read_tfrecorddataset, get_filenames
 
 
 def load_dataset(monet_dir: str = MONET_TFREC_DIR,
@@ -26,6 +26,7 @@ def load_dataset(monet_dir: str = MONET_TFREC_DIR,
         photo_sample_size: The sample size of the photos to train on.
                            If this value is -1 or greater than the size of the photo dataset,
                            then the entire dataset will be used.
+        random_sample: Use random sampling if this is set to True.
 
     Returns:
         The Monet paintings and photos zipped into one dataset.

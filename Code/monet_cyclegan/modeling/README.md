@@ -16,4 +16,6 @@ This folder contains all code that will be used to construct our model.
 
 - `model` - Definition of the CycleGAN.
 
+- `predict` - Generate an image using the CycleGAN. 
+
 - `train` - Train the CycleGAN model. 
