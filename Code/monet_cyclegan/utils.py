@@ -185,3 +185,20 @@ def make_directory(path: str, make_parent: bool = False) -> None:
         dir_path = dir_path.parent
 
     dir_path.mkdir(parents=True, exist_ok=True)
+
+
+def random_number(minval: float, maxval: float, dtype: tf.dtypes.DType = tf.float32):
+    """Generate a random number in an interval.
+
+    The number is randomly sampled from a uniform distribution.
+
+    Args:
+        minval: The lower bound of the interval.
+        maxval: The upper bound of the interval.
+        dtype: The data type of the random number.
+
+    Returns:
+        A random number in the specified interval.
+    """
+
+    return tf.random.uniform([], minval=minval, maxval=maxval, dtype=dtype)

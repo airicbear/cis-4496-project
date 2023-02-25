@@ -2,6 +2,7 @@ import tensorflow as tf
 
 USING_KAGGLE = False
 AUTOTUNE = tf.data.experimental.AUTOTUNE
+SEED = 42
 BATCH_SIZE = 1
 IMAGE_SIZE = [256, 256]
 CHANNELS = 3
@@ -16,6 +17,9 @@ LOSS_RATE = 2e-4
 EPOCHS = 1
 WEIGHT_OUTPUT_DIR = './weights'
 OUTPUT_DIR = '../submission_images'
+
+# Set global seed
+tf.random.set_seed(SEED)
 
 if USING_KAGGLE:
     from kaggle_datasets import KaggleDatasets
