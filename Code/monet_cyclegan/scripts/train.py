@@ -20,10 +20,10 @@ def main() -> None:
     parser.set_defaults(augment=True)
     parser.add_argument('--shuffle', action='store_true')
     parser.add_argument('--no-shuffle', dest='shuffle', action='store_false')
-    parser.set_defaults(augment=True)
+    parser.set_defaults(shuffle=True)
     parser.add_argument('--repeat', action='store_true')
     parser.add_argument('--no-repeat', dest='repeat', action='store_false')
-    parser.set_defaults(augment=True)
+    parser.set_defaults(repeat=True)
     parser.add_argument('--epochs', type=int, default=EPOCHS)
     parser.add_argument('--batch-size', type=int, default=BATCH_SIZE)
     parser.add_argument('--num_monet', type=int, default=-1)
@@ -39,6 +39,12 @@ def main() -> None:
 
     count_monet_samples = count_tfrec_items(tfrec_filenames=monet_filenames)
     count_photo_samples = count_tfrec_items(tfrec_filenames=photo_filenames)
+
+    if args.num_monet >= 0:
+        count_monet_samples = args.num_monet
+
+    if args.num_photo >= 0:
+        count_photo_samples = args.num_photo
 
     if not args.steps_per_epoch:
         steps_per_epoch = max(count_monet_samples, count_photo_samples) // args.batch_size
