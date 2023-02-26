@@ -13,17 +13,21 @@ def main() -> None:
     parser.add_argument('--file', '-f', type=str)
     parser.add_argument('--ext', type=str, default='tfrec')
     parser.add_argument('--num', '-n', type=int, default=None)
-    parser.add_argument('--randomize', action='store_true')
-    parser.add_argument('--no-randomize', dest='randomize', action='store_false')
-    parser.set_defaults(randomize=False)
+    parser.add_argument('--epochs', type=int, default=EPOCHS)
+    parser.add_argument('--weight-dir', type=str, default=WEIGHT_OUTPUT_DIR)
+    parser.add_argument('--filename-weight-monet', type=str, default=MONET_GENERATOR_WEIGHT_PATH)
+    parser.add_argument('--filename-weight-photo', type=str, default=PHOTO_GENERATOR_WEIGHT_PATH)
+    parser.add_argument('--shuffle', action='store_true')
+    parser.add_argument('--no-shuffle', dest='shuffle', action='store_false')
+    parser.set_defaults(shuffle=False)
     parser.add_argument('--with-original', action='store_true')
     parser.add_argument('--without-original', dest='with-original', action='store_false')
     parser.set_defaults(with_original=False)
     args = parser.parse_args()
 
     model = load_cyclegan_model(
-        monet_generator_weights_path=f'{WEIGHT_OUTPUT_DIR}/epoch{EPOCHS}/{MONET_GENERATOR_WEIGHT_PATH}',
-        photo_generator_weights_path=f'{WEIGHT_OUTPUT_DIR}/epoch{EPOCHS}/{PHOTO_GENERATOR_WEIGHT_PATH}')
+        monet_generator_weights_path=f'{args.weight_dir}/epoch{args.epochs}/{args.filename_weight_monet}',
+        photo_generator_weights_path=f'{args.weight_dir}/epoch{args.epochs}/{args.filename_weight_photo}')
 
     if args.file:
         generate_image(cyclegan_model=model,
@@ -35,7 +39,7 @@ def main() -> None:
                         input_ext=args.ext,
                         output_dir=args.output,
                         sample_size=args.num,
-                        randomize=args.randomize,
+                        shuffle=args.shuffle,
                         with_original=args.with_original)
 
 

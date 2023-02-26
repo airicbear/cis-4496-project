@@ -13,7 +13,8 @@ from ..utils import make_directory
 def train_model(cyclegan_model: CycleGan,
                 loss_rate: float,
                 train_dataset: tf.data.Dataset,
-                epochs: int) -> None:
+                epochs: int,
+                steps_per_epoch: int) -> None:
     """Train a given CycleGAN model.
 
     Args:
@@ -21,10 +22,11 @@ def train_model(cyclegan_model: CycleGan,
         loss_rate: The loss rate at which the model should be trained.
         train_dataset: The data to be used for training.
         epochs: The number of epochs to train the model for.
+        steps_per_epoch: The number of steps per epoch.
     """
 
     cyclegan_compile_with_loss_rate(cyclegan_model=cyclegan_model, loss_rate=loss_rate)
-    cyclegan_model.fit(train_dataset, epochs=epochs)
+    cyclegan_model.fit(train_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch)
 
 
 def save_weights(cyclegan_model: CycleGan,

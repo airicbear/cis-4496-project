@@ -2,6 +2,7 @@
 Generates images from the trained model.
 """
 import os
+import sys
 
 from ..consts import IMAGE_SIZE, CHANNELS
 from ..modeling.model import CycleGan
@@ -40,7 +41,7 @@ def generate_images(cyclegan_model: CycleGan,
                     input_ext: str,
                     output_dir: str,
                     sample_size: int,
-                    randomize: bool,
+                    shuffle: bool,
                     with_original: bool) -> None:
     """Use a CycleGAN model to translate images to Monet paintings and save them.
 
@@ -50,21 +51,27 @@ def generate_images(cyclegan_model: CycleGan,
         input_ext: File extension of the input image format.
         output_dir: Directory where the generated images will be saved.
         sample_size: Sample size of photos to generate.
-        randomize: Use random sampling.
+        shuffle: Shuffle the first 2048 images before sampling if True.
         with_original: Save the original images in a separate folder by setting this to True.
     """
 
     if not os.path.isdir(input_dir):
         raise FileNotFoundError(f'Could not find directory "{input_dir}".')
 
+    if os.path.isdir(output_dir) and len(os.listdir(output_dir)) > 0:
+        prompt = input(f'Overwrite the images in "{output_dir}"? (y/n): ')
+
+        if prompt == 'n':
+            sys.exit(1)
+
     if input_ext == 'tfrec':
         photos = read_tfrecorddataset(filenames=get_filenames(image_dir=input_dir, ext=input_ext))
 
+        if shuffle:
+            photos = photos.shuffle(2048)
+
         if sample_size:
             photos = photos.take(sample_size)
-
-        if randomize:
-            photos = photos.shuffle(sample_size)
 
         photos = photos.batch(1)
 
@@ -73,7 +80,7 @@ def generate_images(cyclegan_model: CycleGan,
                                               image=image)
 
             save_image(image=generated_image,
-                       output_path=f'{output_dir}-generated/generated-{i}.jpg')
+                       output_path=f'{output_dir}/generated-{i}.jpg')
 
             if with_original:
                 original_image = tensor_to_image(image)
