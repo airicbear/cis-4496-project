@@ -7,11 +7,12 @@ from ..consts import IMAGE_SIZE, CHANNELS
 from ..utils import read_image, tensor_to_image
 
 
-def plot_rgb_distribution(input_path: str) -> None:
+def plot_rgb_distribution(input_path: str, bins: int) -> None:
     """Plot the RGB distribution of a given image.
 
     Args:
         input_path: The path of the image.
+        bins: Number of bins.
     """
 
     if not os.path.isfile(input_path):
@@ -29,5 +30,5 @@ def plot_rgb_distribution(input_path: str) -> None:
 
     colors = ['red', 'green', 'blue']
     plt.title(f'RGB Distribution of "{input_path}"')
-    plt.hist(x=[red_channel, blue_channel, green_channel], stacked=True, color=colors)
+    plt.hist(x=[red_channel, blue_channel, green_channel], stacked=True, color=colors, bins=bins)
     plt.show(block=True)
