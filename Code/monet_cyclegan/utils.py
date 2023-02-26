@@ -1,8 +1,10 @@
 import io
+import re
 import zipfile
 from pathlib import Path
 from typing import List
 
+import numpy as np
 import requests
 import tensorflow as tf
 from PIL import Image
@@ -202,3 +204,17 @@ def random_number(minval: float, maxval: float, dtype: tf.dtypes.DType = tf.floa
     """
 
     return tf.random.uniform([], minval=minval, maxval=maxval, dtype=dtype)
+
+
+def count_tfrec_items(tfrec_filenames: List[str]) -> int:
+    """Count the total number of images in a set of TFREC files.
+
+    Args:
+        tfrec_filenames: List of TFREC filenames.
+
+    Returns:
+        The total number of images in the TFREC filenames.
+    """
+    regexp = re.compile(r"-([0-9]*)\.")
+    n = [int(regexp.search(filename).group(1)) for filename in tfrec_filenames]
+    return int(np.sum(n))
