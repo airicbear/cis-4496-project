@@ -3,24 +3,29 @@ import tensorflow as tf
 from ..consts import strategy
 
 with strategy.scope():
-    def discriminator_loss(real: tf.keras.Model, generated: tf.keras.Model) -> tf.Tensor:
+    def discriminator_loss(real: tf.keras.Model,
+                           generated: tf.keras.Model,
+                           label_smoothing: float = 0.3) -> tf.Tensor:
         """
         Sub-function for the discriminator loss, which is the loss metric for the discriminator models.
 
         Args:
             real: The real/actual item.
             generated: The generated/fake item.
+            label_smoothing: Regularization float number from 0 to 1 to prevent overfitting.
 
         Returns:
             The discriminator loss.
         """
-        
+
         real_loss = tf.keras.losses.BinaryCrossentropy(from_logits=True,
-                                                       reduction=tf.keras.losses.Reduction.NONE)(tf.ones_like(real),
-                                                                                                 real)
+                                                       reduction=tf.keras.losses.Reduction.NONE,
+                                                       label_smoothing=label_smoothing)(tf.ones_like(real),
+                                                                                        real)
         generated_loss = tf.keras.losses.BinaryCrossentropy(from_logits=True,
-                                                            reduction=tf.keras.losses.Reduction.NONE)(
-            tf.zeros_like(generated), generated)
+                                                            reduction=tf.keras.losses.Reduction.NONE,
+                                                            label_smoothing=label_smoothing)(tf.zeros_like(generated),
+                                                                                             generated)
         total_discriminator_loss = real_loss + generated_loss
         return total_discriminator_loss * 0.5
 
