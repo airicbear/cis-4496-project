@@ -102,23 +102,15 @@ class CycleGan(tf.keras.Model, ABC):
             monet_generator_loss = self.generator_loss_fn(discriminator_fake_monet)
             photo_generator_loss = self.generator_loss_fn(discriminator_fake_photo)
 
-            total_cycle_loss = (self.cycle_loss_fn(real_monet,
-                                                   cycled_monet,
-                                                   self.lambda_cycle)
-                                + self.cycle_loss_fn(real_photo,
-                                                     cycled_photo,
-                                                     self.lambda_cycle))
+            monet_cycle_loss = self.cycle_loss_fn(real_monet, cycled_monet, self.lambda_cycle)
+            photo_cycle_loss = self.cycle_loss_fn(real_photo, cycled_photo, self.lambda_cycle)
+            total_cycle_loss = monet_cycle_loss + photo_cycle_loss
 
-            total_monet_generator_loss = (monet_generator_loss
-                                          + total_cycle_loss
-                                          + self.identity_loss_fn(real_monet,
-                                                                  same_monet,
-                                                                  self.lambda_cycle))
-            total_photo_generator_loss = (photo_generator_loss
-                                          + total_cycle_loss
-                                          + self.identity_loss_fn(real_photo,
-                                                                  same_photo,
-                                                                  self.lambda_cycle))
+            monet_identity_loss = self.identity_loss_fn(real_monet, same_monet, self.lambda_cycle)
+            photo_identity_loss = self.identity_loss_fn(real_photo, same_photo, self.lambda_cycle)
+
+            total_monet_generator_loss = monet_generator_loss + total_cycle_loss + monet_identity_loss
+            total_photo_generator_loss = photo_generator_loss + total_cycle_loss + photo_identity_loss
 
             monet_discriminator_loss = self.discriminator_loss_fn(discriminator_real_monet, discriminator_fake_monet)
             photo_discriminator_loss = self.discriminator_loss_fn(discriminator_real_photo, discriminator_fake_photo)
