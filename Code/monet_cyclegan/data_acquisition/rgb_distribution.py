@@ -3,6 +3,7 @@ from typing import Tuple, List
 
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 import tensorflow as tf
 
 from ..consts import IMAGE_SIZE, CHANNELS
@@ -103,19 +104,23 @@ def get_tfrecorddataset_rgb_distribution(images: tf.data.TFRecordDataset,
     return red_channel, green_channel, blue_channel
 
 
-def plot_rgb_histogram(red_channel: tf.Tensor,
-                       green_channel: tf.Tensor,
-                       blue_channel: tf.Tensor,
-                       bins: int,
-                       exclude_zeros: bool = True) -> None:
-    """Plot the RGB distribution.
+def plot_rgb_density(red_channel: tf.Tensor,
+                     green_channel: tf.Tensor,
+                     blue_channel: tf.Tensor,
+                     exclude_zeros: bool = True,
+                     title: str = None,
+                     xlabel: str = None,
+                     ylabel: str = None) -> None:
+    """Plot the RGB distribution as a density plot.
 
     Args:
         red_channel: The red channel values.
         green_channel: The green channel values.
         blue_channel: The blue channel values.
-        bins: The number of bins in the histogram.
         exclude_zeros: Exclude zero RGB values if set to True.
+        title: The title of the plot.
+        xlabel: The label of the x-axis.
+        ylabel: The label of the y-axis.
     """
 
     if exclude_zeros:
@@ -123,14 +128,27 @@ def plot_rgb_histogram(red_channel: tf.Tensor,
         green_channel = green_channel[green_channel != 0]
         blue_channel = blue_channel[blue_channel != 0]
 
-    colors = ['red', 'green', 'blue']
-    plt.xlabel('RGB value')
-    plt.ylabel('Frequency')
-    plt.hist(x=[red_channel, green_channel, blue_channel], stacked=True, color=colors, bins=bins)
+    palette = ['red', 'green', 'blue']
+    sns.displot(data=[red_channel, green_channel, blue_channel],
+                palette=sns.color_palette(palette, 3),
+                kind='kde',
+                fill=True,
+                legend=False)
+    plt.legend(['blue', 'green', 'red'])
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.tight_layout()
     plt.show(block=True)
 
 
-def plot_rgb_distribution(input_path: str, ext: str, bins: int, num: int, title: str, exclude_zeros: bool) -> None:
+def plot_rgb_distribution(input_path: str,
+                          ext: str,
+                          num: int,
+                          title: str,
+                          xlabel: str,
+                          ylabel: str,
+                          exclude_zeros: bool) -> None:
     """Plot the RGB distribution of given image(s).
 
     Args:
@@ -153,8 +171,8 @@ def plot_rgb_distribution(input_path: str, ext: str, bins: int, num: int, title:
                                                        height=IMAGE_SIZE[1],
                                                        num_images=count_images)
 
-        plt.title(title)
-        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)
+
 
     elif os.path.isdir(input_path) and ext == 'jpg':
         filenames = get_filenames(image_dir=input_path, ext='jpg')
@@ -166,8 +184,7 @@ def plot_rgb_distribution(input_path: str, ext: str, bins: int, num: int, title:
                                                   height=IMAGE_SIZE[1],
                                                   num_images=count_images)
 
-        plt.title(title)
-        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)
 
     elif os.path.isfile(input_path):
         image = read_image(path=input_path,
@@ -177,5 +194,4 @@ def plot_rgb_distribution(input_path: str, ext: str, bins: int, num: int, title:
 
         r, g, b = get_image_rgb_distribution(image)
 
-        plt.title(title)
-        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)

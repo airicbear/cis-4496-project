@@ -17,3 +17,4 @@ dependencies:
       - matplotlib
       - pillow
       - scipy
+      - seaborn
