@@ -106,7 +106,8 @@ def get_tfrecorddataset_rgb_distribution(images: tf.data.TFRecordDataset,
 def plot_rgb_histogram(red_channel: tf.Tensor,
                        green_channel: tf.Tensor,
                        blue_channel: tf.Tensor,
-                       bins: int) -> None:
+                       bins: int,
+                       exclude_zeros: bool = True) -> None:
     """Plot the RGB distribution.
 
     Args:
@@ -114,44 +115,59 @@ def plot_rgb_histogram(red_channel: tf.Tensor,
         green_channel: The green channel values.
         blue_channel: The blue channel values.
         bins: The number of bins in the histogram.
+        exclude_zeros: Exclude zero RGB values if set to True.
     """
 
+    if exclude_zeros:
+        red_channel = red_channel[red_channel != 0]
+        green_channel = green_channel[green_channel != 0]
+        blue_channel = blue_channel[blue_channel != 0]
+
     colors = ['red', 'green', 'blue']
+    plt.xlabel('RGB value')
+    plt.ylabel('Frequency')
     plt.hist(x=[red_channel, green_channel, blue_channel], stacked=True, color=colors, bins=bins)
     plt.show(block=True)
 
 
-def plot_rgb_distribution(input_path: str, ext: str, bins: int) -> None:
+def plot_rgb_distribution(input_path: str, ext: str, bins: int, num: int, title: str, exclude_zeros: bool) -> None:
     """Plot the RGB distribution of given image(s).
 
     Args:
         input_path: The path of the image(s).
         ext: The file extension of the image(s).
         bins: Number of bins.
+        num: The number of images to use.
+        title: The title of the plot.
+        exclude_zeros: Exclude zeros if True.
     """
 
     if os.path.isdir(input_path) and ext == 'tfrec':
         filenames = get_filenames(image_dir=input_path, ext='tfrec')
         count_images = count_tfrec_items(tfrec_filenames=filenames)
         images = read_tfrecorddataset(filenames=filenames)
+        if num >= 0:
+            images = images.take(num)
         r, g, b = get_tfrecorddataset_rgb_distribution(images=images,
                                                        width=IMAGE_SIZE[0],
                                                        height=IMAGE_SIZE[1],
                                                        num_images=count_images)
 
-        plt.title(f'RGB Distribution of "{input_path}"')
-        plot_rgb_histogram(r, g, b, bins=bins)
+        plt.title(title)
+        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
 
     elif os.path.isdir(input_path) and ext == 'jpg':
         filenames = get_filenames(image_dir=input_path, ext='jpg')
+        if num >= 0:
+            filenames = filenames[:num]
         count_images = len(filenames)
         r, g, b = get_jpg_folder_rgb_distribution(filenames=filenames,
                                                   width=IMAGE_SIZE[0],
                                                   height=IMAGE_SIZE[1],
                                                   num_images=count_images)
 
-        plt.title(f'RGB Distribution of "{input_path}"')
-        plot_rgb_histogram(r, g, b, bins=bins)
+        plt.title(title)
+        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
 
     elif os.path.isfile(input_path):
         image = read_image(path=input_path,
@@ -161,5 +177,5 @@ def plot_rgb_distribution(input_path: str, ext: str, bins: int) -> None:
 
         r, g, b = get_image_rgb_distribution(image)
 
-        plt.title(f'RGB Distribution of "{input_path}"')
-        plot_rgb_histogram(r, g, b, bins=bins)
+        plt.title(title)
+        plot_rgb_histogram(r, g, b, bins=bins, exclude_zeros=exclude_zeros)
