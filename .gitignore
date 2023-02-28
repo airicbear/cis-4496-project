@@ -5,3 +5,5 @@ __pycache__
 *.h5
 *.iml
 *.xml
+Kaggle_Dataset
+*.pyc
