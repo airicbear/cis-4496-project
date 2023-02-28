@@ -1,19 +1,24 @@
+import logging
 from argparse import ArgumentParser
 
-from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR, LOSS_RATE, EPOCHS, WEIGHT_OUTPUT_DIR, \
-    BATCH_SIZE, MONET_GENERATOR_WEIGHT_PATH, PHOTO_GENERATOR_WEIGHT_PATH
+import tensorflow as tf
+
+from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR, LOSS_RATE, EPOCHS, BUILD_DIR, \
+    BATCH_SIZE, MONET_GENERATOR_WEIGHT_FILENAME, PHOTO_GENERATOR_WEIGHT_FILENAME
 from ..data_acquisition.augment import augment_image
 from ..data_acquisition.load_dataset import load_dataset
 from ..modeling.create_model import create_cyclegan_model
 from ..modeling.train import train_model, save_weights
 from ..utils import get_filenames, count_tfrec_items
 
+logger = logging.getLogger()
+
 
 def main() -> None:
     parser = ArgumentParser()
     parser.add_argument('--monet_dir', type=str, default=MONET_TFREC_DIR)
     parser.add_argument('--photo_dir', type=str, default=PHOTO_TFREC_DIR)
-    parser.add_argument('--output', '-o', type=str, default=WEIGHT_OUTPUT_DIR)
+    parser.add_argument('--output', '-o', type=str, default=BUILD_DIR)
     parser.add_argument('--loss-rate', '-lr', type=float, default=LOSS_RATE)
     parser.add_argument('--augment', action='store_true')
     parser.add_argument('--no-augment', dest='augment', action='store_false')
@@ -24,15 +29,33 @@ def main() -> None:
     parser.add_argument('--repeat', action='store_true')
     parser.add_argument('--no-repeat', dest='repeat', action='store_false')
     parser.set_defaults(repeat=True)
+    parser.add_argument('--save-logs', action='store_true')
+    parser.add_argument('--no-logs', dest='save_logs', action='store_false')
+    parser.set_defaults(save_logs=True)
     parser.add_argument('--epochs', type=int, default=EPOCHS)
     parser.add_argument('--batch-size', type=int, default=BATCH_SIZE)
     parser.add_argument('--num-monet', type=int, default=-1)
     parser.add_argument('--num-photo', type=int, default=-1)
     parser.add_argument('--steps-per-epoch', type=int, default=None)
-    parser.add_argument('--filename-weight-monet', type=str, default=MONET_GENERATOR_WEIGHT_PATH)
-    parser.add_argument('--filename-weight-photo', type=str, default=PHOTO_GENERATOR_WEIGHT_PATH)
+    parser.add_argument('--filename-weight-monet', type=str, default=MONET_GENERATOR_WEIGHT_FILENAME)
+    parser.add_argument('--filename-weight-photo', type=str, default=PHOTO_GENERATOR_WEIGHT_FILENAME)
     parser.add_argument('--ext', type=str, default='tfrec')
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--no-debug', dest='debug', action='store_false')
+    parser.set_defaults(debug=False)
     args = parser.parse_args()
+
+    if args.debug:
+        tf.data.experimental.enable_debug_mode()
+
+    logging.basicConfig(filename=f'{args.output}/epoch{args.epochs}/train.log',
+                        filemode='w',
+                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.DEBUG)
+
+    for arg, value in sorted(vars(args).items()):
+        logging.info(f'{arg}: {value}')
 
     monet_filenames = get_filenames(image_dir=args.monet_dir, ext=args.ext)
     photo_filenames = get_filenames(image_dir=args.photo_dir, ext=args.ext)

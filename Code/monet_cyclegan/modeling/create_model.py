@@ -1,6 +1,10 @@
+import logging
+
 from .discriminator import discriminator
 from .generator import generator
 from .model import CycleGan
+
+logger = logging.getLogger(__name__)
 
 
 def create_cyclegan_model() -> CycleGan:
@@ -9,6 +13,8 @@ def create_cyclegan_model() -> CycleGan:
     Returns:
         A new CycleGAN model.
     """
+
+    logger.info('Creating CycleGAN model.')
 
     monet_generator = generator()
     photo_generator = generator()

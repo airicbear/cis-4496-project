@@ -1,7 +1,10 @@
+import logging
 from typing import Tuple
 
 import tensorflow as tf
 from scipy.linalg import sqrtm
+
+logger = logging.getLogger(__name__)
 
 
 def create_inception_model() -> tf.keras.Model:
@@ -181,11 +184,21 @@ def calculate_frechet_inception_distance(photo_dataset: tf.data.TFRecordDataset,
         The FID score of the Monet painting generator.
     """
 
+    logger.info('Calculating FID.')
+
     fid_model = create_fid_model(monet_generator=monet_generator, inception_model=inception_model)
 
+    logger.info('Calculating mean mu1 and covariance sigma1 of activations from FID model applied to photo dataset.')
     mu1, sigma1 = calculate_activation_summary(image_dataset=photo_dataset, model=fid_model)
-    mu2, sigma2 = calculate_activation_summary(image_dataset=monet_dataset, model=inception_model)
+    logger.info(f'mu1={mu1}, sigma1={sigma1}.')
 
+    logger.info('Calculating mean mu2 and covariance sigma2 of activations from Inception model applied to Monet dataset.')
+    mu2, sigma2 = calculate_activation_summary(image_dataset=monet_dataset, model=inception_model)
+    logger.info(f'mu2={mu2}, sigma2={sigma2}.')
+
+    logger.info('Calculate the Frechet distance based on mu1, sigma1, mu2, and sigma2.')
     fid_value = calculate_frechet_distance(mu1, sigma1, mu2, sigma2)
+
+    logger.info(f'FID score is {fid_value}.')
 
     return fid_value

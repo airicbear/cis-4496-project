@@ -1,4 +1,6 @@
 import io
+import logging
+import os
 import re
 import zipfile
 from pathlib import Path
@@ -11,6 +13,8 @@ from PIL import Image
 from numpy import uint8, ndarray
 
 from .consts import IMAGE_SIZE, CHANNELS
+
+logger = logging.getLogger(__name__)
 
 
 def decode_image(image: tf.Tensor,
@@ -107,6 +111,9 @@ def read_tfrecorddataset(filenames: List[str],
         A `TFRecordDataset` of the TFREC encoded images.
     """
 
+    logger.info(
+        f'Reading TFRecordDataset (image_width={image_width}, image_height={image_height}, channels={channels}, num_parallel_calls={num_parallel_calls}, filenames={filenames}).')
+
     dataset = tf.data.TFRecordDataset(filenames)
     dataset = dataset.map(lambda x: read_tfrecord(example=x,
                                                   width=image_width,
@@ -124,9 +131,13 @@ def download_extract_zip(url: str, output_dir: str) -> None:
         output_dir: The directory where the zip file will be extracted to.
     """
 
+    logger.info(f'Downloading file from "{url}".')
+
     r = requests.get(url, stream=True)
     z = zipfile.ZipFile(io.BytesIO(r.content))
     z.extractall(output_dir)
+
+    logger.info(f"Extracted file(s) to '{output_dir}'.")
 
 
 def get_filenames(image_dir: str, ext: str) -> List[str]:
@@ -140,7 +151,13 @@ def get_filenames(image_dir: str, ext: str) -> List[str]:
         List of filenames in the image directory.
     """
 
-    return tf.io.gfile.glob(f'{image_dir}/*.{ext}')
+    logger.info(f"Getting filenames from '{image_dir}'.")
+
+    filenames = tf.io.gfile.glob(f'{image_dir}/*.{ext}')
+
+    logger.info(f'Found {filenames}.')
+
+    return filenames
 
 
 def save_image(image: ndarray, output_path: str) -> None:
@@ -150,6 +167,8 @@ def save_image(image: ndarray, output_path: str) -> None:
         image: The image to be saved as a NumPy array.
         output_path: Path of the generated image.
     """
+
+    logger.info(f"Saving image to '{output_path}'.")
 
     make_directory(output_path, make_parent=True)
 
@@ -186,10 +205,12 @@ def make_directory(path: str, make_parent: bool = False) -> None:
     if make_parent:
         dir_path = dir_path.parent
 
-    dir_path.mkdir(parents=True, exist_ok=True)
+    if not os.path.isdir(dir_path):
+        dir_path.mkdir(parents=True, exist_ok=True)
+        logger.info(f"Made a directory at '{dir_path}'.")
 
 
-def random_number(minval: float, maxval: float, dtype: tf.dtypes.DType = tf.float32):
+def random_number(minval: float, maxval: float, dtype: tf.dtypes.DType = tf.float32) -> float:
     """Generate a random number in an interval.
 
     The number is randomly sampled from a uniform distribution.
@@ -203,7 +224,10 @@ def random_number(minval: float, maxval: float, dtype: tf.dtypes.DType = tf.floa
         A random number in the specified interval.
     """
 
-    return tf.random.uniform([], minval=minval, maxval=maxval, dtype=dtype)
+    result = tf.random.uniform([], minval=minval, maxval=maxval, dtype=dtype)
+    result = float(result)
+
+    return result
 
 
 def count_tfrec_items(tfrec_filenames: List[str]) -> int:
@@ -215,6 +239,13 @@ def count_tfrec_items(tfrec_filenames: List[str]) -> int:
     Returns:
         The total number of images in the TFREC filenames.
     """
+
+    logger.info(f'Counting number of images in {tfrec_filenames}.')
+
     regexp = re.compile(r"-([0-9]*)\.")
     n = [int(regexp.search(filename).group(1)) for filename in tfrec_filenames]
-    return int(np.sum(n))
+    result = int(np.sum(n))
+
+    logger.info(f'Found {result} images.')
+
+    return result

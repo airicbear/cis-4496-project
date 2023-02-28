@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import Callable
 
@@ -6,6 +7,8 @@ import tensorflow as tf
 from .preprocess import preprocess_dataset
 from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR, BATCH_SIZE
 from ..utils import read_tfrecorddataset, get_filenames
+
+logger = logging.getLogger(__name__)
 
 
 def load_dataset(monet_dir: str = MONET_TFREC_DIR,
@@ -30,7 +33,6 @@ def load_dataset(monet_dir: str = MONET_TFREC_DIR,
         photo_sample_size: The sample size of the photos to train on.
                            If this value is -1 or greater than the size of the photo dataset,
                            then the entire dataset will be used.
-        shuffle: Use random sampling if this is set to True.
         augment: Augment the images if True.
         repeat: Duplicate each element in the dataset if True.
         shuffle: Shuffle the first 2048 elements of the dataset if True.
@@ -39,6 +41,11 @@ def load_dataset(monet_dir: str = MONET_TFREC_DIR,
     Returns:
         The Monet paintings and photos zipped into one dataset.
     """
+
+    logger.info(f"Loading dataset (monet_dir='{monet_dir}', photo_dir='{photo_dir}', image_ext='{image_ext}', "
+                f'batch_size={batch_size}, monet_sample_size={monet_sample_size}, '
+                f'photo_sample_size={photo_sample_size}, repeat={repeat}, '
+                f'shuffle={shuffle}, batch_size={batch_size})')
 
     if not os.path.isdir(monet_dir):
         raise OSError(f'Can\'t find directory "{monet_dir}".')
