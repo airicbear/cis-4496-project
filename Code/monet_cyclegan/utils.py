@@ -151,11 +151,16 @@ def get_filenames(image_dir: str, ext: str) -> List[str]:
         List of filenames in the image directory.
     """
 
+    image_dir = image_dir.strip('/')
+
     logger.info(f"Getting filenames from '{image_dir}'.")
 
     filenames = tf.io.gfile.glob(f'{image_dir}/*.{ext}')
 
-    logger.info(f'Found {filenames}.')
+    if len(filenames) == 0:
+        logger.warning(f"Could not find any '{ext}' files in '{image_dir}'.")
+    else:
+        logger.info(f'Found {filenames}.')
 
     return filenames
 

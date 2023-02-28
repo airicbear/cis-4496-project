@@ -1,5 +1,6 @@
 import logging
 from argparse import ArgumentParser
+import os
 
 import tensorflow as tf
 
@@ -9,7 +10,7 @@ from ..data_acquisition.augment import augment_image
 from ..data_acquisition.load_dataset import load_dataset
 from ..modeling.create_model import create_cyclegan_model
 from ..modeling.train import train_model, save_weights
-from ..utils import get_filenames, count_tfrec_items
+from ..utils import get_filenames, count_tfrec_items, make_directory
 
 logger = logging.getLogger()
 
@@ -45,7 +46,17 @@ def main() -> None:
     if args.debug:
         tf.data.experimental.enable_debug_mode()
 
-    logging.basicConfig(filename=f'{args.output}/epoch{args.epochs}/train.log',
+    epoch_dir = f'{args.output}/epoch{args.epochs}'
+
+    make_directory(epoch_dir)
+
+    i = 0
+    log_file = f'{epoch_dir}/train-{i}.log'
+    while os.path.isfile(log_file):
+        i += 1
+        log_file = f'{epoch_dir}/train-{i}.log'
+
+    logging.basicConfig(filename=log_file,
                         filemode='w',
                         format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
@@ -89,8 +100,8 @@ def main() -> None:
                 steps_per_epoch=steps_per_epoch)
 
     save_weights(cyclegan_model=model,
-                 monet_generator_path=f'{args.output}/epoch{args.epochs}/{args.filename_weight_monet}',
-                 photo_generator_path=f'{args.output}/epoch{args.epochs}/{args.filename_weight_photo}')
+                 monet_generator_path=f'{epoch_dir}/{args.filename_weight_monet}',
+                 photo_generator_path=f'{epoch_dir}/{args.filename_weight_photo}')
 
 
 if __name__ == '__main__':
