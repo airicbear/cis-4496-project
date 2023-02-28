@@ -1,6 +1,6 @@
  # CIS 4496 Capstone Project
  
-by [George Aeillo](https://github.com/GeorgeFAeillo), [Eric Nguyen](https://github.com/airicbear), [Arun Agarwal](https://github.com/aagarwal17)
+by Team "Artificially Creative" ([George Aeillo](https://github.com/GeorgeFAeillo), [Eric Nguyen](https://github.com/airicbear), [Arun Agarwal](https://github.com/aagarwal17)) 
 
 This repository hosts all code, documentation, and data related our team's solution to the Kaggle competition, [*I'm Something Of A Painter Myself*](https://www.kaggle.com/competitions/gan-getting-started). 
 The challenge of this competition is to translate a photo to a Monet painting.

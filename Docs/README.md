@@ -1,11 +1,11 @@
-# Folder for hosting documents related to our Capstone Project
+# CIS4496 Project Documentation
 
+This folder hosts the documentation for the project.
 
-Documents will contain information about the following 
+- `Project` - Project-specific documentation, including the project charter and bimonthly progress reports.
 
-1. System architecture
-2. Data dictionaries
-3. Reports related to data understanding, modeling
-4. Project management and planning documents
-5. Information obtained about the project
-6. Documents and presentations prepared to share information about the project 
+- `Model` - Documentation for each iteration of our model, including demo presentations.
+
+- `Data_Report` - To be used to store documentation pertaining to the data used to train our models.
+
+- `Data_Dictionaries` - Not currently in use (not very applicable for this project).
