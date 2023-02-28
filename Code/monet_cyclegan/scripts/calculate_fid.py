@@ -17,17 +17,13 @@ def main():
     parser.add_argument('--ext', type=str, default='tfrec')
     parser.add_argument('--filename-weight-monet', type=str, default=MONET_GENERATOR_WEIGHT_FILENAME)
     parser.add_argument('--filename-weight-photo', type=str, default=PHOTO_GENERATOR_WEIGHT_FILENAME)
-    parser.add_argument('--save-logs', action='store_true')
-    parser.add_argument('--no-logs', dest='save_logs', action='store_false')
-    parser.set_defaults(save_logs=True)
     args = parser.parse_args()
 
-    if args.save_logs:
-        logging.basicConfig(filename=f'{args.output}/epoch{args.epochs}/calculate_fid.log',
-                            filemode='w',
-                            format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
-                            datefmt='%Y-%m-%d %H:%M:%S',
-                            level=logging.DEBUG)
+    logging.basicConfig(filename=f'{args.output}/epoch{args.epochs}/calculate_fid.log',
+                        filemode='w',
+                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.DEBUG)
 
     for arg, value in sorted(vars(args).items()):
         logging.info(f'{arg}: {value}')
