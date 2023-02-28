@@ -1,6 +1,6 @@
-import logging
 from argparse import ArgumentParser
 
+from ..utils import configure_logger, log_args
 from ..consts import PHOTO_TFREC_DIR, BUILD_DIR, EPOCHS, \
     MONET_GENERATOR_WEIGHT_FILENAME, PHOTO_GENERATOR_WEIGHT_FILENAME
 from ..deployment.generate_images import generate_image, generate_images
@@ -29,14 +29,11 @@ def main() -> None:
     parser.set_defaults(overwrite=False)
     args = parser.parse_args()
 
-    logging.basicConfig(filename=f'{args.build_dir}/epoch{args.epochs}/generate_images.log',
-                        filemode='w',
-                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        level=logging.DEBUG)
+    epoch_dir = f'{args.build_dir}/epoch{args.epochs}'
+    log_dir = f'{epoch_dir}/logs/generate_images'
 
-    for arg, value in sorted(vars(args).items()):
-        logging.info(f'{arg}: {value}')
+    configure_logger(log_dir=log_dir)
+    log_args(args=args)
 
     model = load_cyclegan_model(
         monet_generator_weights_path=f'{args.build_dir}/epoch{args.epochs}/{args.filename_weight_monet}',

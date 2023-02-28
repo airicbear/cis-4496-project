@@ -1,6 +1,7 @@
 import argparse
 
-from ..consts import PHOTO_TFREC_DIR
+from ..utils import configure_logger, log_args
+from ..consts import PHOTO_TFREC_DIR, BUILD_DIR
 from ..data_acquisition.augment import save_augmented_image, save_augmented_images
 
 
@@ -17,7 +18,13 @@ def main():
     parser.add_argument('--with-original', action='store_true')
     parser.add_argument('--without-original', dest='with-original', action='store_false')
     parser.set_defaults(with_original=False)
+    parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
     args = parser.parse_args()
+
+    log_dir = f'{args.build_dir}/logs/augment_images'
+
+    configure_logger(log_dir=log_dir)
+    log_args(args=args)
 
     if args.file:
         save_augmented_image(input_path=args.file,

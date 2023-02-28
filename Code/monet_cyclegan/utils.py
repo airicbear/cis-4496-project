@@ -3,6 +3,8 @@ import logging
 import os
 import re
 import zipfile
+from argparse import Namespace
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
@@ -254,3 +256,18 @@ def count_tfrec_items(tfrec_filenames: List[str]) -> int:
     logger.info(f'Found {result} images.')
 
     return result
+
+
+def configure_logger(log_dir: str) -> None:
+    make_directory(log_dir)
+    log_file = f"{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}.log"
+    logging.basicConfig(filename=f'{log_dir}/{log_file}',
+                        filemode='w',
+                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.DEBUG)
+
+
+def log_args(args: Namespace) -> None:
+    for arg, value in sorted(vars(args).items()):
+        logging.info(f'{arg}: {value}')

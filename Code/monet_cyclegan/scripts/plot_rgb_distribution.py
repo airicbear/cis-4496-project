@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 
-from ..consts import IMAGE_SIZE
+from ..utils import configure_logger, log_args
+from ..consts import BUILD_DIR
 from ..data_acquisition.rgb_distribution import plot_rgb_distribution
 
 
@@ -15,7 +16,13 @@ def main():
     parser.add_argument('--exclude-zeros', action='store_true')
     parser.add_argument('--include-zeros', dest='exclude_zeros', action='store_false')
     parser.set_defaults(exclude_zeros=True)
+    parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
     args = parser.parse_args()
+
+    log_dir = f'{args.build_dir}/logs/plot_rgb_distribution'
+
+    configure_logger(log_dir=log_dir)
+    log_args(args=args)
 
     if args.title:
         title = args.title
