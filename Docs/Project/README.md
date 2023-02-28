@@ -1,12 +1,37 @@
-# Folder for hosting project documents and reports for a Data Science Project
+# Project Documentation
 
-These could be: 
+This folder contains project-specific documentation including the project charter and bimonthly progress reports.
 
-1. Project management and planning docs
-2. System architecture
-3. Information obtained from a business owner or client about the project
-4. Docs and presentations prepared to share information about the project
+- `Charter.md` - The project charter which includes:
 
-In this folder we have templates for project chater and exit report. 
+  - Problem description
 
-In addition, if you have access to Microsoft Project or Excel, you may use project templates provided in this [blog](https://blogs.msdn.microsoft.com/buckwoody/2017/10/24/a-data-science-microsoft-project-template-you-can-use-in-your-solutions).
+  - Project scope
+
+  - Metrics
+
+  - Architecture
+
+  - Plan
+
+  - Personnel
+
+  - Communication
+
+- `Bimonthly Progress Report 1.md` - The first bimonthly progress report which includes:
+
+  - Introduction: A brief summary of the scope and purpose of the project.
+  
+  - Progress: Summary of the progress made since the *Phase I demo*.
+
+    - Data Preparation: Nature of data, feature extraction, feature augmentation
+
+    - Methods: Models and techniques used, parameter selection
+
+    - Performance: Description of metrics, performance achieved
+
+  - Plan: Summary of plan for next two weeks, including current status.
+
+  - Remaining questions: Summary of areas of the project that need further research and exploration.
+
+  - Expected results: Summary of what we expect to achieve at the end of the next two weeks. 
