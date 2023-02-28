@@ -46,7 +46,7 @@ with strategy.scope():
                                                                                             generated)
 
 
-    def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, alpha: float) -> float:
+    def calc_cycle_loss(real_image: tf.Tensor, cycled_image: tf.Tensor, alpha: tf.Tensor) -> tf.Tensor:
         """
         Calculate the cycle loss given a real image and the image after being cycled.
         This helps to verify whether the result is close to the original input.
@@ -60,11 +60,11 @@ with strategy.scope():
             The calculated cycle loss.
         """
 
-        loss: float = tf.reduce_mean(tf.abs(real_image - cycled_image))
+        loss = tf.reduce_mean(tf.abs(real_image - cycled_image))
         return loss * alpha
 
 
-    def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, alpha: float) -> float:
+    def identity_loss(real_image: tf.Tensor, same_image: tf.Tensor, alpha: tf.Tensor) -> tf.Tensor:
         """
         Sub-function to calculate the identity loss, which says that, if you feed the image to the generator,
         it should yield the real image or something close to the image.
@@ -78,5 +78,5 @@ with strategy.scope():
             The calculated identity loss.
         """
 
-        loss: float = tf.reduce_mean(tf.abs(real_image - same_image))
-        return alpha * 0.5 * loss
+        loss = tf.reduce_mean(tf.abs(real_image - same_image))
+        return tf.math.scalar_mul(0.5, alpha * loss)

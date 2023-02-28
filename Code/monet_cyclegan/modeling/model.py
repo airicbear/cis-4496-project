@@ -1,7 +1,10 @@
+import logging
 from abc import ABC
 from typing import Callable, Tuple
 
 import tensorflow as tf
+
+logger = logging.getLogger(__name__)
 
 
 class CycleGan(tf.keras.Model, ABC):
@@ -12,7 +15,7 @@ class CycleGan(tf.keras.Model, ABC):
                  photo_generator: tf.keras.Model,
                  monet_discriminator: tf.keras.Model,
                  photo_discriminator: tf.keras.Model,
-                 lambda_cycle: int = 10):
+                 lambda_cycle: tf.Tensor = 10):
         """Initialization function for the generators, discriminators, and the lambda cycle.
 
         Args:
@@ -29,14 +32,14 @@ class CycleGan(tf.keras.Model, ABC):
         self.monet_discriminator = monet_discriminator
         self.photo_discriminator = photo_discriminator
         self.lambda_cycle = lambda_cycle
-        self.monet_generator_optimizer = None
-        self.photo_generator_optimizer = None
-        self.monet_discriminator_optimizer = None
-        self.photo_discriminator_optimizer = None
-        self.generator_loss_fn = None
-        self.discriminator_loss_fn = None
-        self.cycle_loss_fn = None
-        self.identity_loss_fn = None
+        self.monet_generator_optimizer: tf.keras.optimizers.Optimizer = None
+        self.photo_generator_optimizer: tf.keras.optimizers.Optimizer = None
+        self.monet_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
+        self.photo_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
+        self.generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor] = None
+        self.discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor] = None
+        self.cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor] = None
+        self.identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor] = None
 
     def compile(self,
                 monet_generator_optimizer: tf.keras.optimizers.Optimizer,
@@ -45,8 +48,8 @@ class CycleGan(tf.keras.Model, ABC):
                 photo_discriminator_optimizer: tf.keras.optimizers.Optimizer,
                 generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor],
                 discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor],
-                cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float],
-                identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, float], float]):
+                cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor],
+                identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor]):
         """Compiler function that sets the optimizers and the loss functions of the CycleGAN.
 
         Args:
@@ -80,6 +83,8 @@ class CycleGan(tf.keras.Model, ABC):
         Returns:
             The loss metrics for all four models.
         """
+
+        logger.info('Performing train step.')
 
         real_monet, real_photo = batch_data
 

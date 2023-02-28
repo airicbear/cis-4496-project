@@ -1,6 +1,6 @@
 .DS_Store
 .vscode
-/submission_images
+build
 __pycache__
 *.h5
 *.iml

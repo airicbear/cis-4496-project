@@ -11,12 +11,11 @@ MONET_TFREC_DIR = f'{DATA_PATH}/monet_tfrec'
 PHOTO_TFREC_DIR = f'{DATA_PATH}/photo_tfrec'
 KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
-MONET_GENERATOR_WEIGHT_PATH = 'photo2monet.h5'
-PHOTO_GENERATOR_WEIGHT_PATH = 'monet2photo.h5'
+MONET_GENERATOR_WEIGHT_FILENAME = 'photo2monet.h5'
+PHOTO_GENERATOR_WEIGHT_FILENAME = 'monet2photo.h5'
 LOSS_RATE = 2e-4
 EPOCHS = 1
-WEIGHT_OUTPUT_DIR = './weights'
-OUTPUT_DIR = '../submission_images'
+BUILD_DIR = './build'
 
 # Set global seed
 tf.random.set_seed(SEED)

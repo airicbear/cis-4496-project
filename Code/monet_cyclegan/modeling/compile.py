@@ -1,8 +1,12 @@
+import logging
+
 import tensorflow as tf
 
 from .losses import generator_loss, discriminator_loss, calc_cycle_loss, identity_loss
 from .model import CycleGan
 from ..consts import strategy
+
+logger = logging.getLogger(__name__)
 
 
 def cyclegan_compile(cyclegan_model: CycleGan,
@@ -40,6 +44,8 @@ def cyclegan_compile_with_loss_rate(cyclegan_model: CycleGan,
         cyclegan_model: The CycleGAN to be compiled.
         loss_rate: The loss rate to be used by the CycleGAN optimizers.
     """
+
+    logger.info(f'Compiling model using a loss rate of {loss_rate}.')
 
     with strategy.scope():
         monet_generator_optimizer = tf.keras.optimizers.Adam(loss_rate, beta_1=0.5)

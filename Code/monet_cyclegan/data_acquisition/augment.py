@@ -1,3 +1,4 @@
+import logging
 import os
 
 import tensorflow as tf
@@ -5,6 +6,8 @@ import tensorflow as tf
 from ..consts import IMAGE_SIZE, CHANNELS
 from ..utils import random_number, tensor_to_image, read_image, save_image, make_directory, get_filenames, \
     read_tfrecorddataset
+
+logger = logging.getLogger(__name__)
 
 
 def random_crop(image: tf.Tensor, width: int, height: int, channels: int) -> tf.Tensor:
