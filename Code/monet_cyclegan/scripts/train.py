@@ -1,6 +1,5 @@
 import logging
 from argparse import ArgumentParser
-import os
 
 import tensorflow as tf
 
@@ -10,7 +9,7 @@ from ..data_acquisition.augment import augment_image
 from ..data_acquisition.load_dataset import load_dataset
 from ..modeling.create_model import create_cyclegan_model
 from ..modeling.train import train_model, save_weights
-from ..utils import get_filenames, count_tfrec_items, make_directory
+from ..utils import get_filenames, count_tfrec_items, configure_logger, log_args
 
 logger = logging.getLogger()
 
@@ -47,23 +46,10 @@ def main() -> None:
         tf.data.experimental.enable_debug_mode()
 
     epoch_dir = f'{args.output}/epoch{args.epochs}'
+    log_dir = f'{epoch_dir}/logs/train'
 
-    make_directory(epoch_dir)
-
-    i = 0
-    log_file = f'{epoch_dir}/train-{i}.log'
-    while os.path.isfile(log_file):
-        i += 1
-        log_file = f'{epoch_dir}/train-{i}.log'
-
-    logging.basicConfig(filename=log_file,
-                        filemode='w',
-                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        level=logging.DEBUG)
-
-    for arg, value in sorted(vars(args).items()):
-        logging.info(f'{arg}: {value}')
+    configure_logger(log_dir=log_dir)
+    log_args(args=args)
 
     monet_filenames = get_filenames(image_dir=args.monet_dir, ext=args.ext)
     photo_filenames = get_filenames(image_dir=args.photo_dir, ext=args.ext)

@@ -1,18 +1,19 @@
-import logging
-
-from ..utils import make_directory
+from argparse import ArgumentParser
 
 from ..consts import BUILD_DIR
 from ..data_acquisition.download_dataset import download_kaggle_dataset
+from ..utils import configure_logger, log_args
 
 
 def main():
-    make_directory(BUILD_DIR)
-    logging.basicConfig(filename=f'{BUILD_DIR}/download_dataset.log',
-                        filemode='a',
-                        format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        level=logging.DEBUG)
+    parser = ArgumentParser()
+    parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
+    args = parser.parse_args()
+
+    log_dir = f'{args.build_dir}/logs/download_dataset'
+
+    configure_logger(log_dir=log_dir)
+    log_args(args=args)
 
     download_kaggle_dataset()
 

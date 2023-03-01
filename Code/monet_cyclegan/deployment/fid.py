@@ -192,7 +192,8 @@ def calculate_frechet_inception_distance(photo_dataset: tf.data.TFRecordDataset,
     mu1, sigma1 = calculate_activation_summary(image_dataset=photo_dataset, model=fid_model)
     logger.info(f'mu1={mu1}, sigma1={sigma1}.')
 
-    logger.info('Calculating mean mu2 and covariance sigma2 of activations from Inception model applied to Monet dataset.')
+    logger.info(
+        'Calculating mean mu2 and covariance sigma2 of activations from Inception model applied to Monet dataset.')
     mu2, sigma2 = calculate_activation_summary(image_dataset=monet_dataset, model=inception_model)
     logger.info(f'mu2={mu2}, sigma2={sigma2}.')
 
