@@ -259,8 +259,16 @@ def count_tfrec_items(tfrec_filenames: List[str]) -> int:
 
 
 def configure_logger(log_dir: str) -> None:
+    """Configure the logging system to output log files to the given directory.
+
+    Args:
+        log_dir: Directory where log files will be stored.
+    """
+
     make_directory(log_dir)
+
     log_file = f"{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}.log"
+
     logging.basicConfig(filename=f'{log_dir}/{log_file}',
                         filemode='w',
                         format='%(asctime)s.%(msecs)03d %(name)s.%(funcName)s %(levelname)s %(message)s',
@@ -269,5 +277,11 @@ def configure_logger(log_dir: str) -> None:
 
 
 def log_args(args: Namespace) -> None:
+    """Log all arguments from a given `Namespace` object.
+
+    Args:
+        args: The `Namespace` object.
+    """
+
     for arg, value in sorted(vars(args).items()):
         logging.info(f'{arg}: {value}')
