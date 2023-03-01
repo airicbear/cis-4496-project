@@ -3,13 +3,13 @@ Generates images from the trained model.
 """
 import logging
 import os
-import sys
 import shutil
+import sys
 
 from ..consts import IMAGE_SIZE, CHANNELS
 from ..modeling.model import CycleGan
 from ..modeling.predict import translate_image
-from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, make_directory, tensor_to_image
+from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, tensor_to_image
 
 logger = logging.getLogger(__name__)
 
