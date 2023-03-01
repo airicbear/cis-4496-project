@@ -3,12 +3,13 @@ Generates images from the trained model.
 """
 import logging
 import os
+import shutil
 import sys
 
 from ..consts import IMAGE_SIZE, CHANNELS
 from ..modeling.model import CycleGan
 from ..modeling.predict import translate_image
-from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, make_directory, tensor_to_image
+from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, tensor_to_image
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,11 @@ def generate_images(cyclegan_model: CycleGan,
         if prompt == 'n':
             sys.exit(1)
 
+    original_dir = f'{output_dir}-original'
+
+    shutil.rmtree(output_dir)
+    shutil.rmtree(original_dir)
+
     if input_ext == 'tfrec':
         photos = read_tfrecorddataset(filenames=get_filenames(image_dir=input_dir, ext=input_ext))
 
@@ -101,11 +107,9 @@ def generate_images(cyclegan_model: CycleGan,
             if with_original:
                 original_image = tensor_to_image(image)
                 save_image(image=original_image[0],
-                           output_path=f'{output_dir}-original/{i}.jpg')
+                           output_path=f'{original_dir}/{i}.jpg')
 
     else:
-        make_directory(output_dir)
-
         for i, filename in enumerate(get_filenames(image_dir=input_dir, ext=input_ext)):
             generate_image(cyclegan_model=cyclegan_model,
                            input_path=filename,
