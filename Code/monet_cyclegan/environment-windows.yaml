@@ -16,3 +16,4 @@ dependencies:
       - pillow
       - scipy
       - seaborn
+      - pytorch-fid
