@@ -1,9 +1,8 @@
 from argparse import ArgumentParser
 
-from ..utils import configure_logger, log_args
-
 from ..consts import BUILD_DIR
 from ..data_acquisition.download_dataset import download_kaggle_dataset
+from ..utils import configure_logger, log_args
 
 
 def main():

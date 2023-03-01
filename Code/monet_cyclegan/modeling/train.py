@@ -34,6 +34,7 @@ def train_model(cyclegan_model: CycleGan,
     cyclegan_model.fit(train_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch)
     logger.info(f'Finished fitting model.')
 
+
 def save_weights(cyclegan_model: CycleGan,
                  monet_generator_path: str = MONET_GENERATOR_WEIGHT_FILENAME,
                  photo_generator_path: str = PHOTO_GENERATOR_WEIGHT_FILENAME) -> None:

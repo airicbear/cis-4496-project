@@ -1,8 +1,8 @@
 import argparse
 
-from ..utils import configure_logger, log_args
 from ..consts import PHOTO_TFREC_DIR, BUILD_DIR
 from ..data_acquisition.augment import save_augmented_image, save_augmented_images
+from ..utils import configure_logger, log_args
 
 
 def main():

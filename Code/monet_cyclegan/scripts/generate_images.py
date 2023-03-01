@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
 
-from ..utils import configure_logger, log_args
 from ..consts import PHOTO_TFREC_DIR, BUILD_DIR, EPOCHS, \
     MONET_GENERATOR_WEIGHT_FILENAME, PHOTO_GENERATOR_WEIGHT_FILENAME
 from ..deployment.generate_images import generate_image, generate_images
 from ..deployment.load_model import load_cyclegan_model
+from ..utils import configure_logger, log_args
 
 
 def main() -> None:
