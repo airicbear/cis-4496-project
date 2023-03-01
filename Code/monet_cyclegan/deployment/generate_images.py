@@ -79,8 +79,11 @@ def generate_images(cyclegan_model: CycleGan,
 
     original_dir = f'{output_dir}-original'
 
-    shutil.rmtree(output_dir)
-    shutil.rmtree(original_dir)
+    if os.path.isdir(output_dir):
+        shutil.rmtree(output_dir)
+
+    if os.path.isdir(original_dir):
+        shutil.rmtree(original_dir)
 
     if input_ext == 'tfrec':
         photos = read_tfrecorddataset(filenames=get_filenames(image_dir=input_dir, ext=input_ext))
