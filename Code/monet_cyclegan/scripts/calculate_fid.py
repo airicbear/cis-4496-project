@@ -1,10 +1,9 @@
 import argparse
+import logging
 import os
 
-from ..consts import PHOTO_TFREC_DIR, MONET_TFREC_DIR, BUILD_DIR, MONET_GENERATOR_WEIGHT_FILENAME, \
-    PHOTO_GENERATOR_WEIGHT_FILENAME, EPOCHS
-from ..deployment.load_model import load_cyclegan_model
-from ..utils import configure_logger, log_args, read_tfrecorddataset, get_filenames
+from ..consts import BUILD_DIR, EPOCHS
+from ..utils import configure_logger, log_args
 
 
 def main():
@@ -20,8 +19,12 @@ def main():
     configure_logger(log_dir=log_dir)
     log_args(args=args)
 
-    fid = os.system('python -m pytorch_fid '+args.painting_dir+' '+args.transformed_photos_dir)
-    print(fid)
+    fid_output = os.popen('python -m pytorch_fid ' + args.painting_dir + ' ' + args.transformed_photos_dir).read()
+
+    logger = logging.getLogger()
+    logger.info(fid_output)
+
+    print(fid_output)
 
 
 if __name__ == '__main__':
