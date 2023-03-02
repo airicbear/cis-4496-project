@@ -8,8 +8,7 @@ from ..utils import random_number, tensor_to_image, read_image, save_image, make
     read_tfrecorddataset
 
 logger = logging.getLogger(__name__)
-
-
+'Explore eliminating random crop and see how that effects results'
 def random_crop(image: tf.Tensor, width: int, height: int, channels: int) -> tf.Tensor:
     """Randomly crop an image.
 

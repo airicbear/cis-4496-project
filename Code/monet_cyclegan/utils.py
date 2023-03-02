@@ -17,7 +17,7 @@ from numpy import uint8, ndarray
 from .consts import IMAGE_SIZE, CHANNELS
 
 logger = logging.getLogger(__name__)
-
+'Helper function to translate tfrec images to jpgs'
 
 def decode_image(image: tf.Tensor,
                  width: int,
