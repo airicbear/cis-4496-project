@@ -16,12 +16,12 @@ def create_cyclegan_model() -> CycleGan:
 
     logger.info('Creating CycleGAN model.')
 
-    monet_generator = generator()
+    painting_generator = generator()
     photo_generator = generator()
-    monet_discriminator = discriminator()
+    painting_discriminator = discriminator()
     photo_discriminator = discriminator()
 
-    return CycleGan(monet_generator=monet_generator,
+    return CycleGan(painting_generator=painting_generator,
                     photo_generator=photo_generator,
-                    monet_discriminator=monet_discriminator,
+                    painting_discriminator=painting_discriminator,
                     photo_discriminator=photo_discriminator)

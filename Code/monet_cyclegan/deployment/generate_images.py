@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -> None:
-    """Use a CycleGAN model to translate an image to a Monet painting and save it.
+    """Use a CycleGAN model to translate an image to a painting and save it.
 
     Args:
         cyclegan_model: The CycleGAN model to be used for image generation.
@@ -23,7 +23,7 @@ def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -
         output_dir: Directory where the generated image will be saved.
     """
 
-    logger.info(f"Generating Monet style version of '{input_path}'.")
+    logger.info(f"Generating painting style version of '{input_path}'.")
 
     if not os.path.isfile(input_path):
         raise FileNotFoundError(f'Could not find file "{input_path}".')
@@ -42,7 +42,7 @@ def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -
     save_image(image=generated_image,
                output_path=output_path)
 
-    logger.info(f"Saved Monet style version of '{input_path}' to '{output_path}'.")
+    logger.info(f"Saved painting style version of '{input_path}' to '{output_path}'.")
 
 
 def generate_images(cyclegan_model: CycleGan,
@@ -53,7 +53,7 @@ def generate_images(cyclegan_model: CycleGan,
                     shuffle: bool,
                     with_original: bool,
                     overwrite: bool) -> None:
-    """Use a CycleGAN model to translate images to Monet paintings and save them.
+    """Use a CycleGAN model to translate images to paintings and save them.
 
     Args:
         cyclegan_model: The CycleGAN model to be used for image generation.
@@ -66,7 +66,7 @@ def generate_images(cyclegan_model: CycleGan,
         overwrite: Overwrite any existing files in the output directory if True.
     """
 
-    logger.info(f"Generating Monet style version of each image in '{input_dir}'.")
+    logger.info(f"Generating painting style version of each image in '{input_dir}'.")
 
     if not os.path.isdir(input_dir):
         raise FileNotFoundError(f'Could not find directory "{input_dir}".')
@@ -118,4 +118,4 @@ def generate_images(cyclegan_model: CycleGan,
                            input_path=filename,
                            output_dir=output_dir)
 
-    logger.info('Finished generating and saving all photo-to-Monet images.')
+    logger.info('Finished generating and saving all photo-to-painting images.')

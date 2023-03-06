@@ -1,6 +1,6 @@
 # Monet CycleGAN
 
-A [CycleGAN](https://junyanz.github.io/CycleGAN/) implementation used to translate photos to Monet paintings.
+A [CycleGAN](https://junyanz.github.io/CycleGAN/) implementation used to translate photos to paintings.
 
 ### Usage
 
