@@ -7,7 +7,7 @@ import tensorflow as tf
 
 from .compile import cyclegan_compile_with_loss_rate
 from .model import CycleGan
-from ..consts import MONET_GENERATOR_WEIGHT_FILENAME, PHOTO_GENERATOR_WEIGHT_FILENAME
+from ..consts import PHOTO2PAINTING_FILENAME, PAINTING2PHOTO_FILENAME
 from ..utils import make_directory
 
 logger = logging.getLogger(__name__)
@@ -36,23 +36,23 @@ def train_model(cyclegan_model: CycleGan,
 
 
 def save_weights(cyclegan_model: CycleGan,
-                 monet_generator_path: str = MONET_GENERATOR_WEIGHT_FILENAME,
-                 photo_generator_path: str = PHOTO_GENERATOR_WEIGHT_FILENAME) -> None:
+                 painting_generator_path: str = PHOTO2PAINTING_FILENAME,
+                 photo_generator_path: str = PAINTING2PHOTO_FILENAME) -> None:
     """Save the build of a CycleGAN model.
 
     Args:
         cyclegan_model: The CycleGAN model to have its build saved.
-        monet_generator_path: The path where the Monet generator's build will be stored.
+        painting_generator_path: The path where the painting generator's build will be stored.
         photo_generator_path: The path where the photo generator's build will be stored.
     """
 
-    make_directory(monet_generator_path, make_parent=True)
+    make_directory(painting_generator_path, make_parent=True)
 
-    logger.info(f"Saving Monet generator build to '{monet_generator_path}'.")
+    logger.info(f"Saving painting generator build to '{painting_generator_path}'.")
     logger.info(f"Saving photo generator build to '{photo_generator_path}'.")
 
-    cyclegan_model.monet_generator.save_weights(monet_generator_path)
+    cyclegan_model.painting_generator.save_weights(painting_generator_path)
     cyclegan_model.photo_generator.save_weights(photo_generator_path)
 
-    logger.info(f"Saved Monet generator build to '{monet_generator_path}'.")
+    logger.info(f"Saved painting generator build to '{painting_generator_path}'.")
     logger.info(f"Saved photo generator build to '{photo_generator_path}'.")

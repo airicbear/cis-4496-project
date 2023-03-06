@@ -8,6 +8,6 @@ This folder contains all executable scripts related to the package.
 
 - `download_dataset` - Download the full Kaggle dataset into `Sample_Data/Raw/Kaggle_Dataset`.
 
-- `generate_images` - Use the Monet painting generator of a pretrained model to translate a set of images.
+- `generate_images` - Use the painting generator of a pretrained model to translate a set of images.
 
 - `plot_rgb_distribution` - Plot the RGB distribution of a given image file.

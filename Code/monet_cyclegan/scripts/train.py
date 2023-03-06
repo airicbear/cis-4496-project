@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 import tensorflow as tf
 
 from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR, LOSS_RATE, EPOCHS, BUILD_DIR, \
-    BATCH_SIZE, MONET_GENERATOR_WEIGHT_FILENAME, PHOTO_GENERATOR_WEIGHT_FILENAME
+    BATCH_SIZE, PHOTO2PAINTING_FILENAME, PAINTING2PHOTO_FILENAME
 from ..data_acquisition.augment import augment_image
 from ..data_acquisition.load_dataset import load_dataset
 from ..modeling.create_model import create_cyclegan_model
@@ -16,9 +16,10 @@ logger = logging.getLogger()
 
 def main() -> None:
     parser = ArgumentParser()
-    parser.add_argument('--monet_dir', type=str, default=MONET_TFREC_DIR)
-    parser.add_argument('--photo_dir', type=str, default=PHOTO_TFREC_DIR)
+    parser.add_argument('--painting-dir', type=str, default=MONET_TFREC_DIR)
+    parser.add_argument('--photo-dir', type=str, default=PHOTO_TFREC_DIR)
     parser.add_argument('--output', '-o', type=str, default=BUILD_DIR)
+    parser.add_argument('--artist', type=str, default='monet')
     parser.add_argument('--loss-rate', '-lr', type=float, default=LOSS_RATE)
     parser.add_argument('--augment', action='store_true')
     parser.add_argument('--no-augment', dest='augment', action='store_false')
@@ -31,11 +32,11 @@ def main() -> None:
     parser.set_defaults(repeat=True)
     parser.add_argument('--epochs', type=int, default=EPOCHS)
     parser.add_argument('--batch-size', type=int, default=BATCH_SIZE)
-    parser.add_argument('--num-monet', type=int, default=-1)
+    parser.add_argument('--num-painting', type=int, default=-1)
     parser.add_argument('--num-photo', type=int, default=-1)
     parser.add_argument('--steps-per-epoch', type=int, default=None)
-    parser.add_argument('--filename-weight-monet', type=str, default=MONET_GENERATOR_WEIGHT_FILENAME)
-    parser.add_argument('--filename-weight-photo', type=str, default=PHOTO_GENERATOR_WEIGHT_FILENAME)
+    parser.add_argument('--photo2painting', type=str, default=PHOTO2PAINTING_FILENAME)
+    parser.add_argument('--painting2photo', type=str, default=PAINTING2PHOTO_FILENAME)
     parser.add_argument('--ext', type=str, default='tfrec')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--no-debug', dest='debug', action='store_false')
@@ -45,36 +46,36 @@ def main() -> None:
     if args.debug:
         tf.data.experimental.enable_debug_mode()
 
-    epoch_dir = f'{args.output}/epoch{args.epochs}'
+    epoch_dir = f'{args.output}/{args.artist}/epoch{args.epochs}'
     log_dir = f'{epoch_dir}/logs/train'
 
     configure_logger(log_dir=log_dir)
     log_args(args=args)
 
-    monet_filenames = get_filenames(image_dir=args.monet_dir, ext=args.ext)
+    painting_filenames = get_filenames(image_dir=args.painting_dir, ext=args.ext)
     photo_filenames = get_filenames(image_dir=args.photo_dir, ext=args.ext)
 
-    count_monet_samples = count_tfrec_items(tfrec_filenames=monet_filenames)
+    count_painting_samples = count_tfrec_items(tfrec_filenames=painting_filenames)
     count_photo_samples = count_tfrec_items(tfrec_filenames=photo_filenames)
 
-    if args.num_monet >= 0:
-        count_monet_samples = args.num_monet
+    if args.num_painting >= 0:
+        count_painting_samples = args.num_painting
 
     if args.num_photo >= 0:
         count_photo_samples = args.num_photo
 
     if not args.steps_per_epoch:
-        steps_per_epoch = max(count_monet_samples, count_photo_samples) // args.batch_size
+        steps_per_epoch = max(count_painting_samples, count_photo_samples) // args.batch_size
     else:
         steps_per_epoch = args.steps_per_epoch
 
-    dataset = load_dataset(monet_dir=args.monet_dir,
+    dataset = load_dataset(painting_dir=args.painting_dir,
                            photo_dir=args.photo_dir,
                            augment=(augment_image if args.augment else None),
                            repeat=args.repeat,
                            shuffle=args.shuffle,
                            batch_size=args.batch_size,
-                           monet_sample_size=args.num_monet,
+                           painting_sample_size=args.num_painting,
                            photo_sample_size=args.num_photo)
 
     model = create_cyclegan_model()
@@ -86,8 +87,8 @@ def main() -> None:
                 steps_per_epoch=steps_per_epoch)
 
     save_weights(cyclegan_model=model,
-                 monet_generator_path=f'{epoch_dir}/{args.filename_weight_monet}',
-                 photo_generator_path=f'{epoch_dir}/{args.filename_weight_photo}')
+                 painting_generator_path=f'{epoch_dir}/{args.photo2painting}',
+                 photo_generator_path=f'{epoch_dir}/{args.painting2photo}')
 
 
 if __name__ == '__main__':

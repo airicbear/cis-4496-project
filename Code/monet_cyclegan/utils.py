@@ -284,4 +284,4 @@ def log_args(args: Namespace) -> None:
     """
 
     for arg, value in sorted(vars(args).items()):
-        logging.info(f'{arg}: {value}')
+        logger.info(f'{arg}: {value}')
