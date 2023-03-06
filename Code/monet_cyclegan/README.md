@@ -32,8 +32,7 @@ For more information on each command, add `--help` to the end of the command.
 
 ### Files/Folders
 
-This folder and all of its subfolders represent
-a [Python package](https://docs.python.org/3/tutorial/modules.html#packages) (called "subpackage" for subfolders).
+This folder and all of its subfolders represent a [Python package](https://docs.python.org/3/tutorial/modules.html#packages) (called "subpackage" for subfolders).
 Each file ending with `.py` represents a [Python module](https://docs.python.org/3/tutorial/modules.html).
 
 - `data_acquisition` - Data storage, processing, exploration, etc.
@@ -75,11 +74,11 @@ Each file ending with `.py` represents a [Python module](https://docs.python.org
 
 - Add the following folders to the top of the list:
 
-    - `%USERPROFILE%\anaconda3`
+  - `%USERPROFILE%\anaconda3`
 
-    - `%USERPROFILE%\anaconda3\Scripts`
+  - `%USERPROFILE%\anaconda3\Scripts`
 
-- Click each OK to exit the window.
+- Click each OK to exit the window. 
 
 - Open your terminal in this folder and create and activate the Conda environment:
 
@@ -106,18 +105,17 @@ Each file ending with `.py` represents a [Python module](https://docs.python.org
   sudo apt-key del 7fa2af80
   ```
 
--
-Install [Linux x86 CUDA Toolkit](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local):
+- Install [Linux x86 CUDA Toolkit](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local):
 
-```commandline
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
-sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
-wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/cuda-repo-ubuntu2204-12-0-local_12.0.1-525.85.12-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu2204-12-0-local_12.0.1-525.85.12-1_amd64.deb
-sudo cp /var/cuda-repo-ubuntu2204-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
-sudo apt-get update
-sudo apt-get -y install cuda
-```
+  ```commandline
+  wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+  sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+  wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/cuda-repo-ubuntu2204-12-0-local_12.0.1-525.85.12-1_amd64.deb
+  sudo dpkg -i cuda-repo-ubuntu2204-12-0-local_12.0.1-525.85.12-1_amd64.deb
+  sudo cp /var/cuda-repo-ubuntu2204-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+  sudo apt-get update
+  sudo apt-get -y install cuda
+  ```
 
 - After CUDA installation completes in WSL, **restart your computer**
 
@@ -126,7 +124,7 @@ sudo apt-get -y install cuda
   ```commandline
   nvidia-smi
   ```
-
+  
 - Install [NVIDIA cuDNN](https://developer.nvidia.com/cudnn):
 
   ```commandline
@@ -156,6 +154,5 @@ sudo apt-get -y install cuda
   conda env create -f environment-cuda.yaml
   conda activate monet-cyclegan-cuda
   ```
-
-For additional information on setting up CUDA on WSL, see
-the [CUDA on WSL User Guide](https://docs.nvidia.com/cuda/wsl-user-guide/index.html).
+  
+For additional information on setting up CUDA on WSL, see the [CUDA on WSL User Guide](https://docs.nvidia.com/cuda/wsl-user-guide/index.html).
