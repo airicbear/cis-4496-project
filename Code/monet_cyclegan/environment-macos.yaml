@@ -20,3 +20,11 @@ dependencies:
       - scipy
       - seaborn
       - pytorch-fid
+
+      # For TensorFlow.js, use pip install tensorflowjs --no-deps
+      - tensorflow_hub
+      - jax
+      - jaxlib
+      - etils
+      - chardet
+      - tensorflow_decision_forests
