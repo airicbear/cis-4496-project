@@ -8,11 +8,11 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Photo → Painting</title>
+        <title>Photo ⇆ Painting</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
+      <Container style={{ maxWidth: "800" }}>
         <AppHeader />
         <FileUpload />
       </Container>
