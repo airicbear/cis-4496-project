@@ -24,27 +24,38 @@ const AppHeader = () => {
     <Container sm>
       <Row align="center">
         <Col>
-          <Text h1>
+          <Text
+            h1
+            css={{
+              "@media (max-width: 620px)": {
+                fontSize: "24px",
+              },
+            }}
+          >
             <Link color="text" href="/">
               Photo ⇆ Painting
             </Link>
           </Text>
         </Col>
-        <Col span={1.5} style={{ padding: "16px" }}>
-          <Switch
-            checked={isDark}
-            onChange={handleThemeToggle}
-            iconOn={<SunIcon filled />}
-            iconOff={<MoonIcon filled />}
-          />
-        </Col>
-        <Col span={1}>
-          <Link
-            href="https://github.com/airicbear/cis-4496-project"
-            color="text"
-          >
-            <GitHubIcon filled />
-          </Link>
+        <Col span={2}>
+          <Row align="center">
+            <Col style={{ padding: "16px" }}>
+              <Switch
+                checked={isDark}
+                onChange={handleThemeToggle}
+                iconOn={<SunIcon filled />}
+                iconOff={<MoonIcon filled />}
+              />
+            </Col>
+            <Col>
+              <Link
+                href="https://github.com/airicbear/cis-4496-project"
+                color="text"
+              >
+                <GitHubIcon />
+              </Link>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>

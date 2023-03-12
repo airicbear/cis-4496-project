@@ -1,12 +1,76 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
+import * as tf from "@tensorflow/tfjs";
 import { ChangeEvent } from "react";
 
 interface ImageInputProps {
   id: number;
+  type: string;
 }
 
-const ImageInput = ({ id }: ImageInputProps) => {
+const ImageInput = ({ id, type }: ImageInputProps) => {
   const { theme } = useTheme();
+  let model: tf.LayersModel;
+
+  const outputPrediction = (reader: FileReader) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    canvas.style.borderRadius = `${theme.radii.lg.value}`;
+    const outputList = document.getElementById("prediction-output");
+    const predictionPair = document.createElement("div");
+    const arrow = document.createElement("p");
+    arrow.textContent = "→";
+    predictionPair.style.display = "inline-flex";
+    const image = new Image();
+    image.src = reader.result.toString();
+    image.style.borderRadius = `${theme.radii.lg.value}`;
+    predictionPair.append(image);
+    predictionPair.append(arrow);
+    predictionPair.append(canvas);
+    outputList.insertBefore(predictionPair, outputList.firstChild);
+    image.onload = () => {
+      const input = tf.browser
+        .fromPixels(image, 3)
+        .toFloat()
+        .mul(1 / 127.5)
+        .sub(1);
+
+      try {
+        console.log("Predicting output...");
+        const output: tf.Tensor<tf.Rank> = model.predict(
+          tf.expandDims(input, 0)
+        ) as tf.Tensor<tf.Rank>;
+        const outputTensor = output.mul(127.5).add(127.5).toInt();
+        const squeezedOutput = tf.squeeze(outputTensor, [0]).as3D(256, 256, 3);
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        tf.browser.toPixels(squeezedOutput, canvas);
+      } catch {
+        console.error("Model prediction failed.");
+        reader.abort();
+      }
+    };
+  };
+
+  const photo2MonetModel = async () => {
+    return await tf.loadLayersModel("/assets/photo2painting/model.json");
+  };
+
+  const monet2PhotoModel = async () => {
+    return await tf.loadLayersModel("/assets/photo2painting/model.json");
+  };
+
+  if (type == "photo2monet") {
+    photo2MonetModel().then((m: tf.LayersModel) => {
+      model = m;
+    });
+  } else if (type == "monet2photo") {
+    monet2PhotoModel().then((m: tf.LayersModel) => {
+      model = m;
+    });
+  } else {
+    console.error(`Invalid model type ${type}`);
+  }
 
   const handleChange = function (event: ChangeEvent<FormElement>) {
     event.stopPropagation();
@@ -24,6 +88,7 @@ const ImageInput = ({ id }: ImageInputProps) => {
         label.style.backgroundSize = "cover";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
+        outputPrediction(reader);
       },
       false
     );
@@ -82,6 +147,7 @@ const ImageInput = ({ id }: ImageInputProps) => {
         label.style.backgroundSize = "cover";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
+        outputPrediction(reader);
       },
       false
     );
@@ -99,7 +165,7 @@ const ImageInput = ({ id }: ImageInputProps) => {
         id={`input-file-upload-${id}`}
         accept=".jpg, .jpeg, .png"
         onChange={handleChange}
-        style={{
+        css={{
           display: "none",
         }}
       ></Input>
@@ -116,13 +182,13 @@ const ImageInput = ({ id }: ImageInputProps) => {
         }}
       >
         <Card
-          style={{
-            backgroundColor: `${theme.colors.neutralLight.value}`,
+          css={{
+            bg: `${theme.colors.neutralLight.value}`,
           }}
         >
           <Card.Body
             id={`label-file-upload-${id}`}
-            style={{
+            css={{
               width: "256px",
               height: "256px",
               textAlign: "center",
@@ -131,10 +197,31 @@ const ImageInput = ({ id }: ImageInputProps) => {
               justifyContent: "center",
               alignContent: "center",
               flexDirection: "column",
+              "@media (max-width: 620px)": {
+                width: "128px",
+                height: "128px",
+              },
             }}
           >
-            <Text h3>Upload image</Text>
-            <Text>(Click or Drag/Drop)</Text>
+            <Text
+              h3
+              css={{
+                "@media (max-width: 620px)": {
+                  fontSize: "12px",
+                },
+              }}
+            >
+              Upload image
+            </Text>
+            <Text
+              css={{
+                "@media (max-width: 620px)": {
+                  fontSize: "12px",
+                },
+              }}
+            >
+              (Click or Drag/Drop)
+            </Text>
           </Card.Body>
         </Card>
       </label>

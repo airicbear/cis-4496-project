@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container style={{ maxWidth: "800" }}>
+      <Container>
         <AppHeader />
         <FileUpload />
       </Container>
