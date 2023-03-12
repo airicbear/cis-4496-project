@@ -1,4 +1,4 @@
-import { Card, FormElement, Input, useTheme, Text } from "@nextui-org/react";
+import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
 import { ChangeEvent } from "react";
 
 interface ImageInputProps {
@@ -127,9 +127,14 @@ const ImageInput = ({ id }: ImageInputProps) => {
               height: "256px",
               textAlign: "center",
               verticalAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              flexDirection: "column",
             }}
           >
             <Text h3>Upload image</Text>
+            <Text>(Click or Drag/Drop)</Text>
           </Card.Body>
         </Card>
       </label>

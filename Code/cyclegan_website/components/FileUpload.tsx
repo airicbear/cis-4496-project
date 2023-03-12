@@ -1,4 +1,4 @@
-import { Text, Container, Row, Col, Card, Spacer } from "@nextui-org/react";
+import { Col, Container, Row, Spacer, Text } from "@nextui-org/react";
 import ImageInput from "./ImageInput";
 
 const FileUpload = () => {

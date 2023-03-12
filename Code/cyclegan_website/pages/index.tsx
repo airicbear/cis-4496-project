@@ -1,4 +1,4 @@
-import { Container, Input } from "@nextui-org/react";
+import { Container } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppHeader from "../components/AppHeader";

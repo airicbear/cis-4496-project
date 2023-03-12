@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
+import { GitHubIcon } from "./GitHubIcon";
 import { MoonIcon } from "./MoonIcon";
 import { SunIcon } from "./SunIcon";
 
@@ -21,7 +22,7 @@ const AppHeader = () => {
 
   return (
     <Container sm>
-      <Row>
+      <Row align="center">
         <Col>
           <Text h1>
             <Link color="text" href="/">
@@ -29,13 +30,21 @@ const AppHeader = () => {
             </Link>
           </Text>
         </Col>
-        <Col span={2} style={{ padding: "16px" }}>
+        <Col span={1.5} style={{ padding: "16px" }}>
           <Switch
             checked={isDark}
             onChange={handleThemeToggle}
             iconOn={<SunIcon filled />}
             iconOff={<MoonIcon filled />}
           />
+        </Col>
+        <Col span={1}>
+          <Link
+            href="https://github.com/airicbear/cis-4496-project"
+            color="text"
+          >
+            <GitHubIcon filled />
+          </Link>
         </Col>
       </Row>
     </Container>
