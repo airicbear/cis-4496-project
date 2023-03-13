@@ -1,8 +1,8 @@
-import { Container } from "@nextui-org/react";
+import { Container, Spacer } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppHeader from "../components/AppHeader";
-import FileUpload from "../components/FileUpload";
+import ModelCard from "../components/ModelCard";
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +14,9 @@ const Home: NextPage = () => {
 
       <Container>
         <AppHeader />
-        <FileUpload />
+        <ModelCard title="Photo2Monet Generator" type="photo2monet" />
+        <Spacer y={2} />
+        <ModelCard title="Monet2Photo Generator" type="monet2photo" />
       </Container>
     </>
   );

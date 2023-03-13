@@ -3,31 +3,19 @@ import * as tf from "@tensorflow/tfjs";
 import { ChangeEvent } from "react";
 
 interface ImageInputProps {
-  id: number;
   type: string;
 }
 
-const ImageInput = ({ id, type }: ImageInputProps) => {
+const ImageInput = ({ type }: ImageInputProps) => {
   const { theme } = useTheme();
   let model: tf.LayersModel;
 
   const outputPrediction = (reader: FileReader) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
+    const canvas = document.getElementById(type) as HTMLCanvasElement;
     canvas.style.borderRadius = `${theme.radii.lg.value}`;
-    const outputList = document.getElementById("prediction-output");
-    const predictionPair = document.createElement("div");
-    const arrow = document.createElement("p");
-    arrow.textContent = "→";
-    predictionPair.style.display = "inline-flex";
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
-    predictionPair.append(image);
-    predictionPair.append(arrow);
-    predictionPair.append(canvas);
-    outputList.insertBefore(predictionPair, outputList.firstChild);
     image.onload = () => {
       const input = tf.browser
         .fromPixels(image, 3)
@@ -53,11 +41,11 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
   };
 
   const photo2MonetModel = async () => {
-    return await tf.loadLayersModel("/assets/photo2painting/model.json");
+    return await tf.loadLayersModel(`/assets/models/${type}/model.json`);
   };
 
   const monet2PhotoModel = async () => {
-    return await tf.loadLayersModel("/assets/photo2painting/model.json");
+    return await tf.loadLayersModel(`/assets/models/${type}/model.json`);
   };
 
   if (type == "photo2monet") {
@@ -78,7 +66,7 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
 
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    const label = document.getElementById(`label-file-upload-${id}`);
+    const label = document.getElementById(`label-file-upload-${type}`);
     const file = files[0];
     const reader = new FileReader();
     reader.addEventListener(
@@ -98,12 +86,12 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
   };
 
   const setLabelTransparency = function (alpha: number) {
-    const label = document.getElementById(`label-file-upload-${id}`);
+    const label = document.getElementById(`label-file-upload-${type}`);
     label.style.opacity = `${alpha}`;
   };
 
   const setLabelBackgroundColor = function (color: string) {
-    const label = document.getElementById(`label-file-upload-${id}`);
+    const label = document.getElementById(`label-file-upload-${type}`);
     label.style.backgroundColor = `${color}`;
   };
 
@@ -137,7 +125,7 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
     event.stopPropagation();
     event.preventDefault();
     const files = event.dataTransfer.files;
-    const label = document.getElementById(`label-file-upload-${id}`);
+    const label = document.getElementById(`label-file-upload-${type}`);
     const file = files[0];
     const reader = new FileReader();
     reader.addEventListener(
@@ -162,7 +150,7 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
     <form style={{ textAlign: "center" }}>
       <Input
         type="file"
-        id={`input-file-upload-${id}`}
+        id={`input-file-upload-${type}`}
         accept=".jpg, .jpeg, .png"
         onChange={handleChange}
         css={{
@@ -171,7 +159,7 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
       ></Input>
 
       <label
-        htmlFor={`input-file-upload-${id}`}
+        htmlFor={`input-file-upload-${type}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDragEnd={handleDragLeave}
@@ -187,7 +175,7 @@ const ImageInput = ({ id, type }: ImageInputProps) => {
           }}
         >
           <Card.Body
-            id={`label-file-upload-${id}`}
+            id={`label-file-upload-${type}`}
             css={{
               width: "256px",
               height: "256px",
