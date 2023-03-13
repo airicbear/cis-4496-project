@@ -22,14 +22,14 @@ const ModelCard = ({ title, type }: ModelCardProps) => {
         </Col>
       </Row>
       <Row align="center">
-        <Col>
+        <Col css={{ textAlign: "center" }}>
           <ImageInput type={type} />
         </Col>
         <Col span={1}>
           <Text css={{ fontSize: "3.5vw" }}>→</Text>
         </Col>
-        <Col>
-          <canvas id={type}></canvas>
+        <Col css={{ textAlign: "center" }}>
+          <canvas id={type} width={256} height={256}></canvas>
         </Col>
       </Row>
     </Container>

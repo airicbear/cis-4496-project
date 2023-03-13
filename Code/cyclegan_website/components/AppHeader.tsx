@@ -37,7 +37,7 @@ const AppHeader = () => {
             </Link>
           </Text>
         </Col>
-        <Col span={2}>
+        <Col span={3}>
           <Row align="center">
             <Col style={{ padding: "16px" }}>
               <Switch

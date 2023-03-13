@@ -17,6 +17,7 @@ const Home: NextPage = () => {
         <ModelCard title="Photo2Monet Generator" type="photo2monet" />
         <Spacer y={2} />
         <ModelCard title="Monet2Photo Generator" type="monet2photo" />
+        <Spacer y={2} />
       </Container>
     </>
   );

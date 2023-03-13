@@ -25,9 +25,11 @@ const ImageInput = ({ type }: ImageInputProps) => {
 
       try {
         console.log("Predicting output...");
+        console.log(`input = ${input}`);
         const output: tf.Tensor<tf.Rank> = model.predict(
           tf.expandDims(input, 0)
         ) as tf.Tensor<tf.Rank>;
+        console.log(`output = ${output}`);
         const outputTensor = output.mul(127.5).add(127.5).toInt();
         const squeezedOutput = tf.squeeze(outputTensor, [0]).as3D(256, 256, 3);
         const context = canvas.getContext("2d");
@@ -40,25 +42,13 @@ const ImageInput = ({ type }: ImageInputProps) => {
     };
   };
 
-  const photo2MonetModel = async () => {
+  const getModel = async () => {
     return await tf.loadLayersModel(`/assets/models/${type}/model.json`);
   };
 
-  const monet2PhotoModel = async () => {
-    return await tf.loadLayersModel(`/assets/models/${type}/model.json`);
-  };
-
-  if (type == "photo2monet") {
-    photo2MonetModel().then((m: tf.LayersModel) => {
-      model = m;
-    });
-  } else if (type == "monet2photo") {
-    monet2PhotoModel().then((m: tf.LayersModel) => {
-      model = m;
-    });
-  } else {
-    console.error(`Invalid model type ${type}`);
-  }
+  getModel().then((m: tf.LayersModel) => {
+    model = m;
+  });
 
   const handleChange = function (event: ChangeEvent<FormElement>) {
     event.stopPropagation();
