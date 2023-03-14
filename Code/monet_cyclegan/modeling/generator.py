@@ -20,24 +20,24 @@ def generator(output_channels: int = 3) -> tf.keras.Model:
     """
 
     down_stack = [
-        downsample(64, 4, apply_instancenorm=False),
-        downsample(128, 4),
-        downsample(256, 4),
-        downsample(512, 4),
-        downsample(512, 4),
-        downsample(512, 4),
-        downsample(512, 4),
-        downsample(512, 4),
+        downsample(name='downsample_1', filters=64, size=4, apply_instancenorm=False),
+        downsample(name='downsample_2', filters=128, size=4),
+        downsample(name='downsample_3', filters=256, size=4),
+        downsample(name='downsample_4', filters=512, size=4),
+        downsample(name='downsample_5', filters=512, size=4),
+        downsample(name='downsample_6', filters=512, size=4),
+        downsample(name='downsample_7', filters=512, size=4),
+        downsample(name='downsample_8', filters=512, size=4),
     ]
 
     up_stack = [
-        upsample(512, 4, apply_dropout=True),
-        upsample(512, 4, apply_dropout=True),
-        upsample(512, 4, apply_dropout=True),
-        upsample(512, 4),
-        upsample(256, 4),
-        upsample(128, 4),
-        upsample(64, 4),
+        upsample(name='upsample_1', filters=512, size=4, apply_dropout=True),
+        upsample(name='upsample_2', filters=512, size=4, apply_dropout=True),
+        upsample(name='upsample_3', filters=512, size=4, apply_dropout=True),
+        upsample(name='upsample_4', filters=512, size=4),
+        upsample(name='upsample_5', filters=256, size=4),
+        upsample(name='upsample_6', filters=128, size=4),
+        upsample(name='upsample_7', filters=64, size=4),
     ]
 
     initializer = tf.random_normal_initializer(0., 0.02)

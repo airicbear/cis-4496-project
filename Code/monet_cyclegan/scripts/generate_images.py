@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from ..consts import PHOTO_TFREC_DIR, BUILD_DIR, EPOCHS, PHOTO2PAINTING_FILENAME, PAINTING2PHOTO_FILENAME
+from ..consts import PHOTO_TFREC_DIR, BUILD_DIR, EPOCHS, PHOTO2PAINTING_WEIGHTS, PAINTING2PHOTO_WEIGHTS
 from ..deployment.generate_images import generate_image, generate_images
 from ..deployment.load_model import load_cyclegan_model
 from ..utils import configure_logger, log_args
@@ -31,6 +31,8 @@ def main() -> None:
     args = parser.parse_args()
 
     epoch_dir = f'{args.build_dir}/{args.artist}/epoch{args.epochs}'
+    weights_dir = f'{epoch_dir}/weights'
+    saved_model_weights_dir = f'{weights_dir}/SavedModel'
 
     if args.log_dir:
         log_dir = args.log_dir
@@ -43,12 +45,12 @@ def main() -> None:
     if args.photo2painting:
         photo2painting_path = args.photo2painting
     else:
-        photo2painting_path = f'{epoch_dir}/{PHOTO2PAINTING_FILENAME}'
+        photo2painting_path = f'{saved_model_weights_dir}/{PHOTO2PAINTING_WEIGHTS}'
 
     if args.painting2photo:
         painting2photo_path = args.painting2photo
     else:
-        painting2photo_path = f'{epoch_dir}/{PAINTING2PHOTO_FILENAME}'
+        painting2photo_path = f'{saved_model_weights_dir}/{PAINTING2PHOTO_WEIGHTS}'
 
     model = load_cyclegan_model(
         photo2painting_generator_weights_path=photo2painting_path,
