@@ -19,15 +19,39 @@ def load_cyclegan_model(
         The reconstructed CycleGAN model.
     """
 
-    if not os.path.isdir(photo2painting_generator_weights_path):
-        raise FileNotFoundError(f'Could not find {photo2painting_generator_weights_path}.')
-
-    if not os.path.isdir(painting2photo_generator_weights_path):
-        raise FileNotFoundError(f'Could not find {painting2photo_generator_weights_path}.')
-
     cyclegan_model = create_cyclegan_model()
 
-    cyclegan_model.painting_generator = tf.keras.models.load_model(photo2painting_generator_weights_path)
-    cyclegan_model.photo_generator = tf.keras.models.load_model(painting2photo_generator_weights_path)
+    photo_generator_path_tokens = os.path.splitext(painting2photo_generator_weights_path)
+    painting_generator_path_tokens = os.path.splitext(photo2painting_generator_weights_path)
+
+    if len(photo_generator_path_tokens) == 2:
+        if not os.path.isfile(painting2photo_generator_weights_path):
+            raise FileNotFoundError(f'Could not find {painting2photo_generator_weights_path}.')
+
+        cyclegan_model.photo_generator.load_weights(painting2photo_generator_weights_path)
+
+    elif len(photo_generator_path_tokens) == 1:
+        if not os.path.isdir(painting2photo_generator_weights_path):
+            raise FileNotFoundError(f'Could not find {painting2photo_generator_weights_path}.')
+
+        cyclegan_model.photo_generator = tf.keras.models.load_model(painting2photo_generator_weights_path)
+
+    else:
+        raise IOError(f'Invalid photo generator path: "{painting2photo_generator_weights_path}"')
+
+    if len(painting_generator_path_tokens) == 2:
+        if not os.path.isfile(photo2painting_generator_weights_path):
+            raise FileNotFoundError(f'Could not find {photo2painting_generator_weights_path}.')
+
+        cyclegan_model.painting_generator.load_weights(photo2painting_generator_weights_path)
+
+    elif len(painting_generator_path_tokens) == 1:
+        if not os.path.isdir(photo2painting_generator_weights_path):
+            raise FileNotFoundError(f'Could not find {photo2painting_generator_weights_path}.')
+
+        cyclegan_model.painting_generator = tf.keras.models.load_model(photo2painting_generator_weights_path)
+
+    else:
+        raise IOError(f'Invalid painting generator path: "{photo2painting_generator_weights_path}"')
 
     return cyclegan_model
