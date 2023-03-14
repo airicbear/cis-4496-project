@@ -14,9 +14,9 @@ const Home: NextPage = () => {
 
       <Container>
         <AppHeader />
-        <ModelCard title="Photo2Monet Generator" type="photo2monet" />
+        <ModelCard title="Photo2Monet Generator" type="photo2painting" />
         <Spacer y={2} />
-        <ModelCard title="Monet2Photo Generator" type="monet2photo" />
+        <ModelCard title="Monet2Photo Generator" type="painting2photo" />
         <Spacer y={2} />
       </Container>
     </>

@@ -2,19 +2,17 @@ import argparse
 import logging
 import os
 
-from ..consts import BUILD_DIR, EPOCHS
 from ..utils import configure_logger, log_args
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--painting_dir', type=str)
-    parser.add_argument('--transformed_photos_dir', type=str)
-    parser.add_argument('--epochs', type=int, default=EPOCHS)
-    parser.add_argument('--output', '-o', type=str, default=BUILD_DIR)
+    parser.add_argument('--painting_dir', type=str, required=True)
+    parser.add_argument('--transformed-photos-dir', type=str, required=True)
+    parser.add_argument('--output', '-o', type=str, required=True)
     args = parser.parse_args()
 
-    log_dir = f'{args.output}/epoch{args.epochs}/logs/calculate_fid'
+    log_dir = f'{args.output}/logs/calculate_fid'
 
     configure_logger(log_dir=log_dir)
     log_args(args=args)

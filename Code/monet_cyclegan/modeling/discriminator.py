@@ -23,9 +23,9 @@ def discriminator() -> tf.keras.Model:
     inputs = tf.keras.layers.Input(shape=[256, 256, 3], name='input_image')
 
     x = inputs
-    down1 = downsample(64, 4, False)(x)
-    down2 = downsample(128, 4)(down1)
-    down3 = downsample(256, 4)(down2)
+    down1 = downsample(name='downsample_1', filters=64, size=4, apply_instancenorm=False)(x)
+    down2 = downsample(name='downsample_2', filters=128, size=4)(down1)
+    down3 = downsample(name='downsample_3', filters=256, size=4)(down2)
     zero_pad1 = tf.keras.layers.ZeroPadding2D()(down3)
     conv = tf.keras.layers.Conv2D(512, 4, strides=1, kernel_initializer=initializer, use_bias=False)(zero_pad1)
     norm1 = InstanceNormalization(gamma_initializer=gamma_init)(conv)

@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 import tensorflow as tf
 
 from ..consts import MONET_TFREC_DIR, PHOTO_TFREC_DIR, LOSS_RATE, EPOCHS, BUILD_DIR, \
-    BATCH_SIZE, PHOTO2PAINTING_FILENAME, PAINTING2PHOTO_FILENAME
+    BATCH_SIZE
 from ..data_acquisition.augment import augment_image
 from ..data_acquisition.load_dataset import load_dataset
 from ..modeling.create_model import create_cyclegan_model
@@ -35,8 +35,6 @@ def main() -> None:
     parser.add_argument('--num-painting', type=int, default=-1)
     parser.add_argument('--num-photo', type=int, default=-1)
     parser.add_argument('--steps-per-epoch', type=int, default=None)
-    parser.add_argument('--photo2painting', type=str, default=PHOTO2PAINTING_FILENAME)
-    parser.add_argument('--painting2photo', type=str, default=PAINTING2PHOTO_FILENAME)
     parser.add_argument('--ext', type=str, default='tfrec')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--no-debug', dest='debug', action='store_false')
@@ -47,6 +45,7 @@ def main() -> None:
         tf.data.experimental.enable_debug_mode()
 
     epoch_dir = f'{args.output}/{args.artist}/epoch{args.epochs}'
+    weights_dir = f'{epoch_dir}/weights'
     log_dir = f'{epoch_dir}/logs/train'
 
     configure_logger(log_dir=log_dir)
@@ -87,8 +86,7 @@ def main() -> None:
                 steps_per_epoch=steps_per_epoch)
 
     save_weights(cyclegan_model=model,
-                 painting_generator_path=f'{epoch_dir}/{args.photo2painting}',
-                 photo_generator_path=f'{epoch_dir}/{args.painting2photo}')
+                 weights_dir=weights_dir)
 
 
 if __name__ == '__main__':

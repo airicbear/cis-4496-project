@@ -8,7 +8,7 @@ interface ImageInputProps {
 
 const ImageInput = ({ type }: ImageInputProps) => {
   const { theme } = useTheme();
-  let model: tf.LayersModel;
+  let model: tf.GraphModel;
 
   const outputPrediction = (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
@@ -43,10 +43,10 @@ const ImageInput = ({ type }: ImageInputProps) => {
   };
 
   const getModel = async () => {
-    return await tf.loadLayersModel(`/assets/models/${type}/model.json`);
+    return await tf.loadGraphModel(`/assets/models/${type}/model.json`);
   };
 
-  getModel().then((m: tf.LayersModel) => {
+  getModel().then((m: tf.GraphModel) => {
     model = m;
   });
 
