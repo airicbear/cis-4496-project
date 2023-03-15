@@ -96,6 +96,20 @@ def augment_image(image: tf.Tensor) -> tf.Tensor:
 
     return image
 
+def augment_image_without_crop(image: tf.Tensor) -> tf.Tensor:
+    """Randomly crop, resize, rotate and/or flip an image.
+
+    Args:
+        image: The image to be augmented.
+
+    Returns:
+        The augmented image.
+    """
+    image = random_rotate(image)
+    image = random_flip(image)
+
+    return image
+
 
 def save_augmented_image(input_path: str, output_dir: str) -> None:
     """Save an augmented image to a file.
@@ -114,6 +128,30 @@ def save_augmented_image(input_path: str, output_dir: str) -> None:
                        channels=CHANNELS)[0]
 
     processed_image = augment_image(image=image)
+    processed_image = tensor_to_image(image=processed_image)
+
+    filename = os.path.basename(input_path)
+
+    save_image(image=processed_image,
+               output_path=f'{output_dir}/augmented-{filename}')
+
+def save_augmented_image_without_crop(input_path: str, output_dir: str) -> None:
+    """Save an augmented image to a file.
+
+    Args:
+        input_path: The path of the original image.
+        output_dir: The directory of the augmented image.
+    """
+
+    if not os.path.isfile(input_path):
+        raise FileNotFoundError(f'Could not find file "{input_path}".')
+
+    image = read_image(path=input_path,
+                       width=IMAGE_SIZE[0],
+                       height=IMAGE_SIZE[1],
+                       channels=CHANNELS)[0]
+
+    processed_image = augment_image_without_crop(image=image)
     processed_image = tensor_to_image(image=processed_image)
 
     filename = os.path.basename(input_path)
