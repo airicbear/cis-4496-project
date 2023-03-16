@@ -1,5 +1,7 @@
 import os
 
+import tensorflow as tf
+
 from .augment import save_augmented_image
 from ..consts import IMAGE_SIZE, CHANNELS
 from ..utils import random_number, read_image, save_image, tensor_to_image
@@ -25,6 +27,14 @@ def add_train_to_test(jpg_train_dir: str,
     ten_percent_of_values = float(number_of_values_in_train_directory) * percent
     ten_percent_rounded = round(ten_percent_of_values)
     indexes_already_used = set()
+
+    filenames = tf.io.gfile.glob(f'{jpg_test_dir}/augmented-*')
+    for file in filenames:
+        os.remove(file)
+
+    filenames = tf.io.gfile.glob(f'{jpg_test_dir}/train-*')
+    for file in filenames:
+        os.remove(file)
 
     while len(indexes_already_used) < ten_percent_rounded:
         random_index_candidate = round(random_number(0, number_of_values_in_train_directory - 1))
@@ -52,3 +62,4 @@ def add_train_to_test(jpg_train_dir: str,
                 save_image(image=image, output_path=output_path)
 
             indexes_already_used.add(random_index_candidate)
+
