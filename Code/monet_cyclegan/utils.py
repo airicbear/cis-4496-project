@@ -13,8 +13,9 @@ import requests
 import tensorflow as tf
 from PIL import Image
 from numpy import uint8, ndarray
+import cv2
 
-from .consts import IMAGE_SIZE, CHANNELS
+from .consts import IMAGE_SIZE, CHANNELS, SIZE
 from .data_acquisition.augment import save_augmented_image_without_crop
 
 logger = logging.getLogger(__name__)
@@ -307,3 +308,43 @@ def ten_percent_for_test(jpg_train_file_path: str, jpg_test_file_path:str) -> No
             picture_path_to_add_and_augment =jpg_train_file_path[random_index_candidate]
             save_augmented_image_without_crop(jpg_train_file_path+picture_path_to_add_and_augment,jpg_test_file_path)
             indexes_already_used.add(random_index_candidate)
+
+def _bytes_feature(value:any) -> any:
+  """Returns a bytes_list from a string / byte
+
+    Args: value - a string/byte
+    """
+  if isinstance(value, type(tf.constant(0))):
+    value = value.numpy() # BytesList won't unpack a string from an EagerTensor.
+  return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+
+def serialize_example(image: str) -> any:
+  """This function works to serialize an image path and returns a binary string
+  Args:
+    image: an image path to a jpg file
+  """
+  feature = {
+      'image': _bytes_feature(image),
+  }
+  example_proto = tf.train.Example(features=tf.train.Features(feature=feature))
+  return example_proto.SerializeToString()
+def generate_TFREC_records(path:str) -> None:
+    """This function takes a path to a list of jpg files and generates TFREC records 
+    This code and the two above functions were gotten from this link https://www.kaggle.com/code/dimitreoliveira/monet-paintings-berkeley-tfrecords-256x256
+    Args:
+        path: a path to a directory that holds jpg files
+    """
+    imgs = os.listdir(path)
+    CT = len(imgs)//SIZE + int(len(imgs)%SIZE!=0)
+    for j in range(CT):
+        print(); print('Writing TFRecord %i of %i...'%(j,CT))
+        CT2 = min(SIZE,len(imgs)-j*SIZE)
+        with tf.io.TFRecordWriter('monet%.2i-%i.tfrec'%(j,CT2)) as writer:
+            for k in range(CT2):
+                img = cv2.imread(path+imgs[SIZE*j+k])
+                img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                img = cv2.imencode('.jpg', img, (cv2.IMWRITE_JPEG_QUALITY, 94))[1].tostring()
+                name = imgs[SIZE*j+k].split('.')[0]
+                example = serialize_example(img)
+                writer.write(example)
+                if k%100==0: print(k,', ',end='')
