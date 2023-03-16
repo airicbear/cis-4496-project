@@ -8,22 +8,23 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
+import cv2
 import numpy as np
 import requests
 import tensorflow as tf
 from PIL import Image
 from numpy import uint8, ndarray
-import cv2
 
 from .consts import IMAGE_SIZE, CHANNELS, SIZE
 
 logger = logging.getLogger(__name__)
-'Helper function to translate tfrec images to jpgs'
+
+
 def decode_image(image: tf.Tensor,
                  width: int,
                  height: int,
                  channels: int) -> tf.Tensor:
-    """Decode a JPEG encoded image to an uint8 `Tensor`.
+    """Decode a JPEG encoded image to a float32 `Tensor`.
 
     Args:
         image: The JPEG encoded image.
@@ -32,7 +33,7 @@ def decode_image(image: tf.Tensor,
         channels: Number of color channels for the decoded image.
 
     Returns:
-        The JPEG image decoded as an uint8 `Tensor`.
+        The JPEG image decoded as a float32 `Tensor`.
     """
 
     image = tf.image.decode_jpeg(image, channels=channels)
@@ -45,7 +46,7 @@ def read_image(path: str,
                width: int,
                height: int,
                channels: int) -> tf.Tensor:
-    """Read and decode an image file to an uint8 `Tensor`
+    """Read and decode an image file to an float32 `Tensor`
 
     Args:
         path: Path of the image.
@@ -54,7 +55,7 @@ def read_image(path: str,
         channels: Number of color channels for the decoded image.
 
     Returns:
-        The image decoded as an uint8 `Tensor`.
+        The image decoded as an float32 `Tensor`.
     """
 
     image = tf.io.read_file(path)
@@ -67,7 +68,7 @@ def read_tfrecord(example: tf.Tensor,
                   width: int,
                   height: int,
                   channels: int) -> tf.Tensor:
-    """Decode a TFREC encoded image to an uint8 `Tensor`.
+    """Decode a TFREC encoded image to an float32 `Tensor`.
 
     Args:
         example: The TFREC encoded image.
@@ -76,13 +77,11 @@ def read_tfrecord(example: tf.Tensor,
         channels: Number of color channels for the decoded image.
 
     Returns:
-        The TFREC image decoded as an uint8 `Tensor`.
+        The TFREC image decoded as an float32 `Tensor`.
     """
 
     tfrecord_format = {
-        'image_name': tf.io.FixedLenFeature([], tf.string),
         'image': tf.io.FixedLenFeature([], tf.string),
-        'target': tf.io.FixedLenFeature([], tf.string)
     }
     example = tf.io.parse_single_example(example, tfrecord_format)
     image = decode_image(image=example['image'],
@@ -287,43 +286,53 @@ def log_args(args: Namespace) -> None:
         logging.info(f'{arg}: {value}')
 
 
+def _bytes_feature(value: any) -> any:
+    """Returns a bytes_list from a string / byte
 
-def _bytes_feature(value:any) -> any:
-  """Returns a bytes_list from a string / byte
+      Args: value - a string/byte
+      """
 
-    Args: value - a string/byte
-    """
-  if isinstance(value, type(tf.constant(0))):
-    value = value.numpy() # BytesList won't unpack a string from an EagerTensor.
-  return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+    if isinstance(value, type(tf.constant(0))):
+        value = value.numpy()  # BytesList won't unpack a string from an EagerTensor.
+    return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+
 
 def serialize_example(image: str) -> any:
-  """This function works to serialize an image path and returns a binary string
-  Args:
-    image: an image path to a jpg file
-  """
-  feature = {
-      'image': _bytes_feature(image),
-  }
-  example_proto = tf.train.Example(features=tf.train.Features(feature=feature))
-  return example_proto.SerializeToString()
-def generate_TFREC_records(path:str) -> None:
-    """This function takes a path to a list of jpg files and generates TFREC records 
-    This code and the two above functions were gotten from this link https://www.kaggle.com/code/dimitreoliveira/monet-paintings-berkeley-tfrecords-256x256
+    """This function works to serialize an image path and returns a binary string
     Args:
-        path: a path to a directory that holds jpg files
+      image: an image path to a jpg file
     """
+
+    feature = {
+        'image': _bytes_feature(image),
+    }
+    example_proto = tf.train.Example(features=tf.train.Features(feature=feature))
+    return example_proto.SerializeToString()
+
+
+def generate_tfrec_records(path: str) -> None:
+    """This function takes a path to a list of jpg files and generates TFREC records
+
+    This code and the two above functions were gotten from this link
+    https://www.kaggle.com/code/dimitreoliveira/monet-paintings-berkeley-tfrecords-256x256
+
+    Args:
+        path: A path to a directory that holds JPG files.
+    """
+
     imgs = os.listdir(path)
-    CT = len(imgs)//SIZE + int(len(imgs)%SIZE!=0)
+    CT = len(imgs) // SIZE + int(len(imgs) % SIZE != 0)
     for j in range(CT):
-        print(); print('Writing TFRecord %i of %i...'%(j,CT))
-        CT2 = min(SIZE,len(imgs)-j*SIZE)
-        with tf.io.TFRecordWriter('monet%.2i-%i.tfrec'%(j,CT2)) as writer:
+        print()
+        print('Writing TFRecord %i of %i...' % (j, CT))
+        CT2 = min(SIZE, len(imgs) - j * SIZE)
+        with tf.io.TFRecordWriter('monet%.2i-%i.tfrec' % (j, CT2)) as writer:
             for k in range(CT2):
-                img = cv2.imread(path+imgs[SIZE*j+k])
+                img = cv2.imread(path + imgs[SIZE * j + k])
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 img = cv2.imencode('.jpg', img, (cv2.IMWRITE_JPEG_QUALITY, 94))[1].tostring()
-                name = imgs[SIZE*j+k].split('.')[0]
+                name = imgs[SIZE * j + k].split('.')[0]
                 example = serialize_example(img)
                 writer.write(example)
-                if k%100==0: print(k,', ',end='')
+                if k % 100 == 0:
+                    print(k, ', ', end='')
