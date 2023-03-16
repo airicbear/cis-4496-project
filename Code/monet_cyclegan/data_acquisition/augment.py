@@ -80,29 +80,47 @@ def random_flip(image: tf.Tensor) -> tf.Tensor:
     return image
 
 
-def augment_image(image: tf.Tensor) -> tf.Tensor:
+def augment_image(image: tf.Tensor,
+                  apply_crop: bool = True,
+                  apply_rotation: bool = True,
+                  apply_flip: bool = True) -> tf.Tensor:
     """Randomly crop, resize, rotate and/or flip an image.
 
     Args:
         image: The image to be augmented.
+        apply_crop: Apply crop image augmentation if True.
+        apply_rotation: Apply rotation image augmentation if True.
+        apply_flip: Apply flip image augmentation if True.
 
     Returns:
         The augmented image.
     """
 
-    image = random_crop(image, width=IMAGE_SIZE[0], height=IMAGE_SIZE[1], channels=CHANNELS)
-    image = random_rotate(image)
-    image = random_flip(image)
+    if apply_crop:
+        image = random_crop(image, width=IMAGE_SIZE[0], height=IMAGE_SIZE[1], channels=CHANNELS)
+
+    if apply_rotation:
+        image = random_rotate(image)
+
+    if apply_flip:
+        image = random_flip(image)
 
     return image
 
 
-def save_augmented_image(input_path: str, output_dir: str) -> None:
+def save_augmented_image(input_path: str,
+                         output_dir: str,
+                         apply_crop: bool = True,
+                         apply_rotation: bool = True,
+                         apply_flip: bool = True) -> None:
     """Save an augmented image to a file.
 
     Args:
         input_path: The path of the original image.
         output_dir: The directory of the augmented image.
+        apply_crop: Apply crop image augmentation if True.
+        apply_rotation: Apply rotation image augmentation if True.
+        apply_flip: Apply flip image augmentation if True.
     """
 
     if not os.path.isfile(input_path):
@@ -113,7 +131,11 @@ def save_augmented_image(input_path: str, output_dir: str) -> None:
                        height=IMAGE_SIZE[1],
                        channels=CHANNELS)[0]
 
-    processed_image = augment_image(image=image)
+    processed_image = augment_image(image=image,
+                                    apply_crop=apply_crop,
+                                    apply_rotation=apply_rotation,
+                                    apply_flip=apply_flip)
+
     processed_image = tensor_to_image(image=processed_image)
 
     filename = os.path.basename(input_path)
@@ -127,7 +149,10 @@ def save_augmented_images(input_dir: str,
                           input_ext: str,
                           sample_size: int,
                           randomize: bool,
-                          with_original: bool) -> None:
+                          with_original: bool,
+                          apply_crop: bool = True,
+                          apply_rotation: bool = True,
+                          apply_flip: bool = True) -> None:
     """Save a folder of augmented images.
 
     Args:
@@ -137,6 +162,9 @@ def save_augmented_images(input_dir: str,
         sample_size: The sample size of the images.
         randomize: Shuffle the first 2048 images before sampling if True.
         with_original: Save the images with the original images in a separate directory.
+        apply_crop: Apply crop image augmentation if True.
+        apply_rotation: Apply rotation image augmentation if True.
+        apply_flip: Apply flip image augmentation if True.
     """
 
     if not os.path.isdir(input_dir):
@@ -155,7 +183,11 @@ def save_augmented_images(input_dir: str,
         images = images.batch(1)
 
         for i, image in enumerate(images):
-            processed_image = augment_image(image[0])
+            processed_image = augment_image(image[0],
+                                            apply_crop=apply_crop,
+                                            apply_rotation=apply_rotation,
+                                            apply_flip=apply_flip)
+
             processed_image = tensor_to_image(processed_image)
 
             save_image(image=processed_image,
@@ -175,7 +207,11 @@ def save_augmented_images(input_dir: str,
                                height=IMAGE_SIZE[1],
                                channels=CHANNELS)[0]
 
-            processed_image = augment_image(image)
+            processed_image = augment_image(image,
+                                            apply_crop=apply_crop,
+                                            apply_rotation=apply_rotation,
+                                            apply_flip=apply_flip)
+
             processed_image = tensor_to_image(processed_image)
 
             filename = os.path.basename(filename)

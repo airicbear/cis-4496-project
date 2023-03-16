@@ -20,6 +20,7 @@ dependencies:
       - scipy
       - seaborn
       - pytorch-fid
+      - opencv-python
 
       # For TensorFlow.js, use pip install tensorflowjs --no-deps
       - tensorflow_hub
