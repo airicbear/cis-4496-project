@@ -6,7 +6,6 @@ from ..utils import configure_logger, log_args
 
 
 def main():
-    'Change so we are able to specify the dataset'
     parser = ArgumentParser()
     parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
     args = parser.parse_args()

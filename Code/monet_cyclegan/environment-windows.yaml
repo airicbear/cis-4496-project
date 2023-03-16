@@ -17,3 +17,4 @@ dependencies:
       - scipy
       - seaborn
       - pytorch-fid
+      - opencv-python
