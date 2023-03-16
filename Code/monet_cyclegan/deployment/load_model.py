@@ -21,16 +21,16 @@ def load_cyclegan_model(
 
     cyclegan_model = create_cyclegan_model()
 
-    photo_generator_path_tokens = os.path.splitext(painting2photo_generator_weights_path)
-    painting_generator_path_tokens = os.path.splitext(photo2painting_generator_weights_path)
+    photo_generator_ext = os.path.splitext(painting2photo_generator_weights_path)[1]
+    painting_generator_ext = os.path.splitext(photo2painting_generator_weights_path)[1]
 
-    if len(photo_generator_path_tokens) == 2:
+    if photo_generator_ext:
         if not os.path.isfile(painting2photo_generator_weights_path):
             raise FileNotFoundError(f'Could not find {painting2photo_generator_weights_path}.')
 
         cyclegan_model.photo_generator.load_weights(painting2photo_generator_weights_path)
 
-    elif len(photo_generator_path_tokens) == 1:
+    elif not photo_generator_ext:
         if not os.path.isdir(painting2photo_generator_weights_path):
             raise FileNotFoundError(f'Could not find {painting2photo_generator_weights_path}.')
 
@@ -39,13 +39,13 @@ def load_cyclegan_model(
     else:
         raise IOError(f'Invalid photo generator path: "{painting2photo_generator_weights_path}"')
 
-    if len(painting_generator_path_tokens) == 2:
+    if painting_generator_ext:
         if not os.path.isfile(photo2painting_generator_weights_path):
             raise FileNotFoundError(f'Could not find {photo2painting_generator_weights_path}.')
 
         cyclegan_model.painting_generator.load_weights(photo2painting_generator_weights_path)
 
-    elif len(painting_generator_path_tokens) == 1:
+    elif not painting_generator_ext:
         if not os.path.isdir(photo2painting_generator_weights_path):
             raise FileNotFoundError(f'Could not find {photo2painting_generator_weights_path}.')
 
