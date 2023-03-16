@@ -13,8 +13,8 @@ PHOTO_TFREC_DIR = f'{DATA_PATH}/photo_tfrec'
 'Change Kaggle Dataset URL to incorporate additional data'
 KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
-MONET_GENERATOR_WEIGHT_FILENAME = 'photo2monet.h5'
-PHOTO_GENERATOR_WEIGHT_FILENAME = 'monet2photo.h5'
+PHOTO2PAINTING_WEIGHTS = 'photo2painting'
+PAINTING2PHOTO_WEIGHTS = 'painting2photo'
 LOSS_RATE = 2e-4
 EPOCHS = 1
 BUILD_DIR = './build'
