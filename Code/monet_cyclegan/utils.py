@@ -286,10 +286,11 @@ def log_args(args: Namespace) -> None:
         logging.info(f'{arg}: {value}')
 
 
-def _bytes_feature(value: any) -> any:
+def _bytes_feature(value: bytes) -> tf.train.Feature:
     """Returns a bytes_list from a string / byte
 
-      Args: value - a string/byte
+      Args:
+          value - A string/byte.
       """
 
     if isinstance(value, type(tf.constant(0))):
@@ -299,8 +300,9 @@ def _bytes_feature(value: any) -> any:
 
 def serialize_example(image: str) -> any:
     """This function works to serialize an image path and returns a binary string
+
     Args:
-      image: an image path to a jpg file
+      image: An image path to a JPG file.
     """
 
     feature = {
@@ -310,29 +312,37 @@ def serialize_example(image: str) -> any:
     return example_proto.SerializeToString()
 
 
-def generate_tfrec_records(path: str) -> None:
+def generate_tfrec_records(input_dir: str,
+                           output_dir: str,
+                           artist: str,
+                           ext: str) -> None:
     """This function takes a path to a list of jpg files and generates TFREC records
 
     This code and the two above functions were gotten from this link
     https://www.kaggle.com/code/dimitreoliveira/monet-paintings-berkeley-tfrecords-256x256
 
     Args:
-        path: A path to a directory that holds JPG files.
+        input_dir: A path to a directory that holds JPG files.
+        output_dir: Path to the output directory.
+        artist: Name of the artist.
+        ext: File extension of the images.
     """
 
-    imgs = os.listdir(path)
+    imgs = tf.io.gfile.glob(f'{input_dir}/*.{ext}')
+
     CT = len(imgs) // SIZE + int(len(imgs) % SIZE != 0)
+
+    make_directory(output_dir)
+
     for j in range(CT):
         print()
         print('Writing TFRecord %i of %i...' % (j, CT))
         CT2 = min(SIZE, len(imgs) - j * SIZE)
-        with tf.io.TFRecordWriter('monet%.2i-%i.tfrec' % (j, CT2)) as writer:
+        with tf.io.TFRecordWriter(f'{output_dir}/{artist}{j:02d}-{CT2}.tfrec') as writer:
             for k in range(CT2):
-                img = cv2.imread(path + imgs[SIZE * j + k])
+                img = cv2.imread(f'{imgs[SIZE * j + k]}')
+                print(f"cv2.imread({imgs[SIZE * j + k]})")
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 img = cv2.imencode('.jpg', img, (cv2.IMWRITE_JPEG_QUALITY, 94))[1].tostring()
-                name = imgs[SIZE * j + k].split('.')[0]
                 example = serialize_example(img)
                 writer.write(example)
-                if k % 100 == 0:
-                    print(k, ', ', end='')
