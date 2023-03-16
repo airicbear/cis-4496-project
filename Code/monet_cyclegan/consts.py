@@ -10,7 +10,6 @@ CHANNELS = 3
 DATA_PATH = '../Sample_Data/Raw/Small_Dataset'
 MONET_TFREC_DIR = f'{DATA_PATH}/monet_tfrec'
 PHOTO_TFREC_DIR = f'{DATA_PATH}/photo_tfrec'
-'Change Kaggle Dataset URL to incorporate additional data'
 KAGGLE_DATASET_URL = 'https://github.com/airicbear/cis-4496-project/releases/download/kaggle-dataset/kaggle-dataset.zip'
 KAGGLE_DATASET_PATH = '../Sample_Data/Raw/Kaggle_Dataset'
 PHOTO2PAINTING_WEIGHTS = 'photo2painting'
