@@ -80,43 +80,31 @@ def random_flip(image: tf.Tensor) -> tf.Tensor:
     return image
 
 
-def augment_image(image: tf.Tensor) -> tf.Tensor:
+def augment_image(image: tf.Tensor,crop: bool) -> tf.Tensor:
     """Randomly crop, resize, rotate and/or flip an image.
 
     Args:
         image: The image to be augmented.
+        crop: Boolean that indicates whether the image should be cropped when augmented
 
     Returns:
         The augmented image.
     """
 
-    image = random_crop(image, width=IMAGE_SIZE[0], height=IMAGE_SIZE[1], channels=CHANNELS)
+    if crop==True:
+        image = random_crop(image, width=IMAGE_SIZE[0], height=IMAGE_SIZE[1], channels=CHANNELS)
     image = random_rotate(image)
     image = random_flip(image)
 
     return image
 
-def augment_image_without_crop(image: tf.Tensor) -> tf.Tensor:
-    """Randomly crop, resize, rotate and/or flip an image.
-
-    Args:
-        image: The image to be augmented.
-
-    Returns:
-        The augmented image.
-    """
-    image = random_rotate(image)
-    image = random_flip(image)
-
-    return image
-
-
-def save_augmented_image(input_path: str, output_dir: str) -> None:
+def save_augmented_image(input_path: str, output_dir: str,crop: bool) -> None:
     """Save an augmented image to a file.
 
     Args:
         input_path: The path of the original image.
         output_dir: The directory of the augmented image.
+        crop: Boolean that indicates whether the image should undergo cropping
     """
 
     if not os.path.isfile(input_path):
@@ -127,31 +115,7 @@ def save_augmented_image(input_path: str, output_dir: str) -> None:
                        height=IMAGE_SIZE[1],
                        channels=CHANNELS)[0]
 
-    processed_image = augment_image(image=image)
-    processed_image = tensor_to_image(image=processed_image)
-
-    filename = os.path.basename(input_path)
-
-    save_image(image=processed_image,
-               output_path=f'{output_dir}/augmented-{filename}')
-
-def save_augmented_image_without_crop(input_path: str, output_dir: str) -> None:
-    """Save an augmented image to a file.
-
-    Args:
-        input_path: The path of the original image.
-        output_dir: The directory of the augmented image.
-    """
-
-    if not os.path.isfile(input_path):
-        raise FileNotFoundError(f'Could not find file "{input_path}".')
-
-    image = read_image(path=input_path,
-                       width=IMAGE_SIZE[0],
-                       height=IMAGE_SIZE[1],
-                       channels=CHANNELS)[0]
-
-    processed_image = augment_image_without_crop(image=image)
+    processed_image = augment_image(image=image,crop=crop)
     processed_image = tensor_to_image(image=processed_image)
 
     filename = os.path.basename(input_path)
@@ -220,3 +184,24 @@ def save_augmented_images(input_dir: str,
 
             save_image(image=processed_image,
                        output_path=f'{input_dir}-augmented/augmented-{filename}')
+def ten_percent_for_test(jpg_train_file_path: str, jpg_test_file_path:str) -> None:
+    """This function parses a file path to a train dataset that contains jpg files, alters 10% of them and then adds them to the test data set
+
+    Args:
+        jpg_train_file_path: file path for the existing train file
+        jpg_test_file_path: file path for the existing test file
+    """
+    if os.path.exists(jpg_train_file_path)!=True:
+        return "Error: The train file path does not exist"
+    if os.path.exists(jpg_test_file_path)!=True:
+        return "Error: The test file path does not exist"
+    number_of_values_in_train_directory = len(os.listdir(jpg_train_file_path))
+    ten_percent_of_values = float(number_of_values_in_train_directory)/10.0
+    ten_percent_rounded = round(ten_percent_of_values)
+    indexes_already_used = set()
+    while len(indexes_already_used) < ten_percent_rounded:
+        random_index_candidate = round(random_number(0,number_of_values_in_train_directory-1))
+        if random_index_candidate not in indexes_already_used:
+            picture_path_to_add_and_augment =jpg_train_file_path[random_index_candidate]
+            save_augmented_image(jpg_train_file_path+picture_path_to_add_and_augment,jpg_test_file_path,False)
+            indexes_already_used.add(random_index_candidate)

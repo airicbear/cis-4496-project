@@ -16,7 +16,6 @@ from numpy import uint8, ndarray
 import cv2
 
 from .consts import IMAGE_SIZE, CHANNELS, SIZE
-from .data_acquisition.augment import save_augmented_image_without_crop
 
 logger = logging.getLogger(__name__)
 'Helper function to translate tfrec images to jpgs'
@@ -287,27 +286,7 @@ def log_args(args: Namespace) -> None:
     for arg, value in sorted(vars(args).items()):
         logging.info(f'{arg}: {value}')
 
-def ten_percent_for_test(jpg_train_file_path: str, jpg_test_file_path:str) -> None:
-    """This function parses a file path to a train dataset that contains jpg files, alters 10% of them and then adds them to the test data set
 
-    Args:
-        jpg_train_file_path: file path for the existing train file
-        jpg_test_file_path: file path for the existing test file
-    """
-    if os.path.exists(jpg_train_file_path)!=True:
-        return "Error: The train file path does not exist"
-    if os.path.exists(jpg_test_file_path)!=True:
-        return "Error: The test file path does not exist"
-    number_of_values_in_train_directory = len(os.listdir(jpg_train_file_path))
-    ten_percent_of_values = float(number_of_values_in_train_directory)/10.0
-    ten_percent_rounded = round(ten_percent_of_values)
-    indexes_already_used = set()
-    while len(indexes_already_used) < ten_percent_rounded:
-        random_index_candidate = round(random_number(0,number_of_values_in_train_directory-1))
-        if random_index_candidate not in indexes_already_used:
-            picture_path_to_add_and_augment =jpg_train_file_path[random_index_candidate]
-            save_augmented_image_without_crop(jpg_train_file_path+picture_path_to_add_and_augment,jpg_test_file_path)
-            indexes_already_used.add(random_index_candidate)
 
 def _bytes_feature(value:any) -> any:
   """Returns a bytes_list from a string / byte
