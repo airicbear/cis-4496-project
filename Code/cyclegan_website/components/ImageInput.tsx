@@ -21,7 +21,8 @@ const ImageInput = ({ type }: ImageInputProps) => {
         .fromPixels(image, 3)
         .toFloat()
         .mul(1 / 127.5)
-        .sub(1);
+        .sub(1)
+        .resizeBilinear([256, 256]);
 
       try {
         console.log("Predicting output...");
@@ -63,7 +64,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
       "load",
       () => {
         label.style.backgroundImage = `url(${reader.result})`;
-        label.style.backgroundSize = "cover";
+        label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
         outputPrediction(reader);
@@ -122,7 +123,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
       "load",
       () => {
         label.style.backgroundImage = `url(${reader.result})`;
-        label.style.backgroundSize = "cover";
+        label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
         outputPrediction(reader);
