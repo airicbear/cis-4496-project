@@ -14,7 +14,8 @@ def discriminator() -> tf.keras.Model:
     Next, the outputs are created from this with another 2D Convolutional Neural Network with stride 1.
     Finally, the Discriminator model is created and returned with the input and outputs as parameters.
 
-    :return: Discriminator model with the inputs and outputs as parameters
+    Returns:
+        A discriminator for the CycleGAN.
     """
 
     initializer = tf.random_normal_initializer(0., 0.02)

@@ -16,7 +16,8 @@ def train_model(cyclegan_model: CycleGan,
                 loss_rate: float,
                 train_dataset: tf.data.Dataset,
                 epochs: int,
-                steps_per_epoch: int) -> None:
+                steps_per_epoch: int,
+                tensorboard_callback: tf.keras.callbacks.Callback) -> None:
     """Train a given CycleGAN model.
 
     Args:
@@ -25,12 +26,19 @@ def train_model(cyclegan_model: CycleGan,
         train_dataset: The data to be used for training.
         epochs: The number of epochs to train the model for.
         steps_per_epoch: The number of steps per epoch.
+        tensorboard_callback: Callback for TensorBoard.
     """
 
     cyclegan_compile_with_loss_rate(cyclegan_model=cyclegan_model, loss_rate=loss_rate)
 
     logger.info(f'Fitting model using {epochs} epochs and {steps_per_epoch} steps per epoch.')
-    cyclegan_model.fit(train_dataset, epochs=epochs, steps_per_epoch=steps_per_epoch)
+
+    tf.config.run_functions_eagerly(True)
+    cyclegan_model.fit(train_dataset,
+                       epochs=epochs,
+                       steps_per_epoch=steps_per_epoch,
+                       callbacks=[tensorboard_callback])
+
     logger.info(f'Finished fitting model.')
 
 

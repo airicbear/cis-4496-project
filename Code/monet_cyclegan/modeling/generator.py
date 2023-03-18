@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 import tensorflow as tf
 
@@ -10,13 +10,13 @@ def generator(output_channels: int = 3) -> tf.keras.Model:
     The Generator applies an encoder-decoder architecture that down-samples the image and then decodes the image
     through various transpose convolutions. It is inspired by a "U-Net" architecture for image generation,
     which down-samples an image and then applies up-sampling.
-    However, it keeps the information from the old images through the residual blocks (the Concatenate function).
+    However, it keeps the information from the old images through the residual blocks (the Concatenate layer).
 
     Args:
-        output_channels: Default of 3 output channels.
+        output_channels: Number of output channels (default: 3).
 
     Returns:
-        Generator model with the inputs (inputs) and outputs (x) as parameters.
+        A generator for the CycleGAN.
     """
 
     down_stack = [
