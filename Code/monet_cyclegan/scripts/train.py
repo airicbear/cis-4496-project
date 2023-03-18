@@ -1,5 +1,6 @@
 import logging
 from argparse import ArgumentParser
+from datetime import datetime
 
 import tensorflow as tf
 
@@ -47,6 +48,9 @@ def main() -> None:
     epoch_dir = f'{args.output}/{args.artist}/epoch{args.epochs}'
     weights_dir = f'{epoch_dir}/weights'
     log_dir = f'{epoch_dir}/logs/train'
+    fit_log_dir = f'{epoch_dir}/logs/fit/{datetime.now().strftime("%Y%m%d-%H%M%S")}'
+
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=fit_log_dir)
 
     configure_logger(log_dir=log_dir)
     log_args(args=args)
@@ -83,7 +87,8 @@ def main() -> None:
                 loss_rate=args.loss_rate,
                 train_dataset=dataset,
                 epochs=args.epochs,
-                steps_per_epoch=steps_per_epoch)
+                steps_per_epoch=steps_per_epoch,
+                tensorboard_callback=tensorboard_callback)
 
     save_weights(cyclegan_model=model,
                  weights_dir=weights_dir)

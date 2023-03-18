@@ -3,8 +3,8 @@ import tensorflow as tf
 from ..consts import strategy
 
 with strategy.scope():
-    def discriminator_loss(real: tf.keras.Model,
-                           generated: tf.keras.Model,
+    def discriminator_loss(real: tf.Tensor,
+                           generated: tf.Tensor,
                            label_smoothing: float = 0.3) -> tf.Tensor:
         """
         Sub-function for the discriminator loss, which is the loss metric for the discriminator models.
@@ -30,7 +30,7 @@ with strategy.scope():
         return total_discriminator_loss * 0.5
 
 
-    def generator_loss(generated: tf.keras.Model) -> tf.Tensor:
+    def generator_loss(generated: tf.Tensor) -> tf.Tensor:
         """
         Sub-function for the generator loss, which is the loss metric for the generator models.
 

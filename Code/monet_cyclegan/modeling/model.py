@@ -36,8 +36,8 @@ class CycleGan(tf.keras.Model, ABC):
         self.photo_generator_optimizer: tf.keras.optimizers.Optimizer = None
         self.painting_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
         self.photo_discriminator_optimizer: tf.keras.optimizers.Optimizer = None
-        self.generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor] = None
-        self.discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor] = None
+        self.generator_loss_fn: Callable[[tf.Tensor], tf.Tensor] = None
+        self.discriminator_loss_fn: Callable[[tf.Tensor, tf.Tensor], tf.Tensor] = None
         self.cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor] = None
         self.identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor] = None
 
@@ -46,8 +46,8 @@ class CycleGan(tf.keras.Model, ABC):
                 photo_generator_optimizer: tf.keras.optimizers.Optimizer,
                 painting_discriminator_optimizer: tf.keras.optimizers.Optimizer,
                 photo_discriminator_optimizer: tf.keras.optimizers.Optimizer,
-                generator_loss_fn: Callable[[tf.keras.Model], tf.Tensor],
-                discriminator_loss_fn: Callable[[tf.keras.Model, tf.keras.Model], tf.Tensor],
+                generator_loss_fn: Callable[[tf.Tensor], tf.Tensor],
+                discriminator_loss_fn: Callable[[tf.Tensor, tf.Tensor], tf.Tensor],
                 cycle_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor],
                 identity_loss_fn: Callable[[tf.Tensor, tf.Tensor, tf.Tensor], tf.Tensor]):
         """Compiler function that sets the optimizers and the loss functions of the CycleGAN.
@@ -89,20 +89,20 @@ class CycleGan(tf.keras.Model, ABC):
         real_painting, real_photo = batch_data
 
         with tf.GradientTape(persistent=True) as tape:
-            fake_painting = self.painting_generator(real_photo, training=True)
-            cycled_photo = self.photo_generator(fake_painting, training=True)
+            fake_painting: tf.Tensor = self.painting_generator(real_photo, training=True)
+            cycled_photo: tf.Tensor = self.photo_generator(fake_painting, training=True)
 
-            fake_photo = self.photo_generator(real_painting, training=True)
-            cycled_painting = self.painting_generator(fake_photo, training=True)
+            fake_photo: tf.Tensor = self.photo_generator(real_painting, training=True)
+            cycled_painting: tf.Tensor = self.painting_generator(fake_photo, training=True)
 
-            same_painting = self.painting_generator(real_painting, training=True)
-            same_photo = self.photo_generator(real_photo, training=True)
+            same_painting: tf.Tensor = self.painting_generator(real_painting, training=True)
+            same_photo: tf.Tensor = self.photo_generator(real_photo, training=True)
 
-            discriminator_real_painting = self.painting_discriminator(real_painting, training=True)
-            discriminator_real_photo = self.photo_discriminator(real_photo, training=True)
+            discriminator_real_painting: tf.Tensor = self.painting_discriminator(real_painting, training=True)
+            discriminator_real_photo: tf.Tensor = self.photo_discriminator(real_photo, training=True)
 
-            discriminator_fake_painting = self.painting_discriminator(fake_painting, training=True)
-            discriminator_fake_photo = self.photo_discriminator(fake_photo, training=True)
+            discriminator_fake_painting: tf.Tensor = self.painting_discriminator(fake_painting, training=True)
+            discriminator_fake_photo: tf.Tensor = self.photo_discriminator(fake_photo, training=True)
 
             painting_generator_loss = self.generator_loss_fn(discriminator_fake_painting)
             photo_generator_loss = self.generator_loss_fn(discriminator_fake_photo)
@@ -123,7 +123,8 @@ class CycleGan(tf.keras.Model, ABC):
 
         painting_generator_gradients = tape.gradient(total_painting_generator_loss,
                                                      self.painting_generator.trainable_variables)
-        photo_generator_gradients = tape.gradient(total_photo_generator_loss, self.photo_generator.trainable_variables)
+        photo_generator_gradients = tape.gradient(total_photo_generator_loss,
+                                                  self.photo_generator.trainable_variables)
 
         painting_discriminator_gradients = tape.gradient(painting_discriminator_loss,
                                                          self.painting_discriminator.trainable_variables)
@@ -140,9 +141,13 @@ class CycleGan(tf.keras.Model, ABC):
         self.photo_discriminator_optimizer.apply_gradients(zip(photo_discriminator_gradients,
                                                                self.photo_discriminator.trainable_variables))
 
-        return {
-            'painting_generator_loss': total_painting_generator_loss,
-            'photo_generator_loss': total_photo_generator_loss,
-            'painting_discriminator_loss': painting_discriminator_loss,
-            'photo_discriminator_loss': photo_discriminator_loss
+        losses = {
+            'painting_generator_loss': tf.reduce_mean(total_painting_generator_loss).numpy(),
+            'photo_generator_loss': tf.reduce_mean(total_photo_generator_loss).numpy(),
+            'painting_discriminator_loss': tf.reduce_mean(painting_discriminator_loss).numpy(),
+            'photo_discriminator_loss': tf.reduce_mean(photo_discriminator_loss).numpy()
         }
+
+        logger.info(f'Losses = {losses}.')
+
+        return losses
