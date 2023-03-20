@@ -43,12 +43,14 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   let model: tf.GraphModel;
 
   const getModel = async () => {
+    console.log("Loading TensorFlow.js model...");
     return await tf.loadGraphModel(modelURL);
   };
 
   if (format == "tfjs") {
     getModel().then((m: tf.GraphModel) => {
       model = m;
+      console.log("Done loading model.");
     });
   }
 
