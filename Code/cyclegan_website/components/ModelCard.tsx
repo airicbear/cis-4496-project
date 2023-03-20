@@ -26,6 +26,7 @@ const ModelCard = ({ title, type }: ModelCardProps) => {
           <ImageInput
             modelURL={"/assets/models/authors/photo2monet.onnx"}
             type={type}
+            format={"onnx"}
           />
         </Col>
         <Col span={1}>

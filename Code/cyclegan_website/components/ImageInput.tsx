@@ -5,6 +5,7 @@ import * as ort from "onnxruntime-web";
 interface ImageInputProps {
   type: string;
   modelURL: string;
+  format: string;
 }
 
 async function createInferenceSession(
@@ -58,9 +59,53 @@ function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
   return canvas.toDataURL("image/jpeg", 1.0);
 }
 
-const ImageInput = ({ type, modelURL }: ImageInputProps) => {
+async function drawOnnxPrediction(
+  canvas: HTMLCanvasElement,
+  image: HTMLImageElement,
+  modelURL: string,
+  sessionOption: ort.InferenceSession.SessionOptions
+) {
+  try {
+    console.log("Converting image to tensor...");
+    const imageTensor: ort.Tensor = await (
+      ort.Tensor as unknown as ort.TensorFactory
+    ).fromImage(imageToDataUri(image, 256, 256), {
+      tensorFormat: "RGB",
+      resizedWidth: 256,
+      resizedHeight: 256,
+    });
+    console.log(imageTensor);
+
+    submitInference(imageTensor, modelURL, sessionOption).then((result) => {
+      const output = result[inferenceSession.outputNames[0]];
+      console.log("Inference complete.");
+      console.log(output);
+
+      console.log("Processing output...");
+      const float32Data = new Float32Array(output.data.length);
+      for (let i = 0; i < output.data.length; i++) {
+        float32Data[i] = output.data[i] * 0.5 + 0.5;
+      }
+      console.log(float32Data);
+
+      const outputTensor = new ort.Tensor(
+        "float32",
+        float32Data,
+        [1, 3, 256, 256]
+      );
+      console.log(outputTensor);
+
+      const imageHTML = outputTensor.toImageData();
+      const context = canvas.getContext("2d");
+      context.putImageData(imageHTML, 0, 0);
+    });
+  } catch (e) {
+    console.error(`Failed to inference ONNX model: ${e}.`);
+  }
+}
+
+const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const { theme } = useTheme();
-  const sessionOption = { executionProviders: ["wasm"] };
 
   const onnxModelPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
@@ -68,43 +113,13 @@ const ImageInput = ({ type, modelURL }: ImageInputProps) => {
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
-    image.onload = async () => {
-      try {
-        console.log("Converting image to tensor...");
-        const imageTensor: ort.Tensor = await (
-          ort.Tensor as unknown as ort.TensorFactory
-        ).fromImage(imageToDataUri(image, 256, 256), {
-          tensorFormat: "RGB",
-          resizedWidth: 256,
-          resizedHeight: 256,
+    image.onload = () => {
+      if (format == "onnx") {
+        drawOnnxPrediction(canvas, image, modelURL, {
+          executionProviders: ["wasm"],
         });
-        console.log(imageTensor);
-
-        submitInference(imageTensor, modelURL, sessionOption).then((result) => {
-          const output = result[inferenceSession.outputNames[0]];
-          console.log("Inference complete.");
-          console.log(output);
-
-          console.log("Processing output...");
-          const float32Data = new Float32Array(output.data.length);
-          for (let i = 0; i < output.data.length; i++) {
-            float32Data[i] = output.data[i] * 0.5 + 0.5;
-          }
-          console.log(float32Data);
-
-          const outputTensor = new ort.Tensor(
-            "float32",
-            float32Data,
-            [1, 3, 256, 256]
-          );
-          console.log(outputTensor);
-
-          const imageHTML = outputTensor.toImageData();
-          const context = canvas.getContext("2d");
-          context.putImageData(imageHTML, 0, 0);
-        });
-      } catch (e) {
-        console.error(`Failed to inference ONNX model: ${e}.`);
+      } else {
+        console.error(`Invalid format "${format}"`);
       }
     };
   };
