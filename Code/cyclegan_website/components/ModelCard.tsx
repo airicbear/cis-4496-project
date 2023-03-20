@@ -23,7 +23,10 @@ const ModelCard = ({ title, type }: ModelCardProps) => {
       </Row>
       <Row align="center">
         <Col css={{ textAlign: "center" }}>
-          <ImageInput type={type} />
+          <ImageInput
+            modelURL={"/assets/models/authors/photo2monet.onnx"}
+            type={type}
+          />
         </Col>
         <Col span={1}>
           <Text css={{ fontSize: "3.5vw" }}>→</Text>

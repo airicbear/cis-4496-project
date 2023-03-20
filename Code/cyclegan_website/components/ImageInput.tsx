@@ -4,12 +4,13 @@ import * as ort from "onnxruntime-web";
 
 interface ImageInputProps {
   type: string;
+  modelURL: string;
 }
 
-const onnxModelURL = "/assets/models/netG_A.onnx";
-const sessionOption = { executionProviders: ["wasm"] };
-
-async function createInferenceSession(onnxModelURL, sessionOption) {
+async function createInferenceSession(
+  onnxModelURL: string,
+  sessionOption: ort.InferenceSession.SessionOptions
+) {
   let session: ort.InferenceSession;
 
   try {
@@ -35,7 +36,11 @@ async function runInference(
 }
 
 var inferenceSession: ort.InferenceSession;
-async function submitInference(imageTensor: ort.Tensor) {
+async function submitInference(
+  imageTensor: ort.Tensor,
+  onnxModelURL: string,
+  sessionOption: ort.InferenceSession.SessionOptions
+) {
   console.log("Submitting inference on image tensor...");
   inferenceSession = await createInferenceSession(onnxModelURL, sessionOption);
   return await runInference(inferenceSession, imageTensor);
@@ -53,10 +58,11 @@ function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
   return canvas.toDataURL("image/jpeg", 1.0);
 }
 
-const ImageInput = ({ type }: ImageInputProps) => {
+const ImageInput = ({ type, modelURL }: ImageInputProps) => {
   const { theme } = useTheme();
+  const sessionOption = { executionProviders: ["wasm"] };
 
-  const outputPrediction = async (reader: FileReader) => {
+  const onnxModelPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
     canvas.style.borderRadius = `${theme.radii.lg.value}`;
     const image = new Image();
@@ -74,7 +80,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
         });
         console.log(imageTensor);
 
-        submitInference(imageTensor).then((result) => {
+        submitInference(imageTensor, modelURL, sessionOption).then((result) => {
           const output = result[inferenceSession.outputNames[0]];
           console.log("Inference complete.");
           console.log(output);
@@ -119,7 +125,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
         label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
-        outputPrediction(reader);
+        onnxModelPrediction(reader);
       },
       false
     );
@@ -178,7 +184,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
         label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
-        outputPrediction(reader);
+        onnxModelPrediction(reader);
       },
       false
     );
