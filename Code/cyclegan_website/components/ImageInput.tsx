@@ -1,55 +1,80 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
-import * as tf from "@tensorflow/tfjs";
 import { ChangeEvent } from "react";
+import * as ort from "onnxruntime-web";
 
 interface ImageInputProps {
   type: string;
 }
 
+const onnxModelURL = "/assets/models/netG_A.onnx";
+const sessionOption = { executionProviders: ["wasm"] };
+
+async function createInferenceSession(onnxModelURL, sessionOption) {
+  let session: ort.InferenceSession;
+
+  try {
+    session = await ort.InferenceSession.create(onnxModelURL, sessionOption);
+  } catch (e) {
+    console.error(`Failed to load ONNX model: ${e}.`);
+  }
+
+  return session;
+}
+
+async function runInference(
+  session: ort.InferenceSession,
+  imageTensor: ort.Tensor
+): Promise<ort.InferenceSession.OnnxValueMapType> {
+  const feeds: Record<string, ort.Tensor> = {};
+  feeds[session.inputNames[0]] = imageTensor;
+
+  console.log("Running inference...");
+  const outputData = session.run(feeds);
+
+  return outputData;
+}
+
+var inferenceSession: ort.InferenceSession;
+async function submitInference(imageTensor: ort.Tensor) {
+  console.log("Submitting inference on image tensor...");
+  inferenceSession = await createInferenceSession(onnxModelURL, sessionOption);
+  return await runInference(inferenceSession, imageTensor);
+}
+
 const ImageInput = ({ type }: ImageInputProps) => {
   const { theme } = useTheme();
-  let model: tf.GraphModel;
 
-  const outputPrediction = (reader: FileReader) => {
+  const outputPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
     canvas.style.borderRadius = `${theme.radii.lg.value}`;
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
-    image.onload = () => {
-      const input = tf.browser
-        .fromPixels(image, 3)
-        .toFloat()
-        .mul(1 / 127.5)
-        .sub(1)
-        .resizeBilinear([256, 256]);
-
+    image.onload = async () => {
       try {
-        console.log("Predicting output...");
-        console.log(`input = ${input}`);
-        const output: tf.Tensor<tf.Rank> = model.predict(
-          tf.expandDims(input, 0)
-        ) as tf.Tensor<tf.Rank>;
-        console.log(`output = ${output}`);
-        const outputTensor = output.mul(127.5).add(127.5).toInt();
-        const squeezedOutput = tf.squeeze(outputTensor, [0]).as3D(256, 256, 3);
-        const context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        tf.browser.toPixels(squeezedOutput, canvas);
-      } catch {
-        console.error("Model prediction failed.");
-        reader.abort();
+        console.log("Converting image to tensor...");
+        const imageTensor: ort.Tensor = await (
+          ort.Tensor as unknown as ort.TensorFactory
+        ).fromImage(image.src, {
+          tensorFormat: "RGB",
+          resizedWidth: 256,
+          resizedHeight: 256,
+        });
+        console.log("Finished converting image to tensor.");
+        console.log(imageTensor);
+
+        submitInference(imageTensor).then((result) => {
+          const output = result[inferenceSession.outputNames[0]];
+
+          const imageHTML = output.toImageData();
+          const context = canvas.getContext("2d");
+          context.putImageData(imageHTML, 0, 0);
+        });
+      } catch (e) {
+        console.error(`Failed to inference ONNX model: ${e}.`);
       }
     };
   };
-
-  const getModel = async () => {
-    return await tf.loadGraphModel(`/assets/models/${type}/model.json`);
-  };
-
-  getModel().then((m: tf.GraphModel) => {
-    model = m;
-  });
 
   const handleChange = function (event: ChangeEvent<FormElement>) {
     event.stopPropagation();
@@ -179,6 +204,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
               "@media (max-width: 620px)": {
                 width: "128px",
                 height: "128px",
+                backgroundSize: "128px 128px",
               },
             }}
           >
