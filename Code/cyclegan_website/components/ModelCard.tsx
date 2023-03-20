@@ -4,9 +4,11 @@ import ImageInput from "./ImageInput";
 interface ModelCardProps {
   title: string;
   type: string;
+  modelURL: string;
+  format: string;
 }
 
-const ModelCard = ({ title, type }: ModelCardProps) => {
+const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   return (
     <Container sm>
       <Row align="center">
@@ -23,11 +25,7 @@ const ModelCard = ({ title, type }: ModelCardProps) => {
       </Row>
       <Row align="center">
         <Col css={{ textAlign: "center" }}>
-          <ImageInput
-            modelURL={"/assets/models/authors/photo2monet.onnx"}
-            type={type}
-            format={"onnx"}
-          />
+          <ImageInput modelURL={modelURL} type={type} format={format} />
         </Col>
         <Col span={1}>
           <Text css={{ fontSize: "3.5vw" }}>→</Text>

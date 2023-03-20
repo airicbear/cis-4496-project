@@ -1,6 +1,7 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
 import { ChangeEvent } from "react";
 import { drawOnnxPrediction } from "../utils/drawOnnxPrediction";
+import * as tf from "@tensorflow/tfjs";
 
 interface ImageInputProps {
   type: string;
@@ -8,10 +9,50 @@ interface ImageInputProps {
   format: string;
 }
 
+async function drawTfjsPrediction(
+  model: tf.GraphModel,
+  canvas: HTMLCanvasElement,
+  image: HTMLImageElement
+) {
+  const input = tf.browser
+    .fromPixels(image, 3)
+    .toFloat()
+    .mul(1 / 127.5)
+    .sub(1)
+    .resizeBilinear([256, 256]);
+
+  try {
+    console.log("Predicting output...");
+    console.log(`input = ${input}`);
+    const output: tf.Tensor<tf.Rank> = model.predict(
+      tf.expandDims(input, 0)
+    ) as tf.Tensor<tf.Rank>;
+    console.log(`output = ${output}`);
+    const outputTensor = output.mul(127.5).add(127.5).toInt();
+    const squeezedOutput = tf.squeeze(outputTensor, [0]).as3D(256, 256, 3);
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    tf.browser.toPixels(squeezedOutput, canvas);
+  } catch {
+    console.error("Model prediction failed.");
+  }
+}
+
 const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const { theme } = useTheme();
+  let model: tf.GraphModel;
 
-  const onnxModelPrediction = async (reader: FileReader) => {
+  const getModel = async () => {
+    return await tf.loadGraphModel(modelURL);
+  };
+
+  if (format == "tfjs") {
+    getModel().then((m: tf.GraphModel) => {
+      model = m;
+    });
+  }
+
+  const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
     canvas.style.borderRadius = `${theme.radii.lg.value}`;
     const image = new Image();
@@ -22,6 +63,8 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
         drawOnnxPrediction(canvas, image, modelURL, {
           executionProviders: ["wasm"],
         });
+      } else if (format == "tfjs") {
+        drawTfjsPrediction(model, canvas, image);
       } else {
         console.error(`Invalid format "${format}"`);
       }
@@ -44,7 +87,7 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
         label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
-        onnxModelPrediction(reader);
+        drawPrediction(reader);
       },
       false
     );
@@ -103,7 +146,7 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
         label.style.backgroundSize = "256px 256px";
         label.style.backgroundRepeat = "no-repeat";
         label.textContent = "";
-        onnxModelPrediction(reader);
+        drawPrediction(reader);
       },
       false
     );
