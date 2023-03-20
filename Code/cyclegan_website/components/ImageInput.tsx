@@ -41,6 +41,18 @@ async function submitInference(imageTensor: ort.Tensor) {
   return await runInference(inferenceSession, imageTensor);
 }
 
+function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+
+  canvas.width = width;
+  canvas.height = height;
+
+  ctx.drawImage(img, 0, 0, width, height);
+
+  return canvas.toDataURL("image/jpeg", 1.0);
+}
+
 const ImageInput = ({ type }: ImageInputProps) => {
   const { theme } = useTheme();
 
@@ -55,12 +67,11 @@ const ImageInput = ({ type }: ImageInputProps) => {
         console.log("Converting image to tensor...");
         const imageTensor: ort.Tensor = await (
           ort.Tensor as unknown as ort.TensorFactory
-        ).fromImage(image.src, {
+        ).fromImage(imageToDataUri(image, 256, 256), {
           tensorFormat: "RGB",
           resizedWidth: 256,
           resizedHeight: 256,
         });
-        console.log("Finished converting image to tensor.");
         console.log(imageTensor);
 
         submitInference(imageTensor).then((result) => {
