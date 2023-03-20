@@ -84,7 +84,7 @@ async function drawOnnxPrediction(
       console.log("Processing output...");
       const float32Data = new Float32Array(output.data.length);
       for (let i = 0; i < output.data.length; i++) {
-        float32Data[i] = output.data[i] * 0.5 + 0.5;
+        float32Data[i] = (output.data[i] as number) * 0.5 + 0.5;
       }
       console.log(float32Data);
 
