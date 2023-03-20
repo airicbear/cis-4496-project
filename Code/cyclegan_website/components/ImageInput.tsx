@@ -65,8 +65,24 @@ const ImageInput = ({ type }: ImageInputProps) => {
 
         submitInference(imageTensor).then((result) => {
           const output = result[inferenceSession.outputNames[0]];
+          console.log("Inference complete.");
+          console.log(output);
 
-          const imageHTML = output.toImageData();
+          console.log("Processing output...");
+          const float32Data = new Float32Array(output.data.length);
+          for (let i = 0; i < output.data.length; i++) {
+            float32Data[i] = output.data[i] * 0.5 + 0.5;
+          }
+          console.log(float32Data);
+
+          const outputTensor = new ort.Tensor(
+            "float32",
+            float32Data,
+            [1, 3, 256, 256]
+          );
+          console.log(outputTensor);
+
+          const imageHTML = outputTensor.toImageData();
           const context = canvas.getContext("2d");
           context.putImageData(imageHTML, 0, 0);
         });
