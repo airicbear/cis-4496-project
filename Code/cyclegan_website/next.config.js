@@ -19,10 +19,6 @@ module.exports = {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm-simd.wasm',
                         to: 'static/chunks/pages',
                     },
-                    {
-                        from: './model',
-                        to: 'static/chunks/pages',
-                    },
                 ],
             }),
         );
