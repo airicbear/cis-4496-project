@@ -1,11 +1,12 @@
 import * as ort from "onnxruntime-web";
 
-async function createInferenceSession(
+export async function createInferenceSession(
   onnxModelURL: string,
   sessionOption: ort.InferenceSession.SessionOptions
 ) {
   let session: ort.InferenceSession;
 
+  console.log("Creating inference session...");
   try {
     session = await ort.InferenceSession.create(onnxModelURL, sessionOption);
   } catch (e) {
@@ -28,14 +29,13 @@ async function runInference(
   return outputData;
 }
 
-var inferenceSession: ort.InferenceSession;
 async function submitInference(
+  inferenceSession: ort.InferenceSession,
   imageTensor: ort.Tensor,
-  onnxModelURL: string,
-  sessionOption: ort.InferenceSession.SessionOptions
+  modelURL: string,
+  sessionOptions: ort.InferenceSession.SessionOptions
 ) {
   console.log("Submitting inference on image tensor...");
-  inferenceSession = await createInferenceSession(onnxModelURL, sessionOption);
   return await runInference(inferenceSession, imageTensor);
 }
 
@@ -54,8 +54,9 @@ function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
 export async function drawOnnxPrediction(
   canvas: HTMLCanvasElement,
   image: HTMLImageElement,
+  inferenceSession: ort.InferenceSession,
   modelURL: string,
-  sessionOption: ort.InferenceSession.SessionOptions
+  sessionOptions: ort.InferenceSession.SessionOptions
 ) {
   try {
     console.log("Converting image to tensor...");
@@ -68,7 +69,12 @@ export async function drawOnnxPrediction(
     });
     console.log(imageTensor);
 
-    submitInference(imageTensor, modelURL, sessionOption).then((result) => {
+    submitInference(
+      inferenceSession,
+      imageTensor,
+      modelURL,
+      sessionOptions
+    ).then((result) => {
       const output = result[inferenceSession.outputNames[0]];
       console.log("Inference complete.");
       console.log(output);

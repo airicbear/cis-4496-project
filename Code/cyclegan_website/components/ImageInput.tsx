@@ -1,7 +1,11 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
-import { ChangeEvent } from "react";
-import { drawOnnxPrediction } from "../utils/drawOnnxPrediction";
 import * as tf from "@tensorflow/tfjs";
+import * as ort from "onnxruntime-web";
+import { ChangeEvent } from "react";
+import {
+  createInferenceSession,
+  drawOnnxPrediction,
+} from "../utils/drawOnnxPrediction";
 
 interface ImageInputProps {
   type: string;
@@ -40,17 +44,19 @@ async function drawTfjsPrediction(
 
 const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const { theme } = useTheme();
-  let model: tf.GraphModel;
+  let tfModel: tf.GraphModel;
+  let inferenceSession: ort.InferenceSession;
+  const sessionOptions = { executionProviders: ["wasm"] };
 
-  const getModel = async () => {
+  const getTfjsModel = async () => {
     console.log("Loading TensorFlow.js model...");
     return await tf.loadGraphModel(modelURL);
   };
 
   if (format == "tfjs") {
-    getModel().then((m: tf.GraphModel) => {
-      model = m;
-      console.log("Done loading model.");
+    getTfjsModel().then((model: tf.GraphModel) => {
+      tfModel = model;
+      console.log("Done loading TensorFlow.js model.");
     });
   }
 
@@ -60,13 +66,24 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
-    image.onload = () => {
+    image.onload = async () => {
       if (format == "onnx") {
-        drawOnnxPrediction(canvas, image, modelURL, {
-          executionProviders: ["wasm"],
-        });
+        if (inferenceSession == null) {
+          inferenceSession = await createInferenceSession(
+            modelURL,
+            sessionOptions
+          );
+        }
+
+        drawOnnxPrediction(
+          canvas,
+          image,
+          inferenceSession,
+          modelURL,
+          sessionOptions
+        );
       } else if (format == "tfjs") {
-        drawTfjsPrediction(model, canvas, image);
+        drawTfjsPrediction(tfModel, canvas, image);
       } else {
         console.error(`Invalid format "${format}"`);
       }
