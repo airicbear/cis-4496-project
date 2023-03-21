@@ -16,7 +16,6 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "node-polyfill-webpack-plugin": "^1.1.4",
     "copy-webpack-plugin": "^9.0.1",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",

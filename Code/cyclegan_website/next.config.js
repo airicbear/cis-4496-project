@@ -3,7 +3,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     reactStrictMode: true,
-    //distDir: 'build',
     webpack: (config, { }) => {
 
         config.resolve.extensions.push(".ts", ".tsx");
