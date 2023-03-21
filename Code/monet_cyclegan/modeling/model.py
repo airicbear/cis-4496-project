@@ -141,13 +141,9 @@ class CycleGan(tf.keras.Model, ABC):
         self.photo_discriminator_optimizer.apply_gradients(zip(photo_discriminator_gradients,
                                                                self.photo_discriminator.trainable_variables))
 
-        losses = {
-            'painting_generator_loss': tf.reduce_mean(total_painting_generator_loss).numpy(),
-            'photo_generator_loss': tf.reduce_mean(total_photo_generator_loss).numpy(),
-            'painting_discriminator_loss': tf.reduce_mean(painting_discriminator_loss).numpy(),
-            'photo_discriminator_loss': tf.reduce_mean(photo_discriminator_loss).numpy()
+        return {
+            'painting_generator_loss': total_painting_generator_loss,
+            'photo_generator_loss': total_photo_generator_loss,
+            'painting_discriminator_loss': painting_discriminator_loss,
+            'photo_discriminator_loss': photo_discriminator_loss
         }
-
-        logger.info(f'Losses = {losses}.')
-
-        return losses

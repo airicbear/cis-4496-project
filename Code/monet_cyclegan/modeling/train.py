@@ -33,7 +33,6 @@ def train_model(cyclegan_model: CycleGan,
 
     logger.info(f'Fitting model using {epochs} epochs and {steps_per_epoch} steps per epoch.')
 
-    tf.config.run_functions_eagerly(True)
     cyclegan_model.fit(train_dataset,
                        epochs=epochs,
                        steps_per_epoch=steps_per_epoch,
