@@ -16,15 +16,15 @@ const Home: NextPage = () => {
         <AppHeader />
         <ModelCard
           title="Author's Photo2Monet Generator"
-          type="photo2painting"
+          type="author-photo2monet"
           modelURL="/assets/models/authors/photo2monet.onnx"
           format="onnx"
         />
         <Spacer y={2} />
         <ModelCard
           title="Our Photo2Monet Generator"
-          type="painting2photo"
-          modelURL="/assets/models/our_model/photo2painting/model.json"
+          type="our-photo2monet"
+          modelURL="/assets/models/our_model/photo2monet/model.json"
           format="tfjs"
         />
         <Spacer y={2} />
