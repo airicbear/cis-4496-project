@@ -1,73 +1,89 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
 import * as tf from "@tensorflow/tfjs";
+import * as ort from "onnxruntime-web";
 import { ChangeEvent } from "react";
+import {
+  createInferenceSession,
+  drawOnnxPrediction,
+} from "../utils/drawOnnxPrediction";
+import { drawTfjsPrediction, getTfjsModel } from "../utils/drawTfjsPrediction";
 
 interface ImageInputProps {
   type: string;
+  modelURL: string;
+  format: string;
 }
 
-const ImageInput = ({ type }: ImageInputProps) => {
+const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const { theme } = useTheme();
-  let model: tf.GraphModel;
+  let tfModel: tf.GraphModel;
+  let inferenceSession: ort.InferenceSession;
+  const sessionOptions = { executionProviders: ["wasm"] };
 
-  const outputPrediction = (reader: FileReader) => {
+  if (format == "tfjs" && tfModel == null) {
+    getTfjsModel(modelURL).then((model: tf.GraphModel) => {
+      tfModel = model;
+      console.log("Done loading TensorFlow.js model.");
+    });
+  }
+
+  const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
     canvas.style.borderRadius = `${theme.radii.lg.value}`;
+
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
-    image.onload = () => {
-      const input = tf.browser
-        .fromPixels(image, 3)
-        .toFloat()
-        .mul(1 / 127.5)
-        .sub(1)
-        .resizeBilinear([256, 256]);
+    image.onload = async () => {
+      if (format == "onnx") {
+        if (inferenceSession == null) {
+          inferenceSession = await createInferenceSession(
+            modelURL,
+            sessionOptions
+          );
+        }
 
-      try {
-        console.log("Predicting output...");
-        console.log(`input = ${input}`);
-        const output: tf.Tensor<tf.Rank> = model.predict(
-          tf.expandDims(input, 0)
-        ) as tf.Tensor<tf.Rank>;
-        console.log(`output = ${output}`);
-        const outputTensor = output.mul(127.5).add(127.5).toInt();
-        const squeezedOutput = tf.squeeze(outputTensor, [0]).as3D(256, 256, 3);
-        const context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        tf.browser.toPixels(squeezedOutput, canvas);
-      } catch {
-        console.error("Model prediction failed.");
-        reader.abort();
+        drawOnnxPrediction(
+          canvas,
+          image,
+          inferenceSession,
+          modelURL,
+          sessionOptions
+        );
+      } else if (format == "tfjs") {
+        drawTfjsPrediction(tfModel, canvas, image);
+      } else {
+        console.error(`Invalid format "${format}"`);
       }
     };
   };
 
-  const getModel = async () => {
-    return await tf.loadGraphModel(`/assets/models/${type}/model.json`);
+  const initializeLabel = function (
+    label: HTMLElement,
+    backgroundImage: string
+  ) {
+    label.style.backgroundImage = backgroundImage;
+    label.style.backgroundSize = "256px 256px";
+    label.style.backgroundRepeat = "no-repeat";
+    label.textContent = "";
   };
-
-  getModel().then((m: tf.GraphModel) => {
-    model = m;
-  });
 
   const handleChange = function (event: ChangeEvent<FormElement>) {
     event.stopPropagation();
     event.preventDefault();
 
+    const label = document.getElementById(`label-file-upload-${type}`);
+
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    const label = document.getElementById(`label-file-upload-${type}`);
     const file = files[0];
+
     const reader = new FileReader();
     reader.addEventListener(
       "load",
       () => {
-        label.style.backgroundImage = `url(${reader.result})`;
-        label.style.backgroundSize = "256px 256px";
-        label.style.backgroundRepeat = "no-repeat";
-        label.textContent = "";
-        outputPrediction(reader);
+        initializeLabel(label, `url(${reader.result})`);
+        drawPrediction(reader);
       },
       false
     );
@@ -115,24 +131,25 @@ const ImageInput = ({ type }: ImageInputProps) => {
   }) {
     event.stopPropagation();
     event.preventDefault();
-    const files = event.dataTransfer.files;
+
     const label = document.getElementById(`label-file-upload-${type}`);
+
+    const files = event.dataTransfer.files;
     const file = files[0];
+
     const reader = new FileReader();
     reader.addEventListener(
       "load",
       () => {
-        label.style.backgroundImage = `url(${reader.result})`;
-        label.style.backgroundSize = "256px 256px";
-        label.style.backgroundRepeat = "no-repeat";
-        label.textContent = "";
-        outputPrediction(reader);
+        initializeLabel(label, `url(${reader.result})`);
+        drawPrediction(reader);
       },
       false
     );
     if (file) {
       reader.readAsDataURL(file);
     }
+
     setLabelTransparency(1.0);
     setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
   };
@@ -179,6 +196,7 @@ const ImageInput = ({ type }: ImageInputProps) => {
               "@media (max-width: 620px)": {
                 width: "128px",
                 height: "128px",
+                backgroundSize: "128px 128px",
               },
             }}
           >

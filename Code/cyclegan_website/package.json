@@ -8,12 +8,15 @@
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.12",
     "@tensorflow/tfjs": "^4.2.0",
+    "jimp": "^0.22.7",
     "next": "latest",
     "next-themes": "^0.2.1",
+    "onnxruntime-web": "^1.14.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^9.0.1",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "typescript": "4.8.4"
