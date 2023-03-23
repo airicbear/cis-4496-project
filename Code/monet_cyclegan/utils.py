@@ -342,7 +342,6 @@ def generate_tfrec_records(input_dir: str,
             for k in range(CT2):
                 img = cv2.imread(f'{imgs[SIZE * j + k]}')
                 print(f"cv2.imread({imgs[SIZE * j + k]})")
-                img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 img = cv2.imencode('.jpg', img, (cv2.IMWRITE_JPEG_QUALITY, 94))[1].tostring()
                 example = serialize_example(img)
                 writer.write(example)
