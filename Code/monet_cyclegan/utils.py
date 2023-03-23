@@ -345,3 +345,23 @@ def generate_tfrec_records(input_dir: str,
                 img = cv2.imencode('.jpg', img, (cv2.IMWRITE_JPEG_QUALITY, 94))[1].tostring()
                 example = serialize_example(img)
                 writer.write(example)
+
+def save_tfrec_to_jpg(input_dir: str,
+                 output_dir: str,
+                 num: int) -> None:
+    """Convert TFREC files to JPG files.
+
+    Args:
+        input_dir: Directory of TFREC files.
+        output_dir: Output directory for JPG files.
+        num: Number of images to save.
+    """
+
+    filenames = get_filenames(image_dir=input_dir, ext='tfrec')
+
+    images = read_tfrecorddataset(filenames=filenames).take(num)
+
+    for i, image in enumerate(images):
+        image_tensor = tensor_to_image(image)
+        save_image(image=image_tensor,
+                   output_path=f'{output_dir}/{i}.jpg')
