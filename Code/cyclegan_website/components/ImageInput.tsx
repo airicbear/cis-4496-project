@@ -29,17 +29,15 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   }
 
   React.useEffect(() => {
-    if (format == "onnx") {
-      if (inferenceSession == null) {
-        createInferenceSession(modelURL, sessionOptions).then(
-          (session: ort.InferenceSession) => {
-            inferenceSession = session;
-            console.log(`(${type}) Done loading ONNX model.`);
-          }
-        );
-      }
+    if (format == "onnx" && inferenceSession == null) {
+      createInferenceSession(modelURL, sessionOptions).then(
+        (session: ort.InferenceSession) => {
+          inferenceSession = session;
+          console.log(`(${type}) Done loading ONNX model.`);
+        }
+      );
     }
-  }, []);
+  });
 
   const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
@@ -50,22 +48,23 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     image.style.borderRadius = `${theme.radii.lg.value}`;
     image.onload = async () => {
       if (format == "onnx") {
-        if (inferenceSession == null) {
-          inferenceSession = await createInferenceSession(
+        if (inferenceSession != null) {
+          drawOnnxPrediction(
+            canvas,
+            image,
+            inferenceSession,
             modelURL,
             sessionOptions
           );
+        } else {
+          console.error(`(${type}) Model not yet loaded.`);
         }
-
-        drawOnnxPrediction(
-          canvas,
-          image,
-          inferenceSession,
-          modelURL,
-          sessionOptions
-        );
       } else if (format == "tfjs") {
-        drawTfjsPrediction(tfModel, canvas, image);
+        if (tfModel != null) {
+          drawTfjsPrediction(tfModel, canvas, image);
+        } else {
+          console.error(`(${type}) Model not yet loaded.`);
+        }
       } else {
         console.error(`Invalid format "${format}"`);
       }
