@@ -10,3 +10,4 @@ Kaggle_Dataset
 .idea
 *.png
 *.jpg
+*.tfrec

@@ -1,7 +1,14 @@
-import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
-import * as tf from "@tensorflow/tfjs";
-import * as ort from "onnxruntime-web";
-import { ChangeEvent } from "react";
+import {
+  Card,
+  FormElement,
+  Input,
+  Loading,
+  Text,
+  useTheme,
+} from "@nextui-org/react";
+import { GraphModel } from "@tensorflow/tfjs";
+import { InferenceSession } from "onnxruntime-web";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
@@ -16,16 +23,27 @@ interface ImageInputProps {
 
 const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const { theme } = useTheme();
-  let tfModel: tf.GraphModel;
-  let inferenceSession: ort.InferenceSession;
+  const [tfModel, setTfModel] = useState(null);
+  const [inferenceSession, setInferenceSession] = useState(null);
   const sessionOptions = { executionProviders: ["wasm"] };
 
   if (format == "tfjs" && tfModel == null) {
-    getTfjsModel(modelURL).then((model: tf.GraphModel) => {
-      tfModel = model;
-      console.log("Done loading TensorFlow.js model.");
+    getTfjsModel(modelURL).then((model: GraphModel) => {
+      setTfModel(model);
+      console.log(`(${type}) Done loading TensorFlow.js model.`);
     });
   }
+
+  useEffect(() => {
+    if (format == "onnx" && inferenceSession == null) {
+      createInferenceSession(modelURL, sessionOptions).then(
+        (session: InferenceSession) => {
+          setInferenceSession(session);
+          console.log(`(${type}) Done loading ONNX model.`);
+        }
+      );
+    }
+  }, []);
 
   const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
@@ -36,22 +54,17 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     image.style.borderRadius = `${theme.radii.lg.value}`;
     image.onload = async () => {
       if (format == "onnx") {
-        if (inferenceSession == null) {
-          inferenceSession = await createInferenceSession(
-            modelURL,
-            sessionOptions
-          );
+        if (inferenceSession != null) {
+          drawOnnxPrediction(inferenceSession, canvas, image);
+        } else {
+          console.error(`(${type}) Model not yet loaded.`);
         }
-
-        drawOnnxPrediction(
-          canvas,
-          image,
-          inferenceSession,
-          modelURL,
-          sessionOptions
-        );
       } else if (format == "tfjs") {
-        drawTfjsPrediction(tfModel, canvas, image);
+        if (tfModel != null) {
+          drawTfjsPrediction(tfModel, canvas, image);
+        } else {
+          console.error(`(${type}) Model not yet loaded.`);
+        }
       } else {
         console.error(`Invalid format "${format}"`);
       }
@@ -154,18 +167,8 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
   };
 
-  return (
-    <form style={{ textAlign: "center" }}>
-      <Input
-        type="file"
-        id={`input-file-upload-${type}`}
-        accept=".jpg, .jpeg, .png"
-        onChange={handleChange}
-        css={{
-          display: "none",
-        }}
-      ></Input>
-
+  const labelElement = () => {
+    return (
       <label
         htmlFor={`input-file-upload-${type}`}
         onDragOver={handleDragOver}
@@ -222,6 +225,27 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
           </Card.Body>
         </Card>
       </label>
+    );
+  };
+
+  return (
+    <form style={{ textAlign: "center" }}>
+      <Input
+        type="file"
+        id={`input-file-upload-${type}`}
+        accept=".jpg, .jpeg, .png"
+        onChange={handleChange}
+        css={{
+          display: "none",
+        }}
+      ></Input>
+
+      {(format == "onnx" && inferenceSession) ||
+      (format == "tfjs" && tfModel) ? (
+        labelElement()
+      ) : (
+        <Loading size="xl" />
+      )}
     </form>
   );
 };
