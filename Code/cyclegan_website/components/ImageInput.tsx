@@ -28,10 +28,28 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   const sessionOptions = { executionProviders: ["wasm"] };
 
   if (format == "tfjs" && tfModel == null) {
-    getTfjsModel(modelURL).then((model: GraphModel) => {
-      setTfModel(model);
-      console.log(`(${type}) Done loading TensorFlow.js model.`);
-    });
+    const indexedDBURL = `indexeddb://${type}`;
+
+    getTfjsModel(indexedDBURL).then(
+      (model: GraphModel) => {
+        setTfModel(model);
+
+        console.log(
+          `(${type}) Loaded TensorFlow.js model from IndexedDB (${indexedDBURL}).`
+        );
+      },
+      () => {
+        getTfjsModel(modelURL).then(async (model: GraphModel) => {
+          setTfModel(model);
+
+          await model.save(indexedDBURL);
+
+          console.log(
+            `(${type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
+          );
+        });
+      }
+    );
   }
 
   useEffect(() => {
@@ -43,7 +61,7 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
         }
       );
     }
-  }, []);
+  });
 
   const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
