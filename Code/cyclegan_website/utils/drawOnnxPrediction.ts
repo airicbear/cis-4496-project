@@ -50,9 +50,9 @@ function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
 }
 
 export async function drawOnnxPrediction(
+  inferenceSession: ort.InferenceSession,
   canvas: HTMLCanvasElement,
-  image: HTMLImageElement,
-  inferenceSession: ort.InferenceSession
+  image: HTMLImageElement
 ) {
   try {
     console.log("Converting image to tensor...");

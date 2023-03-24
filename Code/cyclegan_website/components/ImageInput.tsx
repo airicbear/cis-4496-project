@@ -55,7 +55,7 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     image.onload = async () => {
       if (format == "onnx") {
         if (inferenceSession != null) {
-          drawOnnxPrediction(canvas, image, inferenceSession);
+          drawOnnxPrediction(inferenceSession, canvas, image);
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
