@@ -39,7 +39,7 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
         );
       }
     }
-  });
+  }, []);
 
   const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
