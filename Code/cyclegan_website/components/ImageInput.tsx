@@ -8,7 +8,13 @@ import {
 } from "@nextui-org/react";
 import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
@@ -19,9 +25,15 @@ interface ImageInputProps {
   type: string;
   modelURL: string;
   format: string;
+  onRunInference: Function;
 }
 
-const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
+const ImageInput = ({
+  type,
+  modelURL,
+  format,
+  onRunInference,
+}: ImageInputProps) => {
   const { theme } = useTheme();
   const [tfModel, setTfModel] = useState(null);
   const [inferenceSession, setInferenceSession] = useState(null);
@@ -73,13 +85,19 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
     image.onload = async () => {
       if (format == "onnx") {
         if (inferenceSession != null) {
-          drawOnnxPrediction(inferenceSession, canvas, image);
+          onRunInference(true);
+          drawOnnxPrediction(inferenceSession, canvas, image).then(() => {
+            onRunInference(false);
+          });
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
       } else if (format == "tfjs") {
         if (tfModel != null) {
-          drawTfjsPrediction(tfModel, canvas, image);
+          onRunInference(true);
+          drawTfjsPrediction(tfModel, canvas, image).then(() => {
+            onRunInference(false);
+          });
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
