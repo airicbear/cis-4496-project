@@ -31,9 +31,7 @@ async function runInference(
 
 async function submitInference(
   inferenceSession: ort.InferenceSession,
-  imageTensor: ort.Tensor,
-  modelURL: string,
-  sessionOptions: ort.InferenceSession.SessionOptions
+  imageTensor: ort.Tensor
 ) {
   console.log("Submitting inference on image tensor...");
   return await runInference(inferenceSession, imageTensor);
@@ -69,12 +67,7 @@ export async function drawOnnxPrediction(
     });
     console.log(imageTensor);
 
-    submitInference(
-      inferenceSession,
-      imageTensor,
-      modelURL,
-      sessionOptions
-    ).then((result) => {
+    submitInference(inferenceSession, imageTensor).then((result) => {
       const output = result[inferenceSession.outputNames[0]];
       console.log("Inference complete.");
       console.log(output);
