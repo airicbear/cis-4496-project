@@ -29,14 +29,6 @@ async function runInference(
   return outputData;
 }
 
-async function submitInference(
-  inferenceSession: ort.InferenceSession,
-  imageTensor: ort.Tensor
-) {
-  console.log("Submitting inference on image tensor...");
-  return await runInference(inferenceSession, imageTensor);
-}
-
 function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
@@ -65,7 +57,7 @@ export async function drawOnnxPrediction(
     });
     console.log(imageTensor);
 
-    submitInference(inferenceSession, imageTensor).then((result) => {
+    runInference(inferenceSession, imageTensor).then((result) => {
       const output = result[inferenceSession.outputNames[0]];
       console.log("Inference complete.");
       console.log(output);
