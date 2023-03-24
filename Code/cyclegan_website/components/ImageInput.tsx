@@ -1,6 +1,7 @@
 import { Card, FormElement, Input, Text, useTheme } from "@nextui-org/react";
 import * as tf from "@tensorflow/tfjs";
 import * as ort from "onnxruntime-web";
+import React from "react";
 import { ChangeEvent } from "react";
 import {
   createInferenceSession,
@@ -23,9 +24,22 @@ const ImageInput = ({ type, modelURL, format }: ImageInputProps) => {
   if (format == "tfjs" && tfModel == null) {
     getTfjsModel(modelURL).then((model: tf.GraphModel) => {
       tfModel = model;
-      console.log("Done loading TensorFlow.js model.");
+      console.log(`(${type}) Done loading TensorFlow.js model.`);
     });
   }
+
+  React.useEffect(() => {
+    if (format == "onnx") {
+      if (inferenceSession == null) {
+        createInferenceSession(modelURL, sessionOptions).then(
+          (session: ort.InferenceSession) => {
+            inferenceSession = session;
+            console.log(`(${type}) Done loading ONNX model.`);
+          }
+        );
+      }
+    }
+  });
 
   const drawPrediction = async (reader: FileReader) => {
     const canvas = document.getElementById(type) as HTMLCanvasElement;
