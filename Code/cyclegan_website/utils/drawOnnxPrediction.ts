@@ -29,16 +29,6 @@ async function runInference(
   return outputData;
 }
 
-async function submitInference(
-  inferenceSession: ort.InferenceSession,
-  imageTensor: ort.Tensor,
-  modelURL: string,
-  sessionOptions: ort.InferenceSession.SessionOptions
-) {
-  console.log("Submitting inference on image tensor...");
-  return await runInference(inferenceSession, imageTensor);
-}
-
 function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
@@ -52,11 +42,9 @@ function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
 }
 
 export async function drawOnnxPrediction(
-  canvas: HTMLCanvasElement,
-  image: HTMLImageElement,
   inferenceSession: ort.InferenceSession,
-  modelURL: string,
-  sessionOptions: ort.InferenceSession.SessionOptions
+  canvas: HTMLCanvasElement,
+  image: HTMLImageElement
 ) {
   try {
     console.log("Converting image to tensor...");
@@ -69,12 +57,7 @@ export async function drawOnnxPrediction(
     });
     console.log(imageTensor);
 
-    submitInference(
-      inferenceSession,
-      imageTensor,
-      modelURL,
-      sessionOptions
-    ).then((result) => {
+    runInference(inferenceSession, imageTensor).then((result) => {
       const output = result[inferenceSession.outputNames[0]];
       console.log("Inference complete.");
       console.log(output);
