@@ -1,4 +1,6 @@
 import { Col, Container, Row, Text } from "@nextui-org/react";
+import { useState } from "react";
+import CanvasOutput from "./CanvasOutput";
 import ImageInput from "./ImageInput";
 
 interface ModelCardProps {
@@ -9,6 +11,8 @@ interface ModelCardProps {
 }
 
 const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Container sm>
       <Row align="center">
@@ -25,13 +29,20 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
       </Row>
       <Row align="center">
         <Col css={{ textAlign: "center" }}>
-          <ImageInput modelURL={modelURL} type={type} format={format} />
+          <ImageInput
+            modelURL={modelURL}
+            type={type}
+            format={format}
+            onRunInference={(result: boolean) => {
+              setIsLoading(result);
+            }}
+          />
         </Col>
         <Col span={1}>
           <Text css={{ fontSize: "3.5vw" }}>→</Text>
         </Col>
         <Col css={{ textAlign: "center" }}>
-          <canvas id={type} width={256} height={256}></canvas>
+          <CanvasOutput type={type} isLoading={isLoading} />
         </Col>
       </Row>
     </Container>
