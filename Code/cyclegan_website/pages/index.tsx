@@ -42,6 +42,27 @@ const Home: NextPage = () => {
           format="tfjs"
         />
         <Spacer y={2} />
+        <ModelCard
+          title="Author's Photo2Ukiyoe Generator"
+          type="author-photo2ukiyoe"
+          modelURL="/assets/models/authors/photo2ukiyoe.onnx"
+          format="onnx"
+        />
+        <Spacer y={2} />
+        <ModelCard
+          title="Author's Photo2Cezanne Generator"
+          type="author-photo2cezanne"
+          modelURL="/assets/models/authors/photo2cezanne.onnx"
+          format="onnx"
+        />
+        <Spacer y={2} />
+        <ModelCard
+          title="Author's Photo2Vangogh Generator"
+          type="author-photo2vangogh"
+          modelURL="/assets/models/authors/photo2vangogh.onnx"
+          format="onnx"
+        />
+        <Spacer y={2} />
       </Container>
     </>
   );
