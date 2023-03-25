@@ -22,9 +22,23 @@ const Home: NextPage = () => {
         />
         <Spacer y={2} />
         <ModelCard
+          title="Author's Monet2Photo Generator"
+          type="author-monet2photo"
+          modelURL="/assets/models/authors/monet2photo.onnx"
+          format="onnx"
+        />
+        <Spacer y={2} />
+        <ModelCard
           title="Our Photo2Monet Generator"
           type="our-photo2monet"
           modelURL="/assets/models/our_model/photo2monet/model.json"
+          format="tfjs"
+        />
+        <Spacer y={2} />
+        <ModelCard
+          title="Our Monet2Photo Generator"
+          type="our-monet2photo"
+          modelURL="/assets/models/our_model/monet2photo/model.json"
           format="tfjs"
         />
         <Spacer y={2} />
