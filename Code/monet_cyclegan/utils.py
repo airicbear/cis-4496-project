@@ -346,9 +346,10 @@ def generate_tfrec_records(input_dir: str,
                 example = serialize_example(img)
                 writer.write(example)
 
+
 def save_tfrec_to_jpg(input_dir: str,
-                 output_dir: str,
-                 num: int) -> None:
+                      output_dir: str,
+                      num: int = -1) -> None:
     """Convert TFREC files to JPG files.
 
     Args:
