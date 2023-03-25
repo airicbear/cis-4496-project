@@ -8,13 +8,7 @@ import {
 } from "@nextui-org/react";
 import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
@@ -51,15 +45,20 @@ const ImageInput = ({
         );
       },
       () => {
-        getTfjsModel(modelURL).then(async (model: GraphModel) => {
-          setTfModel(model);
+        getTfjsModel(modelURL).then(
+          async (model: GraphModel) => {
+            setTfModel(model);
 
-          await model.save(indexedDBURL);
+            await model.save(indexedDBURL);
 
-          console.log(
-            `(${type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
-          );
-        });
+            console.log(
+              `(${type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
+            );
+          },
+          () => {
+            console.error(`(${type}) Failed to load model from ${modelURL}.`);
+          }
+        );
       }
     );
   }
