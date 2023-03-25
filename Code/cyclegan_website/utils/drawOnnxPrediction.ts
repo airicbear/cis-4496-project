@@ -67,7 +67,6 @@ export async function drawOnnxPrediction(
       for (let i = 0; i < output.data.length; i++) {
         float32Data[i] = (output.data[i] as number) * 0.5 + 0.5;
       }
-      console.log(float32Data);
 
       const outputTensor = new ort.Tensor(
         "float32",
