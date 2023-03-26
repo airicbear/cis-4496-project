@@ -11,3 +11,4 @@ Kaggle_Dataset
 *.png
 *.jpg
 *.tfrec
+next-env.d.ts
