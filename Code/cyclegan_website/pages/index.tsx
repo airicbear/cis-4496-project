@@ -1,6 +1,7 @@
-import { Container, Spacer } from "@nextui-org/react";
+import { Card, Container, Spacer, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import AppHeader from "../components/AppHeader";
 import ModelCard from "../components/ModelCard";
 
@@ -12,57 +13,24 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
+      <Container sm alignContent="center">
         <AppHeader />
-        <ModelCard
-          title="Author's Photo2Monet Generator"
-          type="author-photo2monet"
-          modelURL="/assets/models/authors/photo2monet.onnx"
-          format="onnx"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Author's Monet2Photo Generator"
-          type="author-monet2photo"
-          modelURL="/assets/models/authors/monet2photo.onnx"
-          format="onnx"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Our Photo2Monet Generator"
-          type="our-photo2monet"
-          modelURL="/assets/models/our_model/photo2monet/model.json"
-          format="tfjs"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Our Monet2Photo Generator"
-          type="our-monet2photo"
-          modelURL="/assets/models/our_model/monet2photo/model.json"
-          format="tfjs"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Author's Photo2Ukiyoe Generator"
-          type="author-photo2ukiyoe"
-          modelURL="/assets/models/authors/photo2ukiyoe.onnx"
-          format="onnx"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Author's Photo2Cezanne Generator"
-          type="author-photo2cezanne"
-          modelURL="/assets/models/authors/photo2cezanne.onnx"
-          format="onnx"
-        />
-        <Spacer y={2} />
-        <ModelCard
-          title="Author's Photo2Vangogh Generator"
-          type="author-photo2vangogh"
-          modelURL="/assets/models/authors/photo2vangogh.onnx"
-          format="onnx"
-        />
-        <Spacer y={2} />
+        <Card>
+          <Card.Header>
+            <Text h3>Generators</Text>
+          </Card.Header>
+          <Card.Body>
+            <Link href="/generators/photo2monet">Photo2Monet Generators</Link>
+            <Link href="/generators/monet2photo">Monet2Photo Generators</Link>
+            <Link href="/generators/photo2ukiyoe">Photo2Ukiyoe Generators</Link>
+            <Link href="/generators/photo2cezanne">
+              Photo2Cezanne Generators
+            </Link>
+            <Link href="/generators/photo2vangogh">
+              Photo2Vangogh Generators
+            </Link>
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );
