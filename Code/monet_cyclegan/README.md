@@ -45,6 +45,8 @@ Each file ending with `.py` represents a [Python module](https://docs.python.org
 
 - `utils.py` - Helper methods used throughout the package.
 
+- `scripts` - Script functions for common tasks related to CycleGAN training, testing, and evaluation.
+
 - `environment-macos.yaml` - Conda environment configuration for macOS users.
 
 - `environment-windows.yaml` - Conda environment configuration for Windows users only using CPU.
