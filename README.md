@@ -17,4 +17,4 @@ This directory primarily hosts design documentation, reports, and presentations.
 For code documentation, see the `Code` directory.
 
 The `Sample_Data` directory hosts a small sample of the data needed for the models.
-The full dataset is available [here](https://github.com/airicbear/cis-4496-project/releases/tag/kaggle-dataset) or by running `python -m monet_cyclegan.scripts.download_dataset` in the `Code` folder and is saved in `Sample_Data/Raw/Kaggle_Dataset` by default.
+The full dataset for the competition is available [here](https://github.com/airicbear/cis-4496-project/releases/tag/kaggle-dataset) or by running `python -m monet_cyclegan.scripts.download_dataset` in the `Code` folder and is saved in `Sample_Data/Raw/Kaggle_Dataset` by default.
