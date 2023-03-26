@@ -6,3 +6,4 @@ In each directory, there is a markdown file, which lists all datasets in each di
 
 Since our data currently does not require processing before entering our model, a link to the full dataset (for the competition) can be found in the Raw directory. Also, the Raw/Small_Dataset directory currently contains 60 Monet Paintings and 352 Photos in Tfrec format. 
 
+For full access to the author's data which includes singificantly more Monet Paintings and photos along with paintings from other artists, this data can be found in JPG format at https://people.eecs.berkeley.edu/~taesung_park/CycleGAN/datasets/
