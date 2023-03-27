@@ -20,8 +20,8 @@ const Home: NextPage = () => {
             <Text h3>Generators</Text>
           </Card.Header>
           <Card.Body>
+            <Text h4>Photo → Painting</Text>
             <Link href="/generators/photo2monet">Photo2Monet Generators</Link>
-            <Link href="/generators/monet2photo">Monet2Photo Generators</Link>
             <Link href="/generators/photo2ukiyoe">Photo2Ukiyoe Generators</Link>
             <Link href="/generators/photo2cezanne">
               Photo2Cezanne Generators
@@ -29,6 +29,10 @@ const Home: NextPage = () => {
             <Link href="/generators/photo2vangogh">
               Photo2Vangogh Generators
             </Link>
+            <Spacer y={2} />
+            <Text h4>Painting → Photo</Text>
+            <Link href="/generators/monet2photo">Monet2Photo Generators</Link>
+            <Link href="/generators/ukiyoe2photo">Ukiyoe2Photo Generators</Link>
           </Card.Body>
         </Card>
       </Container>

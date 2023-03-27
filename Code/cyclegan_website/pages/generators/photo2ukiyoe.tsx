@@ -14,6 +14,13 @@ const Photo2UkiyoePage: NextPage = () => {
         format="onnx"
       />
       <Spacer y={2} />
+      <ModelCard
+        title="Our Photo2Ukiyoe Generator"
+        type="our-photo2ukiyoe"
+        modelURL="/assets/models/our_model/photo2ukiyoe/model.json"
+        format="tfjs"
+      />
+      <Spacer y={2} />
     </Container>
   );
 };
