@@ -21,7 +21,7 @@ const AppHeader = () => {
   };
 
   return (
-    <Container sm>
+    <Container>
       <Row align="center">
         <Col>
           <Text

@@ -1,0 +1,21 @@
+import { Container, Spacer } from "@nextui-org/react";
+import { NextPage } from "next";
+import AppHeader from "../../components/AppHeader";
+import ModelCard from "../../components/ModelCard";
+
+const Photo2CezannePage: NextPage = () => {
+  return (
+    <Container sm>
+      <AppHeader />
+      <ModelCard
+        title="Author's Photo2Cezanne Generator"
+        type="author-photo2cezanne"
+        modelURL="/assets/models/authors/photo2cezanne.onnx"
+        format="onnx"
+      />
+      <Spacer y={2} />
+    </Container>
+  );
+};
+
+export default Photo2CezannePage;

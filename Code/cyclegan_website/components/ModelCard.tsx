@@ -14,7 +14,7 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <Container sm>
+    <Container>
       <Row align="center">
         <Text h3>{title}</Text>
       </Row>
