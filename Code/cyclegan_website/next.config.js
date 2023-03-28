@@ -13,11 +13,11 @@ module.exports = {
                 patterns: [
                     {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm.wasm',
-                        to: 'static/chunks/pages',
+                        to: 'static/chunks',
                     },
                     {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm-simd.wasm',
-                        to: 'static/chunks/pages',
+                        to: 'static/chunks',
                     },
                     {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm.wasm',
