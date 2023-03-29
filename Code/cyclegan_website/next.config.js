@@ -22,7 +22,8 @@ module.exports = {
                     {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm.wasm',
                         to: 'static/chunks/pages/generators',
-                    }, {
+                    },
+                    {
                         from: './node_modules/onnxruntime-web/dist/ort-wasm-simd.wasm',
                         to: 'static/chunks/pages/generators',
                     },

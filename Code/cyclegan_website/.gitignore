@@ -32,3 +32,4 @@ yarn-error.log*
 *.bin
 model.json
 *.onnx
+next-env.d.ts
