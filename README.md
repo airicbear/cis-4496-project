@@ -6,7 +6,7 @@ This repository hosts all code, documentation, and data related our team's solut
 The challenge of this competition is to translate a photo to a Monet painting.
 Our current approach involves implementing a [CycleGAN](https://junyanz.github.io/CycleGAN/), an unpaired image-to-image translation model.
 
-Links: [Project Charter](./Docs/Project/Charter.md)
+Links: [Project Charter](./Docs/Project/Charter.md), [Website](https://cis-4496-project.vercel.app/)
 
 ### Repository Structure
 
