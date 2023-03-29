@@ -1,8 +1,7 @@
 import { Button, Container, Loading } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-const CanvasOutput = ({ type, isLoading, isPredicted }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
 
   const getDisplay = () => {

@@ -1,5 +1,5 @@
 import { Col, Container, Row, Text } from "@nextui-org/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import CanvasOutput from "./CanvasOutput";
 import ImageInput from "./ImageInput";
 
@@ -13,6 +13,8 @@ interface ModelCardProps {
 const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPredicted, setIsPredicted] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const labelRef = useRef<HTMLLabelElement>(null);
 
   return (
     <Container>
@@ -38,6 +40,8 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
               setIsPredicted(true);
               setIsLoading(result);
             }}
+            canvasRef={canvasRef}
+            labelRef={labelRef}
           />
         </Col>
         <Col span={1}>
@@ -48,6 +52,7 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
             type={type}
             isLoading={isLoading}
             isPredicted={isPredicted}
+            canvasRef={canvasRef}
           />
         </Col>
       </Row>
