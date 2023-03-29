@@ -29,10 +29,22 @@ const Home: NextPage = () => {
             <Link href="/generators/photo2vangogh">
               Photo2Vangogh Generators
             </Link>
-            <Spacer y={2} />
+            <Spacer y={1} />
             <Text h4>Painting → Photo</Text>
             <Link href="/generators/monet2photo">Monet2Photo Generators</Link>
             <Link href="/generators/ukiyoe2photo">Ukiyoe2Photo Generators</Link>
+          </Card.Body>
+        </Card>
+        <Spacer y={1} />
+        <Card>
+          <Card.Header>
+            <Text h3>Utilities</Text>
+          </Card.Header>
+          <Card.Body>
+            <Text h4>Data Acquisition and Understanding</Text>
+            <Link href="/utilities/plot_rgb_distribution">
+              Plot RGB Distribution
+            </Link>
           </Card.Body>
         </Card>
       </Container>
