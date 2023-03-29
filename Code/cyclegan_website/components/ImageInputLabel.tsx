@@ -2,12 +2,20 @@ import { Card, Text, useTheme } from "@nextui-org/react";
 import { DragEvent } from "react";
 import { initializeLabel } from "../utils/initializeLabel";
 
-const ImageInputLabel = ({ htmlFor, onFileUpload, id, labelRef }) => {
+const ImageInputLabel = ({
+  htmlFor,
+  onFileUpload = (reader: FileReader) => {},
+  id,
+  labelRef,
+  imageOnLoad = (image) => {},
+}) => {
   const { theme } = useTheme();
 
   const handleDrop = function (event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
+
+    const image = new Image();
 
     const files = event.dataTransfer.files;
     const file = files[0];
@@ -17,10 +25,12 @@ const ImageInputLabel = ({ htmlFor, onFileUpload, id, labelRef }) => {
       "load",
       () => {
         initializeLabel(labelRef.current, `url(${reader.result})`);
+        image.src = reader.result as string;
         onFileUpload(reader);
       },
       false
     );
+    image.onload = () => imageOnLoad(image);
     if (file) {
       reader.readAsDataURL(file);
     }
