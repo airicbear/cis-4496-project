@@ -1,25 +1,27 @@
-import {
-  Card,
-  FormElement,
-  Input,
-  Loading,
-  Text,
-  useTheme,
-} from "@nextui-org/react";
+import { FormElement, Input, Loading, useTheme } from "@nextui-org/react";
 import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  MutableRefObject,
+  useEffect,
+  useState,
+} from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
 } from "../utils/drawOnnxPrediction";
 import { drawTfjsPrediction, getTfjsModel } from "../utils/drawTfjsPrediction";
+import { initializeLabel } from "../utils/initializeLabel";
+import ImageInputLabel from "./ImageInputLabel";
 
 interface ImageInputProps {
   type: string;
   modelURL: string;
   format: string;
   onRunInference: Function;
+  canvasRef: MutableRefObject<HTMLCanvasElement>;
+  labelRef: MutableRefObject<HTMLLabelElement>;
 }
 
 const ImageInput = ({
@@ -27,6 +29,8 @@ const ImageInput = ({
   modelURL,
   format,
   onRunInference,
+  canvasRef,
+  labelRef,
 }: ImageInputProps) => {
   const { theme } = useTheme();
   const [tfModel, setTfModel] = useState(null);
@@ -75,8 +79,7 @@ const ImageInput = ({
   });
 
   const drawPrediction = async (reader: FileReader) => {
-    const canvas = document.getElementById(type) as HTMLCanvasElement;
-    canvas.style.borderRadius = `${theme.radii.lg.value}`;
+    canvasRef.current.style.borderRadius = `${theme.radii.lg.value}`;
 
     const image = new Image();
     image.src = reader.result.toString();
@@ -85,16 +88,18 @@ const ImageInput = ({
       if (format == "onnx") {
         if (inferenceSession != null) {
           onRunInference(true);
-          drawOnnxPrediction(inferenceSession, canvas, image).then(() => {
-            onRunInference(false);
-          });
+          drawOnnxPrediction(inferenceSession, canvasRef.current, image).then(
+            () => {
+              onRunInference(false);
+            }
+          );
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
       } else if (format == "tfjs") {
         if (tfModel != null) {
           onRunInference(true);
-          drawTfjsPrediction(tfModel, canvas, image).then(() => {
+          drawTfjsPrediction(tfModel, canvasRef.current, image).then(() => {
             onRunInference(false);
           });
         } else {
@@ -106,21 +111,9 @@ const ImageInput = ({
     };
   };
 
-  const initializeLabel = function (
-    label: HTMLElement,
-    backgroundImage: string
-  ) {
-    label.style.backgroundImage = backgroundImage;
-    label.style.backgroundSize = "100% 100%";
-    label.style.backgroundRepeat = "no-repeat";
-    label.textContent = "";
-  };
-
   const handleChange = function (event: ChangeEvent<FormElement>) {
     event.stopPropagation();
     event.preventDefault();
-
-    const label = document.getElementById(`label-file-upload-${type}`);
 
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -130,7 +123,7 @@ const ImageInput = ({
     reader.addEventListener(
       "load",
       () => {
-        initializeLabel(label, `url(${reader.result})`);
+        initializeLabel(labelRef.current, `url(${reader.result})`);
         drawPrediction(reader);
       },
       false
@@ -138,129 +131,6 @@ const ImageInput = ({
     if (file) {
       reader.readAsDataURL(file);
     }
-  };
-
-  const setLabelTransparency = function (alpha: number) {
-    const label = document.getElementById(`label-file-upload-${type}`);
-    label.style.opacity = `${alpha}`;
-  };
-
-  const setLabelBackgroundColor = function (color: string) {
-    const label = document.getElementById(`label-file-upload-${type}`);
-    label.style.backgroundColor = `${color}`;
-  };
-
-  const handleDragOver = function (event: {
-    stopPropagation: () => void;
-    preventDefault: () => void;
-    dataTransfer: { dropEffect: string };
-  }) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "copy";
-    setLabelTransparency(0.5);
-    setLabelBackgroundColor(`${theme.colors.neutralBorderHover.value}`);
-  };
-
-  const handleDragLeave = function (event: {
-    stopPropagation: () => void;
-    preventDefault: () => void;
-  }) {
-    event.stopPropagation();
-    event.preventDefault();
-    setLabelTransparency(1.0);
-    setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
-  };
-
-  const handleDrop = function (event: {
-    stopPropagation: () => void;
-    preventDefault: () => void;
-    dataTransfer: { files: any };
-  }) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const label = document.getElementById(`label-file-upload-${type}`);
-
-    const files = event.dataTransfer.files;
-    const file = files[0];
-
-    const reader = new FileReader();
-    reader.addEventListener(
-      "load",
-      () => {
-        initializeLabel(label, `url(${reader.result})`);
-        drawPrediction(reader);
-      },
-      false
-    );
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-
-    setLabelTransparency(1.0);
-    setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
-  };
-
-  const labelElement = () => {
-    return (
-      <label
-        htmlFor={`input-file-upload-${type}`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDragEnd={handleDragLeave}
-        onDrop={handleDrop}
-        style={{
-          display: "inline-flex",
-          textAlign: "center",
-        }}
-      >
-        <Card
-          css={{
-            bg: `${theme.colors.neutralLight.value}`,
-          }}
-        >
-          <Card.Body
-            id={`label-file-upload-${type}`}
-            css={{
-              width: "256px",
-              height: "256px",
-              textAlign: "center",
-              verticalAlign: "center",
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "center",
-              flexDirection: "column",
-              "@media (max-width: 620px)": {
-                width: "128px",
-                height: "128px",
-                backgroundSize: "128px 128px",
-              },
-            }}
-          >
-            <Text
-              h3
-              css={{
-                "@media (max-width: 620px)": {
-                  fontSize: "12px",
-                },
-              }}
-            >
-              Upload image
-            </Text>
-            <Text
-              css={{
-                "@media (max-width: 620px)": {
-                  fontSize: "12px",
-                },
-              }}
-            >
-              (Click or Drag/Drop)
-            </Text>
-          </Card.Body>
-        </Card>
-      </label>
-    );
   };
 
   return (
@@ -277,7 +147,12 @@ const ImageInput = ({
 
       {(format == "onnx" && inferenceSession) ||
       (format == "tfjs" && tfModel) ? (
-        labelElement()
+        <ImageInputLabel
+          htmlFor={`input-file-upload-${type}`}
+          onFileUpload={(reader: FileReader) => drawPrediction(reader)}
+          id={`label-file-upload-${type}`}
+          labelRef={labelRef}
+        />
       ) : (
         <Loading size="xl" />
       )}
