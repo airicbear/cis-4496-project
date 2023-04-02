@@ -10,7 +10,7 @@ const Monet2UkiyoePage: NextPage = () => {
       <Model2ModelCard
         title="Author's Monet2Ukiyoe Generator"
         model1Type="author-monet2photo"
-        model2Type="author-monet2photo"
+        model2Type="author-photo2ukiyoe"
         model1URL="/assets/models/authors/monet2photo.onnx"
         model2URL="/assets/models/authors/photo2ukiyoe.onnx"
         model1Format="onnx"
