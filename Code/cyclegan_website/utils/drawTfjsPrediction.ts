@@ -3,7 +3,7 @@ import * as tf from "@tensorflow/tfjs";
 export async function drawTfjsPrediction(
   model: tf.GraphModel,
   canvas: HTMLCanvasElement,
-  image: HTMLImageElement
+  image: HTMLImageElement | HTMLCanvasElement
 ) {
   const input = tf.browser
     .fromPixels(image, 3)
