@@ -17,7 +17,7 @@ const Photo2UkiyoePage: NextPage = () => {
       <ModelCard
         title="Our Photo2Ukiyoe Generator"
         type="our-photo2ukiyoe"
-        modelURL="/assets/models/our_model/photo2ukiyoe/model.json"
+        modelURL="/assets/models/our_model/ukiyoe/photo2painting/model.json"
         format="tfjs"
       />
       <Spacer y={2} />

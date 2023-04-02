@@ -3,14 +3,14 @@ import { NextPage } from "next";
 import AppHeader from "../../components/AppHeader";
 import ModelCard from "../../components/ModelCard";
 
-const Ukiyoe2PhotoPage: NextPage = () => {
+const Cezanne2PhotoPage: NextPage = () => {
   return (
     <Container sm>
       <AppHeader />
       <ModelCard
-        title="Our Ukiyoe2Photo Generator"
-        type="our-ukiyoe2photo"
-        modelURL="/assets/models/our_model/ukiyoe/painting2photo/model.json"
+        title="Our Cezanne2Photo Generator"
+        type="our-cezanne2photo"
+        modelURL="/assets/models/our_model/cezanne/painting2photo/model.json"
         format="tfjs"
       />
       <Spacer y={2} />
@@ -18,4 +18,4 @@ const Ukiyoe2PhotoPage: NextPage = () => {
   );
 };
 
-export default Ukiyoe2PhotoPage;
+export default Cezanne2PhotoPage;

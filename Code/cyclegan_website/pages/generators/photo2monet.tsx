@@ -15,9 +15,16 @@ const Photo2MonetPage: NextPage = () => {
       />
       <Spacer y={2} />
       <ModelCard
-        title="Our Photo2Monet Generator"
+        title="Our Photo2Monet Generator (Competition)"
+        type="our-competition-photo2monet"
+        modelURL="/assets/models/our_model/monet-competition/photo2painting/model.json"
+        format="tfjs"
+      />
+      <Spacer y={2} />
+      <ModelCard
+        title="Our Photo2Monet Generator (Generic)"
         type="our-photo2monet"
-        modelURL="/assets/models/our_model/photo2monet/model.json"
+        modelURL="/assets/models/our_model/monet/photo2painting/model.json"
         format="tfjs"
       />
       <Spacer y={2} />
