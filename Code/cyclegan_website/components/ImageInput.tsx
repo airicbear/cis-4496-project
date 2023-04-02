@@ -12,6 +12,7 @@ import {
   drawOnnxPrediction,
 } from "../utils/drawOnnxPrediction";
 import { drawTfjsPrediction, getTfjsModel } from "../utils/drawTfjsPrediction";
+import { imageToDataUri } from "../utils/imageToDataUri";
 import { initializeLabel } from "../utils/initializeLabel";
 import ImageInputLabel from "./ImageInputLabel";
 
@@ -88,11 +89,13 @@ const ImageInput = ({
       if (format == "onnx") {
         if (inferenceSession != null) {
           onRunInference(true);
-          drawOnnxPrediction(inferenceSession, canvasRef.current, image).then(
-            () => {
-              onRunInference(false);
-            }
-          );
+          drawOnnxPrediction(
+            inferenceSession,
+            canvasRef.current,
+            imageToDataUri(image, 256, 256)
+          ).then(() => {
+            onRunInference(false);
+          });
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }

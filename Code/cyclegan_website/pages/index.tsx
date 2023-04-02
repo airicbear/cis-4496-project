@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import AppHeader from "../components/AppHeader";
-import ModelCard from "../components/ModelCard";
 
 const Home: NextPage = () => {
   return (
@@ -39,6 +38,9 @@ const Home: NextPage = () => {
             <Link href="/generators/vangogh2photo">
               Vangogh2Photo Generators
             </Link>
+            <Spacer y={1} />
+            <Text h4>Painting → Painting</Text>
+            <Link href="/generators/monet2ukiyoe">Monet2Ukiyoe Generators</Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
