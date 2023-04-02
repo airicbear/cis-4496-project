@@ -1,10 +1,12 @@
 import { Col, Container, Row, Text, useTheme } from "@nextui-org/react";
+import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
 import { useEffect, useRef, useState } from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
 } from "../utils/drawOnnxPrediction";
+import { drawTfjsPrediction, getTfjsModel } from "../utils/drawTfjsPrediction";
 import CanvasOutput from "./CanvasOutput";
 import ImageInput from "./ImageInput";
 
@@ -28,6 +30,7 @@ const Model2ModelCard = ({
   model2Format,
 }: Model2ModelCardProps) => {
   const { theme } = useTheme();
+  const [tfModel, setTfModel] = useState(null);
   const [inferenceSession, setInferenceSession] = useState(null);
   const sessionOptions = { executionProviders: ["wasm"] };
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +38,38 @@ const Model2ModelCard = ({
   const canvas1Ref = useRef<HTMLCanvasElement>(null);
   const canvas2Ref = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLLabelElement>(null);
+
+  if (model2Format == "tfjs" && tfModel == null) {
+    const indexedDBURL = `indexeddb://${model2Type}`;
+
+    getTfjsModel(indexedDBURL).then(
+      (model: GraphModel) => {
+        setTfModel(model);
+
+        console.log(
+          `(${model2Type}) Loaded TensorFlow.js model from IndexedDB (${indexedDBURL}).`
+        );
+      },
+      () => {
+        getTfjsModel(model2URL).then(
+          async (model: GraphModel) => {
+            setTfModel(model);
+
+            await model.save(indexedDBURL);
+
+            console.log(
+              `(${model2Type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
+            );
+          },
+          () => {
+            console.error(
+              `(${model2Type}) Failed to load model from ${model2URL}.`
+            );
+          }
+        );
+      }
+    );
+  }
 
   useEffect(() => {
     if (model2Format == "onnx" && inferenceSession == null) {
@@ -77,14 +112,25 @@ const Model2ModelCard = ({
               image.style.borderRadius = `${theme.radii.lg.value}`;
               image.onload = () => {
                 if (result == false) {
-                  drawOnnxPrediction(
-                    inferenceSession,
-                    canvas2Ref.current,
-                    canvas1Ref.current.toDataURL("image/jpeg", 1.0)
-                  ).then(() => {
-                    setIsPredicted(true);
-                    setIsLoading(result);
-                  });
+                  if (model2Format == "onnx") {
+                    drawOnnxPrediction(
+                      inferenceSession,
+                      canvas2Ref.current,
+                      canvas1Ref.current.toDataURL("image/jpeg", 1.0)
+                    ).then(() => {
+                      setIsPredicted(true);
+                      setIsLoading(result);
+                    });
+                  } else if (model2Format == "tfjs") {
+                    drawTfjsPrediction(
+                      tfModel,
+                      canvas2Ref.current,
+                      canvas1Ref.current
+                    ).then(() => {
+                      setIsPredicted(true);
+                      setIsLoading(result);
+                    });
+                  }
                 }
               };
             }}
