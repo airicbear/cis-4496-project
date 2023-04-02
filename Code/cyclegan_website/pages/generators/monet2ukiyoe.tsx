@@ -18,7 +18,7 @@ const Monet2UkiyoePage: NextPage = () => {
       />
       <Spacer y={2} />
       <Model2ModelCard
-        title="Our Monet2Ukiyoe Generator (Competition)"
+        title="Our Monet2Ukiyoe Generator"
         model1Type="our-monet2photo"
         model2Type="our-photo2ukiyoe"
         model1URL="/assets/models/our_model/monet/painting2photo.json"
