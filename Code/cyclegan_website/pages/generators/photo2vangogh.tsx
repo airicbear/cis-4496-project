@@ -14,6 +14,13 @@ const Photo2VangoghPage: NextPage = () => {
         format="onnx"
       />
       <Spacer y={2} />
+      <ModelCard
+        title="Our Photo2Vangogh Generator"
+        type="our-photo2vangogh"
+        modelURL="/assets/models/our_model/vangogh/photo2painting/model.json"
+        format="tfjs"
+      />
+      <Spacer y={2} />
     </Container>
   );
 };

@@ -14,6 +14,13 @@ const Photo2CezannePage: NextPage = () => {
         format="onnx"
       />
       <Spacer y={2} />
+      <ModelCard
+        title="Our Photo2Cezanne Generator"
+        type="our-photo2cezanne"
+        modelURL="/assets/models/our_model/cezanne/photo2painting/model.json"
+        format="tfjs"
+      />
+      <Spacer y={2} />
     </Container>
   );
 };
