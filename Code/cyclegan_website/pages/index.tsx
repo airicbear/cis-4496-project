@@ -33,6 +33,12 @@ const Home: NextPage = () => {
             <Text h4>Painting → Photo</Text>
             <Link href="/generators/monet2photo">Monet2Photo Generators</Link>
             <Link href="/generators/ukiyoe2photo">Ukiyoe2Photo Generators</Link>
+            <Link href="/generators/cezanne2photo">
+              Cezanne2Photo Generators
+            </Link>
+            <Link href="/generators/vangogh2photo">
+              Vangogh2Photo Generators
+            </Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
