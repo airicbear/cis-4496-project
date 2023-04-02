@@ -29,28 +29,16 @@ async function runInference(
   return outputData;
 }
 
-function imageToDataUri(img: HTMLImageElement, width: number, height: number) {
-  let canvas = document.createElement("canvas");
-  let ctx = canvas.getContext("2d");
-
-  canvas.width = width;
-  canvas.height = height;
-
-  ctx.drawImage(img, 0, 0, width, height);
-
-  return canvas.toDataURL("image/jpeg", 1.0);
-}
-
 export async function drawOnnxPrediction(
   inferenceSession: ort.InferenceSession,
   canvas: HTMLCanvasElement,
-  image: HTMLImageElement
+  dataURI: string
 ) {
   try {
     console.log("Converting image to tensor...");
     const imageTensor: ort.Tensor = await (
       ort.Tensor as unknown as ort.TensorFactory
-    ).fromImage(imageToDataUri(image, 256, 256), {
+    ).fromImage(dataURI, {
       tensorFormat: "RGB",
       resizedWidth: 256,
       resizedHeight: 256,
