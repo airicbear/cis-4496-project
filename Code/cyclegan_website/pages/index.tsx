@@ -44,6 +44,9 @@ const Home: NextPage = () => {
             <Link href="/generators/monet2cezanne">
               Monet2Cezanne Generators
             </Link>
+            <Link href="/generators/monet2vangogh">
+              Monet2Vangogh Generators
+            </Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
