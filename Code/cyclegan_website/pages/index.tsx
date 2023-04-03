@@ -63,6 +63,9 @@ const Home: NextPage = () => {
             <Link href="/generators/cezanne2vangogh">
               Cezanne2Vangogh Generators
             </Link>
+            <Link href="/generators/vangogh2monet">
+              Vangogh2Monet Generators
+            </Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
