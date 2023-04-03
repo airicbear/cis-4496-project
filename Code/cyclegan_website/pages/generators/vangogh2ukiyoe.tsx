@@ -11,8 +11,8 @@ const Vangogh2UkiyoePage: NextPage = () => {
         title="Our Vangogh2Ukiyoe Generator"
         model1Type="our-vangogh2photo"
         model2Type="our-photo2ukiyoe"
-        model1URL="/assets/models/our_model/vangogh/painting2photo.json"
-        model2URL="/assets/models/our_model/ukiyoe/photo2painting.json"
+        model1URL="/assets/models/our_model/vangogh/painting2photo/model.json"
+        model2URL="/assets/models/our_model/ukiyoe/photo2painting/model.json"
         model1Format="tfjs"
         model2Format="tfjs"
       />

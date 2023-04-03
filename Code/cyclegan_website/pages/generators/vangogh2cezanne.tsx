@@ -11,8 +11,8 @@ const Vangogh2CezannePage: NextPage = () => {
         title="Our Vangogh2Cezanne Generator"
         model1Type="our-vangogh2photo"
         model2Type="our-photo2cezanne"
-        model1URL="/assets/models/our_model/vangogh/painting2photo.json"
-        model2URL="/assets/models/our_model/cezanne/photo2painting.json"
+        model1URL="/assets/models/our_model/vangogh/painting2photo/model.json"
+        model2URL="/assets/models/our_model/cezanne/photo2painting/model.json"
         model1Format="tfjs"
         model2Format="tfjs"
       />
