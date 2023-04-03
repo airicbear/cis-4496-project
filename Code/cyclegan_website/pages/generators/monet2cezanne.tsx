@@ -21,8 +21,8 @@ const Monet2CezannePage: NextPage = () => {
         title="Our Monet2Cezanne Generator"
         model1Type="our-monet2photo"
         model2Type="our-photo2cezanne"
-        model1URL="/assets/models/our_model/monet/painting2photo.json"
-        model2URL="/assets/models/our_model/cezanne/photo2painting.json"
+        model1URL="/assets/models/our_model/monet/painting2photo/model.json"
+        model2URL="/assets/models/our_model/cezanne/photo2painting/model.json"
         model1Format="tfjs"
         model2Format="tfjs"
       />

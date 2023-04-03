@@ -21,8 +21,8 @@ const Monet2VangoghPage: NextPage = () => {
         title="Our Monet2Vangogh Generator"
         model1Type="our-monet2photo"
         model2Type="our-photo2vangogh"
-        model1URL="/assets/models/our_model/monet/painting2photo.json"
-        model2URL="/assets/models/our_model/vangogh/photo2painting.json"
+        model1URL="/assets/models/our_model/monet/painting2photo/model.json"
+        model2URL="/assets/models/our_model/vangogh/photo2painting/model.json"
         model1Format="tfjs"
         model2Format="tfjs"
       />
