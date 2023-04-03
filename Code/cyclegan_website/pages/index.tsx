@@ -60,6 +60,9 @@ const Home: NextPage = () => {
             <Link href="/generators/cezanne2ukiyoe">
               Cezanne2Ukiyoe Generators
             </Link>
+            <Link href="/generators/cezanne2vangogh">
+              Cezanne2Vangogh Generators
+            </Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
