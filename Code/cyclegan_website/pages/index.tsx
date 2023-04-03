@@ -41,6 +41,9 @@ const Home: NextPage = () => {
             <Spacer y={1} />
             <Text h4>Painting → Painting</Text>
             <Link href="/generators/monet2ukiyoe">Monet2Ukiyoe Generators</Link>
+            <Link href="/generators/monet2cezanne">
+              Monet2Cezanne Generators
+            </Link>
           </Card.Body>
         </Card>
         <Spacer y={1} />
