@@ -1,6 +1,17 @@
+.image-display {
+  border-radius: 16px;
+}
+
+@media (max-width: 955px) {
+  .image-display {
+    width: 171px;
+    height: 171px;
+  }
+}
+
 @media (max-width: 620px) {
-  canvas {
-    width: 128px;
-    height: 128px;
+  .image-display {
+    width: 85px;
+    height: 85px;
   }
 }

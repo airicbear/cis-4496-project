@@ -86,6 +86,7 @@ const Home: NextPage = () => {
             </Link>
           </Card.Body>
         </Card>
+        <Spacer y={2} />
       </Container>
     </>
   );
