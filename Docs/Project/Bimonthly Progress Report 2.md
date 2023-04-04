@@ -202,9 +202,9 @@ Finally, for Van Gogh, the optimal FID score is 109.882316820886 at 120 epochs.
 Our performance should not only be measured by our MiFID and FID scores but also by examining the outputted images.
 One result is displayed below, along with the result from using the author's model weights (10).
 
-<img src="Images/good_example_photo.png" width="200">
-<img src="Images/good_example_ours.png" width="200">
-<img src="Images/good_example_authors.png" width="200">
+<img src="Images/good_example_photo.jpg" width="200">
+<img src="Images/good_example_ours.jpg" width="200">
+<img src="Images/good_example_authors.jpg" width="200">
 
 Figure 7: A photo (left), our generated Monet-style painting of the photo (middle), and a generated Monet-style painting of the photo using the author's model weights (10).
 
@@ -285,57 +285,24 @@ We expect to have a completed Data Report along with a finished Model and Perfor
 
 **References**:
 
-1.  Google Developers. (2022, July 18). _Overview of GAN Structure_.
+1.  Google Developers. (2022, July 18). _Overview of GAN Structure_. Google. Retrieved April 3, 2023, from https://developers.google.com/machine-learning/gan/gan_structure
 
-    > Google. Retrieved April 3, 2023, from
-    > https://developers.google.com/machine-learning/gan/gan_structure
+2.  Haiku Tech Center. (2020, November 1). \*CycleGAN: A GAN architecture for learning unpaired image to image transformations\*. Haiku Tech Center. Retrieved April 3, 2023, from https://www.haikutechcenter.com/2020/11/cyclegan-gan-architecture-for-learning.html
 
-2.  Haiku Tech Center. (2020, November 1). \*CycleGAN: A GAN architecture
+3.  Jang, A., Uzsoy, A. S., & Culliton, P. (2020). _I\'m Something of a Painter Myself_. Kaggle. Retrieved April 3, 2023, from https://www.kaggle.com/competitions/gan-getting-started
 
-    > for learning unpaired image to image transformations\*. Haiku Tech
-    > Center. Retrieved April 3, 2023, from
-    > https://www.haikutechcenter.com/2020/11/cyclegan-gan-architecture-for-learning.html
+4.  LS4GAN Group. (2022, August 9). _LS4GAN/Benchmarking_. GitHub. Retrieved April 3, 2023, from https://github.com/LS4GAN/benchmarking
 
-3.  Jang, A., Uzsoy, A. S., & Culliton, P. (2020). \*I\'m Something of a
+5.  Mack, D. (2019, March 7). _A simple explanation of the Inception Score_. Medium. Retrieved April 3, 2023, from https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a
 
-    > Painter Myself\*. Kaggle. Retrieved April 3, 2023, from
-    > https://www.kaggle.com/competitions/gan-getting-started
+6.  ONNX. (2019). _Open Neural Network Exchange_. ONNX. Retrieved April 3, 2023, from https://onnx.ai/
 
-4.  LS4GAN Group. (2022, August 9). _LS4GAN/Benchmarking_. GitHub.
+7.  Shah, P. (2021, June 3). _Label Smoothing - Make your model less (over)confident_. Medium. Retrieved April 3, 2023, from https://towardsdatascience.com/label-smoothing-make-your-model-less-over-confident-b12ea6f81a9a
 
-    > Retrieved April 3, 2023, from
-    > https://github.com/LS4GAN/benchmarking
+8.  TensorFlow. (2023). _TensorFlow.js: Machine learning for JavaScript developers_. TensorFlow. Retrieved April 3, 2023, from https://www.tensorflow.org/js
 
-5.  Mack, D. (2019, March 7). \*A simple explanation of the Inception
+9.  Wikipedia. (2023, March 25). _Fréchet inception distance_. Wikipedia. Retrieved April 3, 2023, from [https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance](https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance)
 
-    > Score\*. Medium. Retrieved April 3, 2023, from
-    > https://medium.com/octavian-ai/a-simple-explanation-of-the-inception-score-372dff6a8c7a
+10. Zhu, J.-Y. (2023, March). _Junyanz/Pytorch-Cyclegan-and-pix2pix: Image-to-image translation in pytorch_. GitHub. Retrieved April 3, 2023, from https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
 
-6.  ONNX. (2019). _Open Neural Network Exchange_. ONNX. Retrieved April
-
-    > 3, 2023, from https://onnx.ai/
-
-7.  Shah, P. (2021, June 3). \*Label Smoothing - Make your model less
-
-    > (over)confident\*. Medium. Retrieved April 3, 2023, from
-    > https://towardsdatascience.com/label-smoothing-make-your-model-less-over-confident-b12ea6f81a9a
-
-8.  TensorFlow. (2023). \*TensorFlow.js: Machine learning for JavaScript
-
-    > developers\*. TensorFlow. Retrieved April 3, 2023, from
-    > https://www.tensorflow.org/js
-
-9.  Wikipedia. (2023, March 25). _Fréchet inception distance_.
-
-    > Wikipedia. Retrieved April 3, 2023, from
-    > [[https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance]{.underline}](https://en.wikipedia.org/wiki/Fr%c3%a9chet_inception_distance)
-
-10. Zhu, J.-Y. (2023, March). \*Junyanz/Pytorch-Cyclegan-and-pix2pix:
-
-    > Image-to-image translation in pytorch\*. GitHub. Retrieved April 3,
-    > 2023, from https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
-
-11. Zhu, J.-Y., Park, T., Isola, P., & Efros, A. A. (2020, August 24).
-    > _Unpaired Image-To-Image Translation using Cycle-Consistent
-    > Adversarial Networks_. arXiv.org. Retrieved April 3, 2023, from
-    > https://arxiv.org/abs/1703.10593
+11. Zhu, J.-Y., Park, T., Isola, P., & Efros, A. A. (2020, August 24). _Unpaired Image-To-Image Translation using Cycle-Consistent Adversarial Networks_. arXiv.org. Retrieved April 3, 2023, from https://arxiv.org/abs/1703.10593
