@@ -33,9 +33,11 @@ const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
         position: "relative",
         width: "256px",
         padding: "0",
+        "@media (max-width: 955px)": {
+          width: "171px",
+        },
         "@media (max-width: 620px)": {
-          width: "128px",
-          backgroundSize: "128px 128px",
+          width: "85px",
         },
       }}
     >
@@ -48,8 +50,12 @@ const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
             bottom: "16px",
             left: "75px",
             zIndex: "5",
+            "@media (max-width: 955px)": {
+              left: "34px",
+            },
             "@media (max-width: 620px)": {
-              left: "11px",
+              left: "2.5px",
+              fontSize: "8px",
             },
           }}
           onClick={handleDownloadButtonClicked}
@@ -62,6 +68,7 @@ const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
       <canvas
         ref={canvasRef}
         id={type}
+        className="image-display"
         width={256}
         height={256}
         style={{

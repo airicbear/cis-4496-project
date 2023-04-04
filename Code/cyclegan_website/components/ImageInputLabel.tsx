@@ -90,18 +90,25 @@ const ImageInputLabel = ({
             justifyContent: "center",
             alignContent: "center",
             flexDirection: "column",
+            "@media (max-width: 955px)": {
+              width: "171px",
+              height: "171px",
+              fontSize: "16px",
+            },
             "@media (max-width: 620px)": {
-              width: "128px",
-              height: "128px",
-              backgroundSize: "128px 128px",
+              width: "85px",
+              height: "85px",
             },
           }}
         >
           <Text
             h3
             css={{
+              "@media (max-width: 955px)": {
+                fontSize: "16px",
+              },
               "@media (max-width: 620px)": {
-                fontSize: "12px",
+                fontSize: "8px",
               },
             }}
           >
@@ -109,8 +116,11 @@ const ImageInputLabel = ({
           </Text>
           <Text
             css={{
-              "@media (max-width: 620px)": {
+              "@media (max-width: 955px)": {
                 fontSize: "12px",
+              },
+              "@media (max-width: 620px)": {
+                fontSize: "6px",
               },
             }}
           >

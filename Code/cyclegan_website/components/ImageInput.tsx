@@ -80,8 +80,6 @@ const ImageInput = ({
   });
 
   const drawPrediction = async (reader: FileReader) => {
-    canvasRef.current.style.borderRadius = `${theme.radii.lg.value}`;
-
     const image = new Image();
     image.src = reader.result.toString();
     image.style.borderRadius = `${theme.radii.lg.value}`;
