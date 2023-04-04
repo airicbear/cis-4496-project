@@ -52,9 +52,9 @@ As a step toward better understanding our data, we have created a script to plot
 We will compare the RGB distribution amongst images as well as between photos and paintings to determine how to modify our model.
 Figure 2 shows a plot of the RGB distribution for the first 100 Monet paintings, the first 100 photos, and the first 100 photo-to-Monet images (the zeros are excluded since they distort the plot)---we observe that when generating the photo-to-Monet images, the images tend toward the RGB distribution of the Monet paintings as expected.
 
-<img src="Images/monet_rgb_distribution.png" width="200">
-<img src="Images/photo_rgb_distribution.png" width="200">
-<img src="Images/photo2monet_rgb_distribution.png" width="200">
+[<img src="Images/monet_rgb_distribution.png" width="200">](Images/monet_rgb_distribution.png)
+[<img src="Images/photo_rgb_distribution.png" width="200">](Images/photo_rgb_distribution.png)
+[<img src="Images/photo2monet_rgb_distribution.png" width="200">](Images/photo2monet_rgb_distribution.png)
 
 Figure 2: RGB distribution of the first 100 Monet paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Monet images (right), with zeros excluded.
 
@@ -153,9 +153,9 @@ The data preparation and label smoothing steps described in the model section le
 This score varies slightly due to the random nature of model parameter initialization.
 One result is displayed below, along with a result from another top-performing competitor.
 
-<img src="Images/cloud_photo.png" width="200"/>
-<img src="Images/our_cloud_photo2monet.png" width="200">
-<img src="Images/best_cloud_photo2monet.png" width="200">
+[<img src="Images/cloud_photo.png" width="256"/>](Images/cloud_photo.png)
+[<img src="Images/our_cloud_photo2monet.png" width="256">](Images/our_cloud_photo2monet.png)
+[<img src="Images/best_cloud_photo2monet.png" width="256">](Images/best_cloud_photo2monet.png)
 
 Figure 5: A photo (left), our generated Monet-style painting of the photo (middle), and a generated Monet-style painting of the photo by a top-performing competitor.
 
