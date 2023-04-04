@@ -70,9 +70,9 @@ Figure 2 shows a plot of the RGB distribution for the first 100 Monet paintings,
 Therefore, these distributions serve as a small sanity check that our model is transferring the color/style well.
 The RGB distribution of individual images can be examined on our website, as described later.
 
-<img src="Images/monet_rgb_distribution.png" width="200">
-<img src="Images/photo_rgb_distribution.png" width="200">
-<img src="Images/photo2monet_rgb_distribution.png" width="200">
+[<img src="Images/monet_rgb_distribution.png" width="200">](Images/monet_rgb_distribution.png)
+[<img src="Images/photo_rgb_distribution.png" width="200">](Images/photo_rgb_distribution.png)
+[<img src="Images/photo2monet_rgb_distribution.png" width="200">](Images/photo2monet_rgb_distribution.png)
 
 Figure 2: RGB distribution of the first 100 Monet paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Monet images (right), with zeros excluded.
 
@@ -202,9 +202,9 @@ Finally, for Van Gogh, the optimal FID score is 109.882316820886 at 120 epochs.
 Our performance should not only be measured by our MiFID and FID scores but also by examining the outputted images.
 One result is displayed below, along with the result from using the author's model weights (10).
 
-<img src="Images/good_example_photo.jpg" width="200">
-<img src="Images/good_example_ours.jpg" width="200">
-<img src="Images/good_example_authors.jpg" width="200">
+[<img src="Images/good_example_photo.jpg" width="256">](Images/good_example_photo.jpg)
+[<img src="Images/good_example_ours.jpg" width="256">](Images/good_example_ours.jpg)
+[<img src="Images/good_example_authors.jpg" width="256">](Images/good_example_authors.jpg)
 
 Figure 7: A photo (left), our generated Monet-style painting of the photo (middle), and a generated Monet-style painting of the photo using the author's model weights (10).
 
@@ -213,9 +213,9 @@ Our sky appears to have more blur in some areas, while the author's sky is more 
 The author's buildings also have deeper color shades than ours, but both seem to look like Monet-ified versions of the original image.
 Figure 8 below demonstrates a bad example output.
 
-<img src="Images/bad_example_photo.png" width="200">
-<img src="Images/bad_example_ours.png" width="200">
-<img src="Images/bad_example_authors.png" width="200">
+[<img src="Images/bad_example_photo.png" width="256">](Images/bad_example_photo.png)
+[<img src="Images/bad_example_ours.png" width="256">](Images/bad_example_ours.png)
+[<img src="Images/bad_example_authors.png" width="256">](Images/bad_example_authors.png)
 
 Figure 8: A photo (left), our generated Monet-style painting of the photo (middle), and a generated Monet-style painting of the photo using the author's model weights (10).
 
