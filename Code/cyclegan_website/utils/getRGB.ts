@@ -1,4 +1,5 @@
 export const getRGB = (img: HTMLImageElement) => {
+  console.log("Calling getRGB()");
   const rD = {};
   const gD = {};
   const bD = {};
@@ -21,6 +22,13 @@ export const getRGB = (img: HTMLImageElement) => {
     gD[iD[i + 1]]++;
     bD[iD[i + 2]]++;
   }
+  console.log({ rD, gD, bD });
 
   return { rD, gD, bD };
+};
+
+export const getRGBFrequency = (data) => {
+  return Object.keys(data).map((key) => {
+    return { freq: data[key], idx: +key };
+  });
 };
