@@ -77,10 +77,25 @@ const PlotRGBDistributionPage: NextPage = () => {
     svg
       .append("path")
       .datum(density)
+      .attr("fill", color)
+      .attr("opacity", ".5")
+      .attr(
+        "d",
+        d3
+          .area()
+          .curve(d3.curveBasis)
+          .x((d) => x(d[0]))
+          .y1((d) => y(d[1]))
+          .y0(height)
+      );
+
+    svg
+      .append("path")
+      .datum(density)
       .attr("fill", "none")
-      .attr("opacity", ".8")
+      .attr("opacity", "1")
       .attr("stroke", color)
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 1)
       .attr("stroke-linejoin", "round")
       .attr(
         "d",
