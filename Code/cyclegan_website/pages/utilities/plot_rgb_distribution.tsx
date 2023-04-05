@@ -13,11 +13,10 @@ import { NextPage } from "next";
 import { ChangeEvent, useRef } from "react";
 import AppHeader from "../../components/AppHeader";
 import ImageInputLabel from "../../components/ImageInputLabel";
+import { getRGB } from "../../utils/getRGB";
 import { initializeLabel } from "../../utils/initializeLabel";
 
 const PlotRGBDistributionPage: NextPage = () => {
-  const { theme } = useTheme();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLLabelElement>(null);
 
   // Function to compute density
@@ -53,19 +52,19 @@ const PlotRGBDistributionPage: NextPage = () => {
     });
 
     // Add the x axis
-    var x = d3.scaleLinear().domain([0, 255]).range([0, width]);
+    const x = d3.scaleLinear().domain([0, 255]).range([0, width]);
     svg
       .append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
     // Add the y axis
-    var y = d3.scaleLinear().range([height, 0]).domain([0, 0.01]);
+    const y = d3.scaleLinear().range([height, 0]).domain([0, 0.01]);
     svg.append("g").call(d3.axisLeft(y));
 
     // Compute kernel density estimation
-    var kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(40));
-    var density = kde(
+    const kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(40));
+    const density = kde(
       processedData.map(function (d) {
         return d.freq;
       })
@@ -108,28 +107,7 @@ const PlotRGBDistributionPage: NextPage = () => {
   };
 
   const calcAndGraph = (img: HTMLImageElement) => {
-    const rD = {};
-    const gD = {};
-    const bD = {};
-
-    const cv = canvasRef.current;
-    const ctx = cv.getContext("2d");
-    cv.width = img.width;
-    cv.height = img.height;
-    ctx.drawImage(img, 0, 0);
-    const iD = ctx.getImageData(0, 0, cv.width, cv.height).data;
-
-    for (let i = 0; i < 256; i++) {
-      rD[i] = 0;
-      gD[i] = 0;
-      bD[i] = 0;
-    }
-
-    for (let i = 0; i < iD.length; i += 4) {
-      rD[iD[i]]++;
-      gD[iD[i + 1]]++;
-      bD[iD[i + 2]]++;
-    }
+    const { rD, gD, bD } = getRGB(img);
 
     // Set the dimensions and margins of the graph
     const margin = { top: 30, right: 30, bottom: 50, left: 70 };
@@ -182,7 +160,6 @@ const PlotRGBDistributionPage: NextPage = () => {
       "load",
       () => {
         initializeLabel(labelRef.current, `url(${reader.result})`);
-        canvasRef.current.style.borderRadius = `${theme.radii.lg.value}`;
         image.src = reader.result as string;
       },
       false
@@ -205,7 +182,6 @@ const PlotRGBDistributionPage: NextPage = () => {
         <Row align="center">
           <Col css={{ textAlign: "center" }}>
             <Text>Input</Text>
-            <canvas ref={canvasRef} style={{ display: "none" }} />
           </Col>
         </Row>
         <Row align="center">
@@ -222,9 +198,6 @@ const PlotRGBDistributionPage: NextPage = () => {
               ></Input>
               <ImageInputLabel
                 htmlFor={"input-file-upload"}
-                onFileUpload={() => {
-                  canvasRef.current.style.borderRadius = `${theme.radii.lg.value}`;
-                }}
                 id={"label-input-rgb-distribution"}
                 labelRef={labelRef}
                 imageOnLoad={(image) => {
