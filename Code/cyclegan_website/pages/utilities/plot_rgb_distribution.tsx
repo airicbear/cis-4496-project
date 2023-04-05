@@ -4,6 +4,7 @@ import {
   FormElement,
   Input,
   Row,
+  Spacer,
   Text,
   useTheme,
 } from "@nextui-org/react";
@@ -76,10 +77,25 @@ const PlotRGBDistributionPage: NextPage = () => {
     svg
       .append("path")
       .datum(density)
+      .attr("fill", color)
+      .attr("opacity", ".5")
+      .attr(
+        "d",
+        d3
+          .area()
+          .curve(d3.curveBasis)
+          .x((d) => x(d[0]))
+          .y1((d) => y(d[1]))
+          .y0(height)
+      );
+
+    svg
+      .append("path")
+      .datum(density)
       .attr("fill", "none")
-      .attr("opacity", ".8")
+      .attr("opacity", "1")
       .attr("stroke", color)
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 1)
       .attr("stroke-linejoin", "round")
       .attr(
         "d",
@@ -116,7 +132,7 @@ const PlotRGBDistributionPage: NextPage = () => {
     }
 
     // Set the dimensions and margins of the graph
-    const margin = { top: 30, right: 30, bottom: 30, left: 50 };
+    const margin = { top: 30, right: 30, bottom: 50, left: 70 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -130,6 +146,21 @@ const PlotRGBDistributionPage: NextPage = () => {
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg
+      .append("text")
+      .attr("text-anchor", "end")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left + 20)
+      .attr("x", -margin.top)
+      .text("Density");
+
+    svg
+      .append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width)
+      .attr("y", height + margin.top + 20)
+      .text("RGB value");
 
     plotDensity(width, height, svg, rD, "red");
     plotDensity(width, height, svg, gD, "green");
@@ -208,6 +239,7 @@ const PlotRGBDistributionPage: NextPage = () => {
             <Container id="my_dataviz"></Container>
           </Col>
         </Row>
+        <Spacer y={2} />
       </Container>
     </Container>
   );
