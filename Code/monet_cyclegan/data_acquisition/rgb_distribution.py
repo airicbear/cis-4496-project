@@ -1,5 +1,5 @@
 import os
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -110,7 +110,8 @@ def plot_rgb_density(red_channel: tf.Tensor,
                      exclude_zeros: bool = True,
                      title: str = None,
                      xlabel: str = None,
-                     ylabel: str = None) -> None:
+                     ylabel: str = None,
+                     with_brightness: bool = True) -> None:
     """Plot the RGB distribution as a density plot.
 
     Args:
@@ -121,20 +122,39 @@ def plot_rgb_density(red_channel: tf.Tensor,
         title: The title of the plot.
         xlabel: The label of the x-axis.
         ylabel: The label of the y-axis.
+        with_brightness: Plot the brightness if True.
     """
+
+    palette = ['red', 'green', 'blue']
+    legend = ['blue', 'green', 'red']
+    data = [red_channel, green_channel, blue_channel]
+
+    brightness: Optional[tf.Tensor] = None
+    if with_brightness:
+        brightness = (tf.math.scalar_mul(0.2126, red_channel)
+                      + tf.math.scalar_mul(0.7152, green_channel)
+                      + tf.math.scalar_mul(0.0722, blue_channel))
+
+        palette.append('black')
+        legend.insert(0, 'brightness')
+        data.append(brightness)
 
     if exclude_zeros:
         red_channel = red_channel[red_channel != 0]
         green_channel = green_channel[green_channel != 0]
         blue_channel = blue_channel[blue_channel != 0]
+        data = [red_channel, green_channel, blue_channel]
+        if brightness is not None:
+            brightness = brightness[brightness != 0]
+            data.append(brightness)
 
-    palette = ['red', 'green', 'blue']
-    sns.displot(data=[red_channel, green_channel, blue_channel],
-                palette=sns.color_palette(palette, 3),
+    sns.displot(data=data,
+                palette=sns.color_palette(palette, len(palette)),
                 kind='kde',
                 fill=True,
                 legend=False)
-    plt.legend(['blue', 'green', 'red'])
+
+    plt.legend(legend)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
@@ -148,16 +168,19 @@ def plot_rgb_distribution(input_path: str,
                           title: str,
                           xlabel: str,
                           ylabel: str,
-                          exclude_zeros: bool) -> None:
+                          exclude_zeros: bool,
+                          with_brightness: bool) -> None:
     """Plot the RGB distribution of given image(s).
 
     Args:
         input_path: The path of the image(s).
         ext: The file extension of the image(s).
-        bins: Number of bins.
         num: The number of images to use.
         title: The title of the plot.
+        xlabel: The label of the x-axis.
+        ylabel: The label of the y-axis.
         exclude_zeros: Exclude zeros if True.
+        with_brightness: Plot brightness if True.
     """
 
     if os.path.isdir(input_path) and ext == 'tfrec':
@@ -171,7 +194,12 @@ def plot_rgb_distribution(input_path: str,
                                                        height=IMAGE_SIZE[1],
                                                        num_images=count_images)
 
-        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b,
+                         xlabel=xlabel,
+                         ylabel=ylabel,
+                         title=title,
+                         exclude_zeros=exclude_zeros,
+                         with_brightness=with_brightness)
 
 
     elif os.path.isdir(input_path) and ext == 'jpg':
@@ -184,7 +212,12 @@ def plot_rgb_distribution(input_path: str,
                                                   height=IMAGE_SIZE[1],
                                                   num_images=count_images)
 
-        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b,
+                         xlabel=xlabel,
+                         ylabel=ylabel,
+                         title=title,
+                         exclude_zeros=exclude_zeros,
+                         with_brightness=with_brightness)
 
     elif os.path.isfile(input_path):
         image = read_image(path=input_path,

@@ -16,6 +16,9 @@ def main():
     parser.add_argument('--exclude-zeros', action='store_true')
     parser.add_argument('--include-zeros', dest='exclude_zeros', action='store_false')
     parser.set_defaults(exclude_zeros=True)
+    parser.add_argument('--with-brightness', action='store_true')
+    parser.add_argument('--without-brightness', dest='with_brightness', action='store_false')
+    parser.set_defaults(with_brightness=True)
     parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
     args = parser.parse_args()
 
@@ -35,7 +38,8 @@ def main():
                           title=title,
                           xlabel=args.xlabel,
                           ylabel=args.ylabel,
-                          exclude_zeros=args.exclude_zeros)
+                          exclude_zeros=args.exclude_zeros,
+                          with_brightness=args.with_brightness)
 
 
 if __name__ == '__main__':
