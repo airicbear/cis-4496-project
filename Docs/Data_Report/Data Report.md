@@ -46,7 +46,7 @@ We also ran into some time and memory limits when trying to implement the techni
 The research paper that introduced the DiffAugment technique discusses that it should be used for "vanilla" GANs instead of GANs used for image style transfer.
 Instead of using DiffAugment which augments the images in each training step, we have opted to augment all the images, including Monet paintings and photos, through randomly resizing, cropping, rotating (by a multiple of 90 degrees), and flipping the images before training even begins.
 
-[](../Project/Images/image_augmentation.png)
+![](../Project/Images/image_augmentation.png)
 
 Figure 1: Examples of augmented images using resizing, cropping, rotation, and flipping
 
