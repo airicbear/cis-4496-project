@@ -88,26 +88,26 @@ This is calculated by the following formula: brightness = 0.2126R + 0.7152G + 0.
 Viewing the brightness distribution provides an additional way of analyzing our data and validating our results.
 The RGB distribution of individual images can be examined on our website, as described later.
 
-[<img src="../Project/Images/monet_photo_rgb.png" width="256" height="256">](../Project/Images/monet_photo_rgb.png)
 [<img src="../Project/Images/monet_painting_rgb.png" width="256" height="256">](../Project/Images/monet_painting_rgb.png)
+[<img src="../Project/Images/monet_photo_rgb.png" width="256" height="256">](../Project/Images/monet_photo_rgb.png)
 [<img src="../Project/Images/monet_generated_rgb.png" width="256" height="256">](../Project/Images/monet_generated_rgb.png)
 
 Figure 2: RGB distribution of the first 100 Monet paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Monet images with our generic model (right), with zeros excluded (3)
 
-[<img src="../Project/Images/ukiyoe_photo_rgb.png" width="256" height="256">](../Project/Images/ukiyoe_photo_rgb.png)
 [<img src="../Project/Images/ukiyoe_painting_rgb.png" width="256" height="256">](../Project/Images/ukiyoe_painting_rgb.png)
+[<img src="../Project/Images/ukiyoe_photo_rgb.png" width="256" height="256">](../Project/Images/ukiyoe_photo_rgb.png)
 [<img src="../Project/Images/ukiyoe_generated_rgb.png" width="256" height="256">](../Project/Images/ukiyoe_generated_rgb.png)
 
 Figure 3: RGB Distribution of the first 100 Ukiyo-e paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Ukiyo-e images (right), with zeros excluded (3)
 
-[<img src="../Project/Images/cezanne_photo_rgb.png" width="256" height="256">](../Project/Images/cezanne_photo_rgb.png)
 [<img src="../Project/Images/cezanne_painting_rgb.png" width="256" height="256">](../Project/Images/cezanne_painting_rgb.png)
+[<img src="../Project/Images/cezanne_photo_rgb.png" width="256" height="256">](../Project/Images/cezanne_photo_rgb.png)
 [<img src="../Project/Images/cezanne_generated_rgb.png" width="256" height="256">](../Project/Images/cezanne_generated_rgb.png)
 
 Figure 4: RGB Distribution of the first 100 Cezanne Paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Cezanne images (right), with zeroes excluded (3)
 
-[<img src="../Project/Images/vangogh_photo_rgb.png" width="256" height="256">](../Project/Images/vangogh_photo_rgb.png)
 [<img src="../Project/Images/vangogh_painting_rgb.png" width="256" height="256">](../Project/Images/vangogh_painting_rgb.png)
+[<img src="../Project/Images/vangogh_photo_rgb.png" width="256" height="256">](../Project/Images/vangogh_photo_rgb.png)
 [<img src="../Project/Images/vangogh_generated_rgb.png" width="256" height="256">](../Project/Images/vangogh_generated_rgb.png)
 
 Figure 5: RGB Distribution of the first 100 Van Gogh Paintings (left), the first 100 photos (middle), and the first 100 generated photo-to-Van Gogh images (right), with zeroes excluded (3)
