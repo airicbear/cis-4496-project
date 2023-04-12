@@ -139,7 +139,7 @@ const ImageInput = ({
       <Input
         type="file"
         id={`input-file-upload-${type}`}
-        accept=".jpg, .jpeg, .png"
+        accept="image/*"
         onChange={handleChange}
         css={{
           display: "none",
