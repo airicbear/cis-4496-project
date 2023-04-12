@@ -3,7 +3,6 @@ import os
 import tensorflow as tf
 
 from .augment import save_augmented_image
-from ..consts import IMAGE_SIZE, CHANNELS
 from ..utils import random_number, read_image, save_image, tensor_to_image
 
 
@@ -48,10 +47,7 @@ def add_train_to_test(jpg_train_dir: str,
                                      output_dir=jpg_test_dir,
                                      apply_crop=False)
             else:
-                image = read_image(path=input_path,
-                                   width=IMAGE_SIZE[0],
-                                   height=IMAGE_SIZE[1],
-                                   channels=CHANNELS)[0]
+                image = read_image(path=input_path)[0]
 
                 image = tensor_to_image(image)
 
@@ -62,4 +58,3 @@ def add_train_to_test(jpg_train_dir: str,
                 save_image(image=image, output_path=output_path)
 
             indexes_already_used.add(random_index_candidate)
-

@@ -6,8 +6,8 @@ import numpy as np
 import seaborn as sns
 import tensorflow as tf
 
-from ..consts import IMAGE_SIZE, CHANNELS
-from ..utils import read_image, tensor_to_image, read_tfrecorddataset, get_filenames, count_tfrec_items
+from ..consts import IMAGE_SIZE
+from ..utils import read_image, tensor_to_image, read_tfrecorddataset, get_filenames, count_tfrec_items, get_image_info
 
 
 def get_image_rgb_distribution(image: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
@@ -25,6 +25,10 @@ def get_image_rgb_distribution(image: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor, 
     red_channel = tf.reshape(tensor=image[:, :, 0], shape=[-1])
     green_channel = tf.reshape(tensor=image[:, :, 1], shape=[-1])
     blue_channel = tf.reshape(tensor=image[:, :, 2], shape=[-1])
+
+    red_channel = tf.cast(red_channel, tf.float64)
+    green_channel = tf.cast(green_channel, tf.float64)
+    blue_channel = tf.cast(blue_channel, tf.float64)
 
     return red_channel, green_channel, blue_channel
 
@@ -50,10 +54,7 @@ def get_jpg_folder_rgb_distribution(filenames: List[str],
     blue_channel = np.zeros(shape=(num_images * width * height,))
 
     for i, filename in enumerate(filenames):
-        image = read_image(path=filename,
-                           width=IMAGE_SIZE[0],
-                           height=IMAGE_SIZE[1],
-                           channels=CHANNELS)[0]
+        image = read_image(path=filename)[0]
 
         r, g, b = get_image_rgb_distribution(image)
         start_index = r.shape[0] * i
@@ -128,7 +129,6 @@ def plot_rgb_density(red_channel: tf.Tensor,
     palette = ['red', 'green', 'blue']
     legend = ['blue', 'green', 'red']
     data = [red_channel, green_channel, blue_channel]
-
     brightness: Optional[tf.Tensor] = None
     if with_brightness:
         brightness = (tf.math.scalar_mul(0.2126, red_channel)
@@ -185,14 +185,17 @@ def plot_rgb_distribution(input_path: str,
 
     if os.path.isdir(input_path) and ext == 'tfrec':
         filenames = get_filenames(image_dir=input_path, ext='tfrec')
-        count_images = count_tfrec_items(tfrec_filenames=filenames)
         images = read_tfrecorddataset(filenames=filenames)
         if num >= 0:
             images = images.take(num)
+            num_images = num
+        else:
+            num_images = count_tfrec_items(tfrec_filenames=filenames)
+
         r, g, b = get_tfrecorddataset_rgb_distribution(images=images,
                                                        width=IMAGE_SIZE[0],
                                                        height=IMAGE_SIZE[1],
-                                                       num_images=count_images)
+                                                       num_images=num_images)
 
         plot_rgb_density(r, g, b,
                          xlabel=xlabel,
@@ -201,15 +204,15 @@ def plot_rgb_distribution(input_path: str,
                          exclude_zeros=exclude_zeros,
                          with_brightness=with_brightness)
 
-
     elif os.path.isdir(input_path) and ext == 'jpg':
         filenames = get_filenames(image_dir=input_path, ext='jpg')
         if num >= 0:
             filenames = filenames[:num]
+        width, height, channels = get_image_info(filenames[0])
         count_images = len(filenames)
         r, g, b = get_jpg_folder_rgb_distribution(filenames=filenames,
-                                                  width=IMAGE_SIZE[0],
-                                                  height=IMAGE_SIZE[1],
+                                                  width=width,
+                                                  height=height,
                                                   num_images=count_images)
 
         plot_rgb_density(r, g, b,
@@ -220,11 +223,13 @@ def plot_rgb_distribution(input_path: str,
                          with_brightness=with_brightness)
 
     elif os.path.isfile(input_path):
-        image = read_image(path=input_path,
-                           width=IMAGE_SIZE[0],
-                           height=IMAGE_SIZE[1],
-                           channels=CHANNELS)[0]
+        image = read_image(path=input_path)[0]
 
         r, g, b = get_image_rgb_distribution(image)
 
-        plot_rgb_density(r, g, b, xlabel=xlabel, ylabel=ylabel, title=title, exclude_zeros=exclude_zeros)
+        plot_rgb_density(r, g, b,
+                         xlabel=xlabel,
+                         ylabel=ylabel,
+                         title=title,
+                         exclude_zeros=exclude_zeros,
+                         with_brightness=with_brightness)

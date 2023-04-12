@@ -6,7 +6,7 @@ import zipfile
 from argparse import Namespace
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import cv2
 import numpy as np
@@ -42,21 +42,35 @@ def decode_image(image: tf.Tensor,
     return image
 
 
-def read_image(path: str,
-               width: int,
-               height: int,
-               channels: int) -> tf.Tensor:
+def get_image_info(path: str) -> Tuple[int, int, int]:
+    """Get metadata information from an image.
+
+    Args:
+        path: Path of the image.
+
+    Returns:
+        A tuple of the image's width, height, and number of channels.
+    """
+
+    pillow_image = Image.open(path)
+    width = pillow_image.width
+    height = pillow_image.height
+    channels = len(pillow_image.getbands())
+
+    return width, height, channels
+
+
+def read_image(path: str) -> tf.Tensor:
     """Read and decode an image file to an float32 `Tensor`
 
     Args:
         path: Path of the image.
-        width: The width of the decoded image.
-        height: The height of the decoded image.
-        channels: Number of color channels for the decoded image.
 
     Returns:
         The image decoded as an float32 `Tensor`.
     """
+
+    width, height, channels = get_image_info(path)
 
     image = tf.io.read_file(path)
     image = decode_image(image, width, height, channels)
