@@ -99,7 +99,7 @@ const PlotRGBDistributionPage: NextPage = () => {
               <Input
                 type="file"
                 id={"input-file-upload"}
-                accept=".jpg, .jpeg, .png"
+                accept="image/*"
                 onChange={handleChange}
                 css={{
                   display: "none",
