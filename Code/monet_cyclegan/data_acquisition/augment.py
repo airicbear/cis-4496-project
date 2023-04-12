@@ -126,10 +126,7 @@ def save_augmented_image(input_path: str,
     if not os.path.isfile(input_path):
         raise FileNotFoundError(f'Could not find file "{input_path}".')
 
-    image = read_image(path=input_path,
-                       width=IMAGE_SIZE[0],
-                       height=IMAGE_SIZE[1],
-                       channels=CHANNELS)[0]
+    image = read_image(path=input_path)[0]
 
     processed_image = augment_image(image=image,
                                     apply_crop=apply_crop,
@@ -202,10 +199,7 @@ def save_augmented_images(input_dir: str,
         make_directory(f'{input_dir}-augmented')
 
         for i, filename in enumerate(get_filenames(image_dir=input_dir, ext=input_ext)):
-            image = read_image(path=filename,
-                               width=IMAGE_SIZE[0],
-                               height=IMAGE_SIZE[1],
-                               channels=CHANNELS)[0]
+            image = read_image(path=filename)[0]
 
             processed_image = augment_image(image,
                                             apply_crop=apply_crop,

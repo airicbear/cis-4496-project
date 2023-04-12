@@ -6,7 +6,6 @@ import os
 import shutil
 import sys
 
-from ..consts import IMAGE_SIZE, CHANNELS
 from ..modeling.model import CycleGan
 from ..modeling.predict import translate_image
 from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, tensor_to_image
@@ -28,10 +27,7 @@ def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -
     if not os.path.isfile(input_path):
         raise FileNotFoundError(f'Could not find file "{input_path}".')
 
-    image = read_image(path=input_path,
-                       width=IMAGE_SIZE[0],
-                       height=IMAGE_SIZE[1],
-                       channels=CHANNELS)
+    image = read_image(path=input_path)
 
     generated_image = translate_image(cyclegan_model=cyclegan_model,
                                       image=image)
