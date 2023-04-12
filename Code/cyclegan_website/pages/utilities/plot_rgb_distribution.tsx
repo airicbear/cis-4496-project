@@ -34,16 +34,24 @@ const PlotRGBDistributionPage: NextPage = () => {
       height,
       margin,
       "RGB Value",
-      "Density"
+      "Frequency"
     );
 
     const { rD, gD, bD } = getRGB(img);
     const rData = getRGBFrequency(rD);
     const gData = getRGBFrequency(gD);
     const bData = getRGBFrequency(bD);
-    plotDensity(width, height, svg, rData, "red");
-    plotDensity(width, height, svg, gData, "green");
-    plotDensity(width, height, svg, bData, "blue");
+    const rDataArray = rData.map<[number, number]>((d) => [d.idx, d.freq]);
+    const gDataArray = gData.map<[number, number]>((d) => [d.idx, d.freq]);
+    const bDataArray = bData.map<[number, number]>((d) => [d.idx, d.freq]);
+    const rFreq = rData.map<number>((d) => d.freq);
+    const gFreq = gData.map<number>((d) => d.freq);
+    const bFreq = bData.map<number>((d) => d.freq);
+    const totalFreq = rFreq.concat(gFreq).concat(bFreq);
+    const maxFreq = Math.max(...totalFreq);
+    plotDensity(width, height, svg, rDataArray, "red", maxFreq);
+    plotDensity(width, height, svg, gDataArray, "green", maxFreq);
+    plotDensity(width, height, svg, bDataArray, "blue", maxFreq);
   };
 
   const handleChange = function (event: ChangeEvent<FormElement>) {
