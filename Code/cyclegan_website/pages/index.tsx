@@ -1,13 +1,4 @@
-import {
-  Col,
-  Collapse,
-  Container,
-  Grid,
-  Link,
-  Row,
-  Spacer,
-  Text,
-} from "@nextui-org/react";
+import { Collapse, Container, Grid } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppHeader from "../components/AppHeader";
