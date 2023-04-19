@@ -2,6 +2,8 @@
 
 This folder hosts the documentation for the project.
 
+### Files/Folders
+
 - `Project` - Project-specific documentation, including the project charter and bimonthly progress reports.
 
 - `Model` - Documentation for each iteration of our model, including demo presentations.
