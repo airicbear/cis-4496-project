@@ -2,6 +2,7 @@ import { Col, Container, Row, Text } from "@nextui-org/react";
 import { useRef, useState } from "react";
 import CanvasOutput from "./CanvasOutput";
 import ImageInput from "./ImageInput";
+import ImageInputTitle from "./ImageInputTitle";
 
 interface ModelCardProps {
   title: string;
@@ -13,6 +14,7 @@ interface ModelCardProps {
 const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPredicted, setIsPredicted] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLLabelElement>(null);
 
@@ -23,7 +25,7 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
       </Row>
       <Row align="center">
         <Col css={{ textAlign: "center" }}>
-          <Text>Input</Text>
+          <ImageInputTitle />
         </Col>
         <Col span={1}></Col>
         <Col css={{ textAlign: "center" }}>
