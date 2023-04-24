@@ -9,6 +9,7 @@ import {
 import { drawTfjsPrediction, getTfjsModel } from "../utils/drawTfjsPrediction";
 import CanvasOutput from "./CanvasOutput";
 import ImageInput from "./ImageInput";
+import ImageInputTitle from "./ImageInputTitle";
 
 interface Model2ModelCardProps {
   title: string;
@@ -89,7 +90,7 @@ const Model2ModelCard = ({
       </Row>
       <Row align="center">
         <Col css={{ textAlign: "center" }}>
-          <Text>Input</Text>
+          <ImageInputTitle />
         </Col>
         <Col span={1}></Col>
         <Col css={{ textAlign: "center" }}>

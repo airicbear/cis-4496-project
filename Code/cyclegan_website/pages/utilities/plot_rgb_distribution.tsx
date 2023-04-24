@@ -15,6 +15,7 @@ import { createPlot } from "../../utils/createPlot";
 import { getRGB, getRGBFrequency } from "../../utils/getRGB";
 import { initializeLabel } from "../../utils/initializeLabel";
 import { plotDensity } from "../../utils/plotRGB";
+import ImageInputTitle from "../../components/ImageInputTitle";
 
 const PlotRGBDistributionPage: NextPage = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
@@ -90,7 +91,7 @@ const PlotRGBDistributionPage: NextPage = () => {
         </Row>
         <Row align="center">
           <Col css={{ textAlign: "center" }}>
-            <Text>Input</Text>
+            <ImageInputTitle />
           </Col>
         </Row>
         <Row align="center">
