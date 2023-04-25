@@ -10,7 +10,7 @@ const Photo2UkiyoePage: NextPage = () => {
       <ModelCard
         title="Author's Photo2Ukiyoe Generator"
         type="author-photo2ukiyoe"
-        modelURL="/assets/models/authors/photo2ukiyoe.onnx"
+        modelURL="/assets/models/authors/photo2ukiyoe.ort"
         format="onnx"
       />
       <Spacer y={2} />

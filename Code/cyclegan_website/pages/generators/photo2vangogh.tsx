@@ -10,7 +10,7 @@ const Photo2VangoghPage: NextPage = () => {
       <ModelCard
         title="Author's Photo2Vangogh Generator"
         type="author-photo2vangogh"
-        modelURL="/assets/models/authors/photo2vangogh.onnx"
+        modelURL="/assets/models/authors/photo2vangogh.ort"
         format="onnx"
       />
       <Spacer y={2} />

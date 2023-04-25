@@ -10,7 +10,7 @@ const Monet2PhotoPage: NextPage = () => {
       <ModelCard
         title="Author's Monet2Photo Generator"
         type="author-monet2photo"
-        modelURL="/assets/models/authors/monet2photo.onnx"
+        modelURL="/assets/models/authors/monet2photo.ort"
         format="onnx"
       />
       <Spacer y={2} />
