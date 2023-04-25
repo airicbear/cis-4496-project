@@ -10,7 +10,7 @@ const Photo2CezannePage: NextPage = () => {
       <ModelCard
         title="Author's Photo2Cezanne Generator"
         type="author-photo2cezanne"
-        modelURL="/assets/models/authors/photo2cezanne.onnx"
+        modelURL="/assets/models/authors/photo2cezanne.ort"
         format="onnx"
       />
       <Spacer y={2} />
