@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import { select } from "d3";
 
 export const createPlot = (
   id: string,
@@ -8,8 +8,7 @@ export const createPlot = (
   xlabel: string,
   ylabel: string
 ) => {
-  const svg = d3
-    .select(id)
+  const svg = select(id)
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
