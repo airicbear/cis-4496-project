@@ -4,7 +4,7 @@ export async function createInferenceSession(
   onnxModelURL: string,
   sessionOption: InferenceSession.SessionOptions
 ) {
-  let session: InferenceSession;
+  let session: InferenceSession | undefined;
 
   console.log("Creating inference session...");
   try {
@@ -61,7 +61,7 @@ export async function drawOnnxPrediction(
 
       const imageHTML = outputTensor.toImageData();
       const context = canvas.getContext("2d");
-      context.putImageData(imageHTML, 0, 0);
+      context?.putImageData(imageHTML, 0, 0);
     });
   } catch (e) {
     console.error(`Failed to inference ONNX model: ${e}.`);

@@ -29,8 +29,9 @@ const ImageInput = ({
   labelRef,
 }: ImageInputProps) => {
   const { theme } = useTheme();
-  const [tfModel, setTfModel] = useState(null);
-  const [inferenceSession, setInferenceSession] = useState(null);
+  const [tfModel, setTfModel] = useState<GraphModel | null>(null);
+  const [inferenceSession, setInferenceSession] =
+    useState<InferenceSession | null>(null);
   const sessionOptions = { executionProviders: ["wasm"] };
 
   if (format == "tfjs" && tfModel == null) {
@@ -66,8 +67,10 @@ const ImageInput = ({
   useEffect(() => {
     if (format == "onnx" && inferenceSession == null) {
       createInferenceSession(modelURL, sessionOptions).then(
-        (session: InferenceSession) => {
-          setInferenceSession(session);
+        (session: InferenceSession | undefined) => {
+          if (session) {
+            setInferenceSession(session);
+          }
           console.log(`(${type}) Done loading ONNX model.`);
         }
       );
@@ -76,8 +79,12 @@ const ImageInput = ({
 
   const drawPrediction = async (reader: FileReader) => {
     const image = new Image();
-    image.src = reader.result.toString();
-    image.style.borderRadius = `${theme.radii.lg.value}`;
+    if (reader.result) {
+      image.src = reader.result.toString();
+    }
+    if (theme) {
+      image.style.borderRadius = `${theme.radii.lg.value}`;
+    }
     image.onload = async () => {
       if (format == "onnx") {
         if (inferenceSession != null) {
@@ -113,7 +120,7 @@ const ImageInput = ({
 
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    const file = files[0];
+    const file = files ? files[0] : null;
 
     const reader = new FileReader();
     reader.addEventListener(
