@@ -1,7 +1,7 @@
 import { FormElement, Input, Loading, useTheme } from "@nextui-org/react";
 import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
-import { ChangeEvent, MutableRefObject, useEffect, useState } from "react";
+import { ChangeEvent, RefObject, useEffect, useState } from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,
@@ -16,8 +16,8 @@ interface ImageInputProps {
   modelURL: string;
   format: string;
   onRunInference: Function;
-  canvasRef: MutableRefObject<HTMLCanvasElement>;
-  labelRef: MutableRefObject<HTMLLabelElement>;
+  canvasRef: RefObject<HTMLCanvasElement>;
+  labelRef: RefObject<HTMLDivElement>;
 }
 
 const ImageInput = ({
@@ -89,22 +89,27 @@ const ImageInput = ({
       if (format == "onnx") {
         if (inferenceSession != null) {
           onRunInference(true);
-          drawOnnxPrediction(
-            inferenceSession,
-            canvasRef.current,
-            imageToDataUri(image, 256, 256)
-          ).then(() => {
-            onRunInference(false);
-          });
+
+          if (canvasRef.current) {
+            drawOnnxPrediction(
+              inferenceSession,
+              canvasRef.current,
+              imageToDataUri(image, 256, 256)
+            ).then(() => {
+              onRunInference(false);
+            });
+          }
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
       } else if (format == "tfjs") {
         if (tfModel != null) {
           onRunInference(true);
-          drawTfjsPrediction(tfModel, canvasRef.current, image).then(() => {
-            onRunInference(false);
-          });
+          if (canvasRef.current) {
+            drawTfjsPrediction(tfModel, canvasRef.current, image).then(() => {
+              onRunInference(false);
+            });
+          }
         } else {
           console.error(`(${type}) Model not yet loaded.`);
         }
@@ -126,7 +131,9 @@ const ImageInput = ({
     reader.addEventListener(
       "load",
       () => {
-        initializeLabel(labelRef.current, `url(${reader.result})`);
+        if (labelRef.current) {
+          initializeLabel(labelRef.current, `url(${reader.result})`);
+        }
         drawPrediction(reader);
       },
       false

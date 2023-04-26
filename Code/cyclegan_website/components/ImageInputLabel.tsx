@@ -1,14 +1,22 @@
 import { Card, Text, useTheme } from "@nextui-org/react";
-import { DragEvent } from "react";
+import { DragEvent, RefObject } from "react";
 import { initializeLabel } from "../utils/initializeLabel";
+
+interface ImageInputLabelProps {
+  htmlFor: string;
+  onFileUpload?: (reader: FileReader) => void;
+  id: string;
+  labelRef: RefObject<HTMLDivElement>;
+  imageOnLoad?: (image: HTMLImageElement) => void;
+}
 
 const ImageInputLabel = ({
   htmlFor,
-  onFileUpload = (reader: FileReader) => {},
+  onFileUpload = (reader) => {},
   id,
   labelRef,
   imageOnLoad = (image) => {},
-}) => {
+}: ImageInputLabelProps) => {
   const { theme } = useTheme();
 
   const handleDrop = function (event: DragEvent) {
@@ -24,7 +32,9 @@ const ImageInputLabel = ({
     reader.addEventListener(
       "load",
       () => {
-        initializeLabel(labelRef.current, `url(${reader.result})`);
+        if (labelRef.current) {
+          initializeLabel(labelRef.current, `url(${reader.result})`);
+        }
         image.src = reader.result as string;
         onFileUpload(reader);
       },
@@ -36,15 +46,19 @@ const ImageInputLabel = ({
     }
 
     setLabelTransparency(1.0);
-    setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
+    setLabelBackgroundColor(`${theme?.colors.neutralLight.value}`);
   };
 
   const setLabelTransparency = function (alpha: number) {
-    labelRef.current.style.opacity = `${alpha}`;
+    if (labelRef.current) {
+      labelRef.current.style.opacity = `${alpha}`;
+    }
   };
 
   const setLabelBackgroundColor = function (color: string) {
-    labelRef.current.style.backgroundColor = `${color}`;
+    if (labelRef.current) {
+      labelRef.current.style.backgroundColor = `${color}`;
+    }
   };
 
   const handleDragOver = function (event: DragEvent) {
@@ -52,14 +66,14 @@ const ImageInputLabel = ({
     event.preventDefault();
     event.dataTransfer.dropEffect = "copy";
     setLabelTransparency(0.5);
-    setLabelBackgroundColor(`${theme.colors.neutralBorderHover.value}`);
+    setLabelBackgroundColor(`${theme?.colors.neutralBorderHover.value}`);
   };
 
   const handleDragLeave = function (event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
     setLabelTransparency(1.0);
-    setLabelBackgroundColor(`${theme.colors.neutralLight.value}`);
+    setLabelBackgroundColor(`${theme?.colors.neutralLight.value}`);
   };
   return (
     <label
@@ -75,7 +89,7 @@ const ImageInputLabel = ({
     >
       <Card
         css={{
-          bg: `${theme.colors.neutralLight.value}`,
+          bg: `${theme?.colors.neutralLight.value}`,
         }}
       >
         <Card.Body

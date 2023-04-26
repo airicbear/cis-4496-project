@@ -16,7 +16,7 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   const [isPredicted, setIsPredicted] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const labelRef = useRef<HTMLLabelElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
   return (
     <Container>
