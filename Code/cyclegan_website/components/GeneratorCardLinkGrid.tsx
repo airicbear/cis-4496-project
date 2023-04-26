@@ -1,7 +1,17 @@
 import { Grid } from "@nextui-org/react";
 import CardLink from "./CardLink";
 
-const GeneratorCardLinkGrid = ({ list, xs, sm }) => {
+interface GeneratorCardLinkGridProps {
+  list: any[];
+  xs: number;
+  sm: number;
+}
+
+const GeneratorCardLinkGrid = ({
+  list,
+  xs,
+  sm,
+}: GeneratorCardLinkGridProps) => {
   return (
     <Grid.Container gap={2} justify="flex-start">
       {list.map((item, index: number) => (

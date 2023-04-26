@@ -1,7 +1,19 @@
 import { Button, Container, Loading } from "@nextui-org/react";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 
-const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
+interface CanvasOutputProps {
+  type: string;
+  isLoading: boolean;
+  isPredicted: boolean;
+  canvasRef: RefObject<HTMLCanvasElement>;
+}
+
+const CanvasOutput = ({
+  type,
+  isLoading,
+  isPredicted,
+  canvasRef,
+}: CanvasOutputProps) => {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
 
   const getDisplay = () => {
@@ -9,19 +21,25 @@ const CanvasOutput = ({ type, isLoading, isPredicted, canvasRef }) => {
   };
 
   const handleMouseEnter = () => {
-    canvasRef.current.style.opacity = "0.5";
+    if (canvasRef.current) {
+      canvasRef.current.style.opacity = "0.5";
+    }
     setIsMouseEnter(true);
   };
 
   const handleMouseLeave = () => {
-    canvasRef.current.style.opacity = "1.0";
+    if (canvasRef.current) {
+      canvasRef.current.style.opacity = "1.0";
+    }
     setIsMouseEnter(false);
   };
 
   const handleDownloadButtonClicked = () => {
     var link = document.createElement("a");
     link.download = "download.jpg";
-    link.href = canvasRef.current.toDataURL();
+    if (canvasRef.current) {
+      link.href = canvasRef.current.toDataURL();
+    }
     link.click();
   };
 

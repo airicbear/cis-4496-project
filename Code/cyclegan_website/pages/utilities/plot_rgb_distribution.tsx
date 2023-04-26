@@ -11,14 +11,14 @@ import { NextPage } from "next";
 import { ChangeEvent, useRef } from "react";
 import AppHeader from "../../components/AppHeader";
 import ImageInputLabel from "../../components/ImageInputLabel";
+import ImageInputTitle from "../../components/ImageInputTitle";
 import { createPlot } from "../../utils/createPlot";
 import { getRGB, getRGBFrequency } from "../../utils/getRGB";
 import { initializeLabel } from "../../utils/initializeLabel";
 import { plotDensity } from "../../utils/plotRGB";
-import ImageInputTitle from "../../components/ImageInputTitle";
 
 const PlotRGBDistributionPage: NextPage = () => {
-  const labelRef = useRef<HTMLLabelElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
   const calcAndGraph = (img: HTMLImageElement) => {
     // Set the dimensions and margins of the graph
