@@ -1,10 +1,17 @@
+interface GitHubIconProps {
+  fill?: string;
+  size?: number;
+  height?: number;
+  width?: number;
+}
+
 export const GitHubIcon = ({
   fill = "currentColor",
-  size = null,
-  height = null,
-  width = null,
+  size = undefined,
+  height = undefined,
+  width = undefined,
   ...props
-}) => {
+}: GitHubIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

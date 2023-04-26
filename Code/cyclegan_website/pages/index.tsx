@@ -2,11 +2,11 @@ import { Collapse, Container, Grid } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppHeader from "../components/AppHeader";
-import GeneratorCardLinkGrid from "../components/GeneratorCardLinkGrid";
-import { photo2PaintingList } from "../consts/photo2PaintingList";
-import { painting2PhotoList } from "../consts/painting2PhotoList";
-import { painting2PaintingList } from "../consts/painting2PaintingList";
 import CardLink from "../components/CardLink";
+import GeneratorCardLinkGrid from "../components/GeneratorCardLinkGrid";
+import { painting2PaintingList } from "../consts/painting2PaintingList";
+import { painting2PhotoList } from "../consts/painting2PhotoList";
+import { photo2PaintingList } from "../consts/photo2PaintingList";
 
 const Home: NextPage = () => {
   return (

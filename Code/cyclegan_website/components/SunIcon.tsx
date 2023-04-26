@@ -1,12 +1,21 @@
+export interface SunIconProps {
+  fill?: string;
+  filled?: boolean;
+  size?: number;
+  height?: number;
+  width?: number;
+  label?: string;
+}
+
 export const SunIcon = ({
   fill = "currentColor",
-  filled = null,
-  size = null,
-  height = null,
-  width = null,
-  label = null,
+  filled = undefined,
+  size = undefined,
+  height = undefined,
+  width = undefined,
+  label = undefined,
   ...props
-}) => {
+}: SunIconProps) => {
   if (filled) {
     return (
       <svg

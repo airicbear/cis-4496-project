@@ -1,6 +1,12 @@
 import { Card, Link, Row, useTheme } from "@nextui-org/react";
 
-const CardLink = ({ img, title, url }) => {
+interface CardLinkProps {
+  img: string;
+  title: string;
+  url: string;
+}
+
+const CardLink = ({ img, title, url }: CardLinkProps) => {
   const { theme } = useTheme();
 
   return (
@@ -18,7 +24,7 @@ const CardLink = ({ img, title, url }) => {
         isBlurred
         css={{
           position: "absolute",
-          bgBlur: `${theme.colors.background.value}66`,
+          bgBlur: `${theme?.colors.background.value}66`,
           borderTop: "$borderWeights$light solid rgba(255, 255, 255, 0.2)",
           bottom: 0,
           zIndex: 1,

@@ -4,6 +4,7 @@ import {
   Link,
   Row,
   Switch,
+  SwitchEvent,
   Text,
   useTheme,
 } from "@nextui-org/react";
@@ -14,9 +15,9 @@ import { SunIcon } from "./SunIcon";
 
 const AppHeader = () => {
   const { setTheme } = useNextTheme();
-  const { isDark, type } = useTheme();
+  const { isDark } = useTheme();
 
-  const handleThemeToggle = function (event) {
+  const handleThemeToggle = function (event: SwitchEvent) {
     setTheme(event.target.checked ? "dark" : "light");
   };
 

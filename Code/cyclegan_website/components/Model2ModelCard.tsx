@@ -31,14 +31,15 @@ const Model2ModelCard = ({
   model2Format,
 }: Model2ModelCardProps) => {
   const { theme } = useTheme();
-  const [tfModel, setTfModel] = useState(null);
-  const [inferenceSession, setInferenceSession] = useState(null);
+  const [tfModel, setTfModel] = useState<GraphModel | null>(null);
+  const [inferenceSession, setInferenceSession] =
+    useState<InferenceSession | null>(null);
   const sessionOptions = { executionProviders: ["wasm"] };
   const [isLoading, setIsLoading] = useState(false);
   const [isPredicted, setIsPredicted] = useState(false);
   const canvas1Ref = useRef<HTMLCanvasElement>(null);
   const canvas2Ref = useRef<HTMLCanvasElement>(null);
-  const labelRef = useRef<HTMLLabelElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
   if (model2Format == "tfjs" && tfModel == null) {
     const indexedDBURL = `indexeddb://${model2Type}`;
@@ -75,9 +76,11 @@ const Model2ModelCard = ({
   useEffect(() => {
     if (model2Format == "onnx" && inferenceSession == null) {
       createInferenceSession(model2URL, sessionOptions).then(
-        (session: InferenceSession) => {
-          setInferenceSession(session);
-          console.log(`(${model2Type}) Done loading ONNX model.`);
+        (session: InferenceSession | undefined) => {
+          if (session) {
+            setInferenceSession(session);
+            console.log(`(${model2Type}) Done loading ONNX model.`);
+          }
         }
       );
     }
@@ -109,11 +112,20 @@ const Model2ModelCard = ({
             format={model1Format}
             onRunInference={(result: boolean) => {
               const image = new Image();
-              image.src = canvas1Ref.current.toDataURL("image/jpeg", 1.0);
-              image.style.borderRadius = `${theme.radii.lg.value}`;
+              if (canvas1Ref.current) {
+                image.src = canvas1Ref.current.toDataURL("image/jpeg", 1.0);
+              }
+              if (theme) {
+                image.style.borderRadius = `${theme.radii.lg.value}`;
+              }
               image.onload = () => {
                 if (result == false) {
-                  if (model2Format == "onnx") {
+                  if (
+                    model2Format == "onnx" &&
+                    inferenceSession &&
+                    canvas1Ref.current &&
+                    canvas2Ref.current
+                  ) {
                     drawOnnxPrediction(
                       inferenceSession,
                       canvas2Ref.current,
@@ -122,7 +134,12 @@ const Model2ModelCard = ({
                       setIsPredicted(true);
                       setIsLoading(result);
                     });
-                  } else if (model2Format == "tfjs") {
+                  } else if (
+                    model2Format == "tfjs" &&
+                    tfModel &&
+                    canvas1Ref.current &&
+                    canvas2Ref.current
+                  ) {
                     drawTfjsPrediction(
                       tfModel,
                       canvas2Ref.current,
