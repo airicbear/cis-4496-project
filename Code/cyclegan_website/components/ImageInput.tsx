@@ -1,12 +1,7 @@
 import { FormElement, Input, Loading, useTheme } from "@nextui-org/react";
 import { GraphModel } from "@tensorflow/tfjs";
 import { InferenceSession } from "onnxruntime-web";
-import React, {
-  ChangeEvent,
-  MutableRefObject,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, MutableRefObject, useEffect, useState } from "react";
 import {
   createInferenceSession,
   drawOnnxPrediction,

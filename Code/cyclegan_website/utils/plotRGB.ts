@@ -1,9 +1,18 @@
-import * as d3 from "d3";
+import {
+  Selection,
+  ValueFn,
+  area,
+  axisBottom,
+  axisLeft,
+  curveBasis,
+  line,
+  scaleLinear,
+} from "d3";
 
 export const plotDensity = (
   width: number,
   height: number,
-  svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  svg: Selection<SVGGElement, unknown, HTMLElement, any>,
   data: number[][],
   color: string,
   maxFreq: number
@@ -11,19 +20,18 @@ export const plotDensity = (
   console.log(`Creating density plot for the ${color} channel.`);
 
   // Add the x axis
-  const x = d3.scaleLinear().domain([0, 255]).range([0, width]);
+  const x = scaleLinear().domain([0, 255]).range([0, width]);
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(axisBottom(x));
 
   // Add the y axis
-  const y = d3.scaleLinear().range([height, 0]).domain([0, maxFreq]);
-  svg.append("g").call(d3.axisLeft(y));
+  const y = scaleLinear().range([height, 0]).domain([0, maxFreq]);
+  svg.append("g").call(axisLeft(y));
 
-  const area = d3
-    .area()
-    .curve(d3.curveBasis)
+  const areaUnderCurve = area()
+    .curve(curveBasis)
     .x((d) => x(d[0]))
     .y1((d) => y(d[1]))
     .y0(height);
@@ -33,11 +41,10 @@ export const plotDensity = (
     .datum(data)
     .attr("fill", color)
     .attr("opacity", ".5")
-    .attr("d", area as any);
+    .attr("d", areaUnderCurve as ValueFn<SVGPathElement, number[][], string>);
 
-  const path = d3
-    .line()
-    .curve(d3.curveBasis)
+  const path = line()
+    .curve(curveBasis)
     .x((d) => x(d[0]))
     .y((d) => y(d[1]));
 
@@ -49,5 +56,5 @@ export const plotDensity = (
     .attr("stroke", color)
     .attr("stroke-width", 1)
     .attr("stroke-linejoin", "round")
-    .attr("d", path as any);
+    .attr("d", path as ValueFn<SVGPathElement, number[][], string>);
 };
