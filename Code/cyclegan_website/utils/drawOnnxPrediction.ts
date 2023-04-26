@@ -1,14 +1,14 @@
-import * as ort from "onnxruntime-web";
+import { InferenceSession, Tensor, TensorFactory } from "onnxruntime-web";
 
 export async function createInferenceSession(
   onnxModelURL: string,
-  sessionOption: ort.InferenceSession.SessionOptions
+  sessionOption: InferenceSession.SessionOptions
 ) {
-  let session: ort.InferenceSession;
+  let session: InferenceSession;
 
   console.log("Creating inference session...");
   try {
-    session = await ort.InferenceSession.create(onnxModelURL, sessionOption);
+    session = await InferenceSession.create(onnxModelURL, sessionOption);
   } catch (e) {
     console.error(`Failed to load ONNX model: ${e}.`);
   }
@@ -17,10 +17,10 @@ export async function createInferenceSession(
 }
 
 async function runInference(
-  session: ort.InferenceSession,
-  imageTensor: ort.Tensor
-): Promise<ort.InferenceSession.OnnxValueMapType> {
-  const feeds: Record<string, ort.Tensor> = {};
+  session: InferenceSession,
+  imageTensor: Tensor
+): Promise<InferenceSession.OnnxValueMapType> {
+  const feeds: Record<string, Tensor> = {};
   feeds[session.inputNames[0]] = imageTensor;
 
   console.log("Running inference...");
@@ -30,14 +30,14 @@ async function runInference(
 }
 
 export async function drawOnnxPrediction(
-  inferenceSession: ort.InferenceSession,
+  inferenceSession: InferenceSession,
   canvas: HTMLCanvasElement,
   dataURI: string
 ) {
   try {
     console.log("Converting image to tensor...");
-    const imageTensor: ort.Tensor = await (
-      ort.Tensor as unknown as ort.TensorFactory
+    const imageTensor: Tensor = await (
+      Tensor as unknown as TensorFactory
     ).fromImage(dataURI, {
       tensorFormat: "RGB",
       resizedWidth: 256,
@@ -56,11 +56,7 @@ export async function drawOnnxPrediction(
         float32Data[i] = (output.data[i] as number) * 0.5 + 0.5;
       }
 
-      const outputTensor = new ort.Tensor(
-        "float32",
-        float32Data,
-        [1, 3, 256, 256]
-      );
+      const outputTensor = new Tensor("float32", float32Data, [1, 3, 256, 256]);
       console.log(outputTensor);
 
       const imageHTML = outputTensor.toImageData();
