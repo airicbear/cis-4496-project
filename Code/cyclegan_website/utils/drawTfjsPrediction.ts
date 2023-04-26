@@ -37,7 +37,7 @@ export async function drawTfjsPrediction(
     const squeezedOutput = squeeze(outputTensor, [0]).as3D(256, 256, 3);
 
     const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context?.clearRect(0, 0, canvas.width, canvas.height);
     browser.toPixels(squeezedOutput, canvas);
   } catch {
     console.error("Model prediction failed.");

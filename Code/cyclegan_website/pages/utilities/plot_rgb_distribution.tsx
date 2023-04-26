@@ -26,7 +26,10 @@ const PlotRGBDistributionPage: NextPage = () => {
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    document.getElementById("my_dataviz").innerHTML = "";
+    const plotContainer = document.getElementById("my_dataviz");
+    if (plotContainer) {
+      plotContainer.innerHTML = "";
+    }
 
     // Append the svg object to the body of the page
     const svg = createPlot(
@@ -48,8 +51,11 @@ const PlotRGBDistributionPage: NextPage = () => {
     const rFreq = rData.map<number>((d) => d.freq);
     const gFreq = gData.map<number>((d) => d.freq);
     const bFreq = bData.map<number>((d) => d.freq);
+
+    // Used to scale axis
     const totalFreq = rFreq.concat(gFreq).concat(bFreq);
     const maxFreq = Math.max(...totalFreq);
+
     plotDensity(width, height, svg, rDataArray, "red", maxFreq);
     plotDensity(width, height, svg, gDataArray, "green", maxFreq);
     plotDensity(width, height, svg, bDataArray, "blue", maxFreq);
@@ -63,13 +69,15 @@ const PlotRGBDistributionPage: NextPage = () => {
 
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    const file = files[0];
+    const file = files ? files[0] : null;
 
     const reader = new FileReader();
     reader.addEventListener(
       "load",
       () => {
-        initializeLabel(labelRef.current, `url(${reader.result})`);
+        if (labelRef.current) {
+          initializeLabel(labelRef.current, `url(${reader.result})`);
+        }
         image.src = reader.result as string;
       },
       false

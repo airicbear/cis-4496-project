@@ -4,7 +4,7 @@ export const createPlot = (
   id: string,
   width: number,
   height: number,
-  margin: { top: any; right: any; bottom: any; left: any },
+  margin: { top: number; right: number; bottom: number; left: number },
   xlabel: string,
   ylabel: string
 ) => {
