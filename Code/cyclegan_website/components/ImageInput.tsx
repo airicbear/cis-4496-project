@@ -34,44 +34,37 @@ const ImageInput = ({
     useState<InferenceSession | null>(null);
   const sessionOptions = { executionProviders: ["wasm"] };
 
-  if (format == "tfjs" && tfModel == null) {
-    const indexedDBURL = `indexeddb://${type}`;
-
-    getTfjsModel(indexedDBURL).then(
-      (model: GraphModel) => {
-        setTfModel(model);
-
-        console.log(
-          `(${type}) Loaded TensorFlow.js model from IndexedDB (${indexedDBURL}).`
-        );
-      },
-      () => {
-        getTfjsModel(modelURL).then(
-          async (model: GraphModel) => {
-            setTfModel(model);
-
-            await model.save(indexedDBURL);
-
-            console.log(
-              `(${type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
-            );
-          },
-          () => {
-            console.error(`(${type}) Failed to load model from ${modelURL}.`);
-          }
-        );
-      }
-    );
-  }
-
   useEffect(() => {
+    if (format == "tfjs" && tfModel == null) {
+      const indexedDBURL = `indexeddb://${type}`;
+
+      getTfjsModel(indexedDBURL).then(
+        (model: GraphModel) => {
+          setTfModel(model);
+        },
+        () => {
+          getTfjsModel(modelURL).then(
+            async (model: GraphModel) => {
+              setTfModel(model);
+
+              await model.save(indexedDBURL);
+            },
+            () => {
+              throw new Error(
+                `(${type}) Failed to load model from ${modelURL}.`
+              );
+            }
+          );
+        }
+      );
+    }
+
     if (format == "onnx" && inferenceSession == null) {
       createInferenceSession(modelURL, sessionOptions).then(
         (session: InferenceSession | undefined) => {
           if (session) {
             setInferenceSession(session);
           }
-          console.log(`(${type}) Done loading ONNX model.`);
         }
       );
     }
@@ -100,7 +93,7 @@ const ImageInput = ({
             });
           }
         } else {
-          console.error(`(${type}) Model not yet loaded.`);
+          throw new Error(`(${type}) Model not yet loaded.`);
         }
       } else if (format == "tfjs") {
         if (tfModel != null) {
@@ -111,10 +104,10 @@ const ImageInput = ({
             });
           }
         } else {
-          console.error(`(${type}) Model not yet loaded.`);
+          throw new Error(`(${type}) Model not yet loaded.`);
         }
       } else {
-        console.error(`Invalid format "${format}"`);
+        throw new Error(`Invalid format "${format}"`);
       }
     };
   };

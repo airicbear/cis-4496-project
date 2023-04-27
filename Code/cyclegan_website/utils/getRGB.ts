@@ -3,7 +3,6 @@ type Distribution = {
 };
 
 export const getRGB = (img: HTMLImageElement) => {
-  console.log("Calling getRGB()");
   const rD: Distribution = {};
   const gD: Distribution = {};
   const bD: Distribution = {};
@@ -28,7 +27,6 @@ export const getRGB = (img: HTMLImageElement) => {
       bD[iD[i + 2]]++;
     }
   }
-  console.log({ rD, gD, bD });
 
   return { rD, gD, bD };
 };
