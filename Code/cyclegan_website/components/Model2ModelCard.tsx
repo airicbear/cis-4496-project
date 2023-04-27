@@ -41,45 +41,36 @@ const Model2ModelCard = ({
   const canvas2Ref = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
 
-  if (model2Format == "tfjs" && tfModel == null) {
-    const indexedDBURL = `indexeddb://${model2Type}`;
-
-    getTfjsModel(indexedDBURL).then(
-      (model: GraphModel) => {
-        setTfModel(model);
-
-        console.log(
-          `(${model2Type}) Loaded TensorFlow.js model from IndexedDB (${indexedDBURL}).`
-        );
-      },
-      () => {
-        getTfjsModel(model2URL).then(
-          async (model: GraphModel) => {
-            setTfModel(model);
-
-            await model.save(indexedDBURL);
-
-            console.log(
-              `(${model2Type}) Saved TensorFlow.js model to IndexedDB (${indexedDBURL}).`
-            );
-          },
-          () => {
-            console.error(
-              `(${model2Type}) Failed to load model from ${model2URL}.`
-            );
-          }
-        );
-      }
-    );
-  }
-
   useEffect(() => {
+    if (model2Format == "tfjs" && tfModel == null) {
+      const indexedDBURL = `indexeddb://${model2Type}`;
+
+      getTfjsModel(indexedDBURL).then(
+        (model: GraphModel) => {
+          setTfModel(model);
+        },
+        () => {
+          getTfjsModel(model2URL).then(
+            async (model: GraphModel) => {
+              setTfModel(model);
+
+              await model.save(indexedDBURL);
+            },
+            () => {
+              throw new Error(
+                `(${model2Type}) Failed to load model from ${model2URL}.`
+              );
+            }
+          );
+        }
+      );
+    }
+
     if (model2Format == "onnx" && inferenceSession == null) {
       createInferenceSession(model2URL, sessionOptions).then(
         (session: InferenceSession | undefined) => {
           if (session) {
             setInferenceSession(session);
-            console.log(`(${model2Type}) Done loading ONNX model.`);
           }
         }
       );

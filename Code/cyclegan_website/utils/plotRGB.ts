@@ -17,8 +17,6 @@ export const plotDensity = (
   color: string,
   maxFreq: number
 ) => {
-  console.log(`Creating density plot for the ${color} channel.`);
-
   // Add the x axis
   const x = scaleLinear().domain([0, 255]).range([0, width]);
   svg
