@@ -11,7 +11,7 @@ const MonetTrainDatasetPage: NextPage = () => {
         <Row align="center">
           <Text h3>Monet Train Data Set</Text>
         </Row>
-        <DatasetGrid dir="assets/datasets/monet/train" />
+        <DatasetGrid dir="assets/datasets/monet/train" offset="0" limit="10" />
         <Spacer y={2} />
       </Container>
     </Container>

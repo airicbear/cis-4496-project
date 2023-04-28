@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 
 interface DatasetGridProps {
   dir: string;
+  limit: string;
+  offset: string;
 }
 
-const DatasetGrid = ({ dir }: DatasetGridProps) => {
+const DatasetGrid = ({ dir, limit, offset }: DatasetGridProps) => {
   const [files, setFiles] = useState<string[]>([]);
 
   async function fetchFiles(dir: string) {
-    const res = await fetch(`/api/get-files?dir=${dir}`);
+    const res = await fetch(
+      `/api/get-files?dir=${dir}&limit=${limit}&offset=${offset}`
+    );
     const data = await res.json();
     return data.files;
   }
