@@ -86,6 +86,13 @@ const Home: NextPage = () => {
                   url="/datasets/cezanne/train"
                 />
               </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/vangogh/test-train/00001.jpg"
+                  title="Vangogh Test/Train"
+                  url="/datasets/vangogh/test-train"
+                />
+              </Grid>
             </Grid.Container>
           </Collapse>
           <Collapse title="Utilities">
