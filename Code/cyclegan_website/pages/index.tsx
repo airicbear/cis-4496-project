@@ -32,6 +32,20 @@ const Home: NextPage = () => {
             <Grid.Container gap={2} justify="flex-start">
               <Grid xs={6} sm={3}>
                 <CardLink
+                  img="/assets/datasets/photo/test/2014-08-01 17:41:55.jpg"
+                  title="Photo Test"
+                  url="/datasets/photo/test"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/photo/train/2013-11-08 16:45:24.jpg"
+                  title="Photo Train"
+                  url="/datasets/photo/train"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
                   img="/assets/datasets/monet/test/00010.jpg"
                   title="Monet Test"
                   url="/datasets/monet/test"
