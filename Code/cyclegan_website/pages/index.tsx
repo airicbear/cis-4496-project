@@ -72,6 +72,20 @@ const Home: NextPage = () => {
                   url="/datasets/ukiyoe/train"
                 />
               </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/cezanne/test/00010.jpg"
+                  title="Cezanne Test"
+                  url="/datasets/cezanne/test"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/cezanne/train/00001.jpg"
+                  title="Cezanne Train"
+                  url="/datasets/cezanne/train"
+                />
+              </Grid>
             </Grid.Container>
           </Collapse>
           <Collapse title="Utilities">
