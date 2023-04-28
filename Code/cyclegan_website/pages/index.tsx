@@ -28,9 +28,27 @@ const Home: NextPage = () => {
           <Collapse title="Painting → Painting">
             <GeneratorCardLinkGrid list={painting2PaintingList} xs={4} sm={4} />
           </Collapse>
+          <Collapse title="Data">
+            <Grid.Container gap={2} justify="flex-start">
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/monet/test/00010.jpg"
+                  title="Monet Test"
+                  url="/datasets/monet/test"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/datasets/monet/train/00001.jpg"
+                  title="Monet Train"
+                  url="/datasets/monet/train"
+                />
+              </Grid>
+            </Grid.Container>
+          </Collapse>
           <Collapse title="Utilities">
             <Grid.Container gap={2} justify="flex-start">
-              <Grid xs={4} sm={4}>
+              <Grid xs={6} sm={4}>
                 <CardLink
                   img="/assets/images/RGB.png"
                   title="Plot RGB Distribution"
