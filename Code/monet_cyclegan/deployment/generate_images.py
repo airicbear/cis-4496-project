@@ -6,18 +6,19 @@ import os
 import shutil
 import sys
 
-from ..modeling.model import CycleGan
+import tensorflow as tf
+
 from ..modeling.predict import translate_image
 from ..utils import read_image, read_tfrecorddataset, get_filenames, save_image, tensor_to_image
 
 logger = logging.getLogger(__name__)
 
 
-def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -> None:
+def generate_image(generator: tf.keras.models.Model, input_path: str, output_dir: str) -> None:
     """Use a CycleGAN model to translate an image to a painting and save it.
 
     Args:
-        cyclegan_model: The CycleGAN model to be used for image generation.
+        generator: The generator model.
         input_path: Path of the image to be translated.
         output_dir: Directory where the generated image will be saved.
     """
@@ -29,7 +30,7 @@ def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -
 
     image = read_image(path=input_path)
 
-    generated_image = translate_image(cyclegan_model=cyclegan_model,
+    generated_image = translate_image(generator=generator,
                                       image=image)
 
     filename = os.path.basename(input_path)
@@ -41,7 +42,7 @@ def generate_image(cyclegan_model: CycleGan, input_path: str, output_dir: str) -
     logger.info(f"Saved painting style version of '{input_path}' to '{output_path}'.")
 
 
-def generate_images(cyclegan_model: CycleGan,
+def generate_images(generator: tf.keras.models.Model,
                     input_dir: str,
                     input_ext: str,
                     output_dir: str,
@@ -52,7 +53,7 @@ def generate_images(cyclegan_model: CycleGan,
     """Use a CycleGAN model to translate images to paintings and save them.
 
     Args:
-        cyclegan_model: The CycleGAN model to be used for image generation.
+        generator: The generator model.
         input_dir: Directory of images to be translated.
         input_ext: File extension of the input image format.
         output_dir: Directory where the generated images will be saved.
@@ -97,7 +98,7 @@ def generate_images(cyclegan_model: CycleGan,
         logger.info('Generating and saving images.')
 
         for i, image in enumerate(photos):
-            generated_image = translate_image(cyclegan_model=cyclegan_model,
+            generated_image = translate_image(generator=generator,
                                               image=image)
 
             save_image(image=generated_image,
@@ -110,7 +111,7 @@ def generate_images(cyclegan_model: CycleGan,
 
     else:
         for i, filename in enumerate(get_filenames(image_dir=input_dir, ext=input_ext)):
-            generate_image(cyclegan_model=cyclegan_model,
+            generate_image(generator=generator,
                            input_path=filename,
                            output_dir=output_dir)
 

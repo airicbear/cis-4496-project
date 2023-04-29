@@ -18,6 +18,7 @@ def main() -> None:
     parser.add_argument('--build-dir', type=str, default=BUILD_DIR)
     parser.add_argument('--photo2painting', type=str, default=None)
     parser.add_argument('--painting2photo', type=str, default=None)
+    parser.add_argument('--type', type=str, default='photo2painting')
     parser.add_argument('--shuffle', action='store_true')
     parser.add_argument('--no-shuffle', dest='shuffle', action='store_false')
     parser.set_defaults(shuffle=False)
@@ -56,17 +57,22 @@ def main() -> None:
         photo2painting_generator_weights_path=photo2painting_path,
         painting2photo_generator_weights_path=painting2photo_path)
 
+    if args.type == 'painting2photo':
+        generator = model.photo_generator
+    else:
+        generator = model.painting_generator
+
     if args.output:
         output_dir = args.output
     else:
         output_dir = f'{epoch_dir}/images'
 
     if args.file:
-        generate_image(cyclegan_model=model,
+        generate_image(generator=generator,
                        input_path=args.file,
                        output_dir=output_dir)
     else:
-        generate_images(cyclegan_model=model,
+        generate_images(generator=generator,
                         input_dir=args.input,
                         input_ext=args.ext,
                         output_dir=output_dir,
