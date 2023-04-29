@@ -10,7 +10,7 @@ const PhotoTestToMonetDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Photo Test Data Set</Text>
+          <Text h3>Test Photo to Monet Predictions</Text>
         </Row>
         <DatasetGrid
           dir="assets/predictions/photo/test/monet"
