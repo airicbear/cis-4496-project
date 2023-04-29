@@ -100,17 +100,25 @@ const Home: NextPage = () => {
             <Grid.Container gap={2} justify="flex-start">
               <Grid xs={6} sm={3}>
                 <CardLink
-                  img="/assets/predictions/photo/test/monet/2014-08-01 17:41:55.jpg"
-                  title="Test Photo → Monet (Competition, Final)"
-                  url="/predictions/photo/test/monet"
+                  img="/assets/predictions/monet/test/photo/authors/00010.png"
+                  title="Test Monet → Photo (Author's)"
+                  url="/predictions/monet/test/photo/authors"
                   fontSize="12px"
                 />
               </Grid>
               <Grid xs={6} sm={3}>
                 <CardLink
-                  img="/assets/predictions/monet/test/photo/00010.jpg"
+                  img="/assets/predictions/photo/test/monet/ours/competition/final/2014-08-01 17:41:55.jpg"
+                  title="Test Photo → Monet (Competition, Final)"
+                  url="/predictions/photo/test/monet/ours/competition/final"
+                  fontSize="12px"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/predictions/monet/test/photo/ours/competition/final/00010.jpg"
                   title="Test Monet → Photo (Competition, Final)"
-                  url="/predictions/monet/test/photo"
+                  url="/predictions/monet/test/photo/ours/competition/final"
                   fontSize="12px"
                 />
               </Grid>
