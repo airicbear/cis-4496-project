@@ -1,10 +1,10 @@
 import { Container, Row, Spacer, Text } from "@nextui-org/react";
 import { NextPage } from "next";
-import AppHeader from "../../../../components/AppHeader";
-import DatasetGrid from "../../../../components/DatasetGrid";
-import { monetTestData } from "../../../../consts/monetTestData";
+import AppHeader from "../../../../../../../components/AppHeader";
+import DatasetGrid from "../../../../../../../components/DatasetGrid";
+import { monetTestData } from "../../../../../../../consts/monetTestData";
 
-const PhotoTestToMonetDatasetPage: NextPage = () => {
+const PhotoTestToMonetOursCompetitionFinalDatasetPage: NextPage = () => {
   return (
     <Container sm>
       <AppHeader />
@@ -13,7 +13,7 @@ const PhotoTestToMonetDatasetPage: NextPage = () => {
           <Text h3>Test Monet to Photo Predictions (Competition, Final)</Text>
         </Row>
         <DatasetGrid
-          dir="assets/predictions/monet/test/photo"
+          dir="assets/predictions/monet/test/photo/ours/competition/final"
           filenames={monetTestData.files}
         />
         <Spacer y={2} />
@@ -22,4 +22,4 @@ const PhotoTestToMonetDatasetPage: NextPage = () => {
   );
 };
 
-export default PhotoTestToMonetDatasetPage;
+export default PhotoTestToMonetOursCompetitionFinalDatasetPage;
