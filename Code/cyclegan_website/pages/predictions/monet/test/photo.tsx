@@ -2,7 +2,7 @@ import { Container, Row, Spacer, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import AppHeader from "../../../../components/AppHeader";
 import DatasetGrid from "../../../../components/DatasetGrid";
-import { photoTestData } from "../../../../consts/photoTestData";
+import { monetTestData } from "../../../../consts/monetTestData";
 
 const PhotoTestToMonetDatasetPage: NextPage = () => {
   return (
@@ -10,11 +10,11 @@ const PhotoTestToMonetDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Test Photo to Monet Predictions (Competition, Final)</Text>
+          <Text h3>Test Monet to Photo Predictions (Competition, Final)</Text>
         </Row>
         <DatasetGrid
-          dir="assets/predictions/photo/test/monet"
-          filenames={photoTestData.files}
+          dir="assets/predictions/monet/test/photo"
+          filenames={monetTestData.files}
         />
         <Spacer y={2} />
       </Container>

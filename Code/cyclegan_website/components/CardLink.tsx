@@ -4,9 +4,17 @@ interface CardLinkProps {
   img: string;
   title: string;
   url: string;
+  fontSize?: string;
+  fontSizeSmall?: string;
 }
 
-const CardLink = ({ img, title, url }: CardLinkProps) => {
+const CardLink = ({
+  img,
+  title,
+  url,
+  fontSize = "16px",
+  fontSizeSmall = "12px",
+}: CardLinkProps) => {
   const { theme } = useTheme();
 
   return (
@@ -37,8 +45,9 @@ const CardLink = ({ img, title, url }: CardLinkProps) => {
             color="text"
             css={{
               fontWeight: "bold",
+              fontSize: fontSize,
               "@media (max-width: 955px)": {
-                fontSize: "12px",
+                fontSize: fontSizeSmall,
               },
             }}
           >

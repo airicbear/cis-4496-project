@@ -91,6 +91,7 @@ const Home: NextPage = () => {
                   img="/assets/datasets/vangogh/test-train/00001.jpg"
                   title="Vangogh Test/Train"
                   url="/datasets/vangogh/test-train"
+                  fontSize="14px"
                 />
               </Grid>
             </Grid.Container>
@@ -100,8 +101,17 @@ const Home: NextPage = () => {
               <Grid xs={6} sm={3}>
                 <CardLink
                   img="/assets/predictions/photo/test/monet/2014-08-01 17:41:55.jpg"
-                  title="Test Photo → Monet"
+                  title="Test Photo → Monet (Competition, Final)"
                   url="/predictions/photo/test/monet"
+                  fontSize="12px"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/predictions/monet/test/photo/00010.jpg"
+                  title="Test Monet → Photo (Competition, Final)"
+                  url="/predictions/monet/test/photo"
+                  fontSize="12px"
                 />
               </Grid>
             </Grid.Container>
