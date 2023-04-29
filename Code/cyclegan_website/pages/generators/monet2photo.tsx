@@ -29,7 +29,7 @@ const Monet2PhotoPage: NextPage = () => {
       />
       <Spacer y={2} />
       <ModelCard
-        title="Our Monet2Photo Generator (Generic)"
+        title="Our Monet2Photo Generator (General)"
         type="our-monet2photo"
         modelURL="/assets/models/our_model/monet/painting2photo/model.json"
         format="tfjs"

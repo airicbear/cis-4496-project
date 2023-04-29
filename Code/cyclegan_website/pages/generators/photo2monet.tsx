@@ -29,7 +29,7 @@ const Photo2MonetPage: NextPage = () => {
       />
       <Spacer y={2} />
       <ModelCard
-        title="Our Photo2Monet Generator (Generic)"
+        title="Our Photo2Monet Generator (General)"
         type="our-photo2monet"
         modelURL="/assets/models/our_model/monet/photo2painting/model.json"
         format="tfjs"
