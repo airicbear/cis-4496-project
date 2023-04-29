@@ -95,6 +95,17 @@ const Home: NextPage = () => {
               </Grid>
             </Grid.Container>
           </Collapse>
+          <Collapse title="Predictions">
+            <Grid.Container gap={2} justify="flex-start">
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/predictions/photo/test/monet/2014-08-01 17:41:55.jpg"
+                  title="Test Photo → Monet"
+                  url="/predictions/photo/test/monet"
+                />
+              </Grid>
+            </Grid.Container>
+          </Collapse>
           <Collapse title="Utilities">
             <Grid.Container gap={2} justify="flex-start">
               <Grid xs={6} sm={4}>
