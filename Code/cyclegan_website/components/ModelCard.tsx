@@ -13,7 +13,7 @@ interface ModelCardProps {
 
 const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isPredicted, setIsPredicted] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
@@ -39,7 +39,7 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
             type={type}
             format={format}
             onRunInference={(result: boolean) => {
-              setIsPredicted(true);
+              setIsLoaded(true);
               setIsLoading(result);
             }}
             canvasRef={canvasRef}
@@ -51,9 +51,9 @@ const ModelCard = ({ title, type, modelURL, format }: ModelCardProps) => {
         </Col>
         <Col css={{ textAlign: "center" }}>
           <CanvasOutput
-            type={type}
+            id={type}
             isLoading={isLoading}
-            isPredicted={isPredicted}
+            isLoaded={isLoaded}
             canvasRef={canvasRef}
           />
         </Col>

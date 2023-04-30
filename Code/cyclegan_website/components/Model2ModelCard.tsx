@@ -36,7 +36,7 @@ const Model2ModelCard = ({
     useState<InferenceSession | null>(null);
   const sessionOptions = { executionProviders: ["wasm"] };
   const [isLoading, setIsLoading] = useState(false);
-  const [isPredicted, setIsPredicted] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const canvas1Ref = useRef<HTMLCanvasElement>(null);
   const canvas2Ref = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
@@ -122,7 +122,7 @@ const Model2ModelCard = ({
                       canvas2Ref.current,
                       canvas1Ref.current.toDataURL("image/jpeg", 1.0)
                     ).then(() => {
-                      setIsPredicted(true);
+                      setIsLoaded(true);
                       setIsLoading(result);
                     });
                   } else if (
@@ -136,7 +136,7 @@ const Model2ModelCard = ({
                       canvas2Ref.current,
                       canvas1Ref.current
                     ).then(() => {
-                      setIsPredicted(true);
+                      setIsLoaded(true);
                       setIsLoading(result);
                     });
                   }
@@ -152,9 +152,9 @@ const Model2ModelCard = ({
         </Col>
         <Col css={{ textAlign: "center" }}>
           <CanvasOutput
-            type={model1Type}
+            id={model1Type}
             isLoading={isLoading}
-            isPredicted={isPredicted}
+            isLoaded={isLoaded}
             canvasRef={canvas1Ref}
           />
         </Col>
@@ -163,9 +163,9 @@ const Model2ModelCard = ({
         </Col>
         <Col css={{ textAlign: "center" }}>
           <CanvasOutput
-            type={model2Type}
+            id={model2Type}
             isLoading={isLoading}
-            isPredicted={isPredicted}
+            isLoaded={isLoaded}
             canvasRef={canvas2Ref}
           />
         </Col>

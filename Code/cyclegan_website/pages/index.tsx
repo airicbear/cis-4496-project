@@ -1,4 +1,4 @@
-import { Collapse, Container, Grid } from "@nextui-org/react";
+import { Collapse, Container, Grid, Spacer } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import AppHeader from "../components/AppHeader";
@@ -133,9 +133,17 @@ const Home: NextPage = () => {
                   url="/utilities/plot_rgb_distribution"
                 />
               </Grid>
+              <Grid xs={6} sm={4}>
+                <CardLink
+                  img="/assets/images/AugmentImage.jpg"
+                  title="Augment Image"
+                  url="/utilities/augment_image"
+                />
+              </Grid>
             </Grid.Container>
           </Collapse>
         </Collapse.Group>
+        <Spacer y={4} />
       </Container>
     </>
   );
