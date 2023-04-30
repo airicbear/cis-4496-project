@@ -132,6 +132,14 @@ const Home: NextPage = () => {
               </Grid>
               <Grid xs={6} sm={3}>
                 <CardLink
+                  img="/assets/predictions/photo/test/monet/ours/general/2014-08-01 17:41:55.jpg"
+                  title="Our Test Photo → Monet (General)"
+                  url="/predictions/photo/test/monet/ours/general"
+                  fontSize="12px"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
                   img="/assets/predictions/monet/test/photo/ours/general/00010.jpg"
                   title="Our Test Monet → Photo (General)"
                   url="/predictions/monet/test/photo/ours/general"
