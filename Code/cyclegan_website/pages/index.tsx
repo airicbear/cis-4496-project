@@ -101,7 +101,7 @@ const Home: NextPage = () => {
               <Grid xs={6} sm={3}>
                 <CardLink
                   img="/assets/predictions/photo/test/monet/authors/2014-08-01 17:41:55.png"
-                  title="Test Photo → Monet (Author's)"
+                  title="Author's Test Photo → Monet"
                   url="/predictions/photo/test/monet/authors"
                   fontSize="12px"
                 />
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
               <Grid xs={6} sm={3}>
                 <CardLink
                   img="/assets/predictions/monet/test/photo/authors/00010.png"
-                  title="Test Monet → Photo (Author's)"
+                  title="Author's Test Monet → Photo"
                   url="/predictions/monet/test/photo/authors"
                   fontSize="12px"
                 />
@@ -117,7 +117,7 @@ const Home: NextPage = () => {
               <Grid xs={6} sm={3}>
                 <CardLink
                   img="/assets/predictions/photo/test/monet/ours/competition/final/2014-08-01 17:41:55.jpg"
-                  title="Test Photo → Monet (Competition, Final)"
+                  title="Our Test Photo → Monet (Competition, Final)"
                   url="/predictions/photo/test/monet/ours/competition/final"
                   fontSize="12px"
                 />
@@ -125,8 +125,16 @@ const Home: NextPage = () => {
               <Grid xs={6} sm={3}>
                 <CardLink
                   img="/assets/predictions/monet/test/photo/ours/competition/final/00010.jpg"
-                  title="Test Monet → Photo (Competition, Final)"
+                  title="Our Test Monet → Photo (Competition, Final)"
                   url="/predictions/monet/test/photo/ours/competition/final"
+                  fontSize="12px"
+                />
+              </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/predictions/monet/test/photo/ours/general/00010.jpg"
+                  title="Our Test Monet → Photo (General)"
+                  url="/predictions/monet/test/photo/ours/general"
                   fontSize="12px"
                 />
               </Grid>
