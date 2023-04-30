@@ -2,16 +2,16 @@ import { Button, Container, Loading } from "@nextui-org/react";
 import { RefObject, useState } from "react";
 
 interface CanvasOutputProps {
-  type: string;
+  id: string;
   isLoading: boolean;
-  isPredicted: boolean;
+  isLoaded: boolean;
   canvasRef: RefObject<HTMLCanvasElement>;
 }
 
 const CanvasOutput = ({
-  type,
+  id,
   isLoading,
-  isPredicted,
+  isLoaded,
   canvasRef,
 }: CanvasOutputProps) => {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
@@ -60,7 +60,7 @@ const CanvasOutput = ({
       }}
     >
       {isLoading ? <Loading /> : <></>}
-      {isPredicted && isMouseEnter && !isLoading ? (
+      {isLoaded && isMouseEnter && !isLoading ? (
         <Button
           auto
           css={{
@@ -85,7 +85,7 @@ const CanvasOutput = ({
       )}
       <canvas
         ref={canvasRef}
-        id={type}
+        id={id}
         className="image-display"
         width={256}
         height={256}
