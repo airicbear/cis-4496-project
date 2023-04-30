@@ -3,25 +3,33 @@ import { NextPage } from "next";
 import AppHeader from "../../../../../components/AppHeader";
 import DatasetGrid from "../../../../../components/DatasetGrid";
 import { monetTestData } from "../../../../../consts/monetTestData";
+import Head from "next/head";
 
-const PhotoTestToMonetAuthorsDatasetPage: NextPage = () => {
+const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
   return (
-    <Container sm>
-      <AppHeader />
-      <Container>
-        <Row align="center">
-          <Text h3>Test Monet to Photo Predictions (Author's)</Text>
-        </Row>
-        <DatasetGrid
-          dir="assets/predictions/monet/test/photo/authors"
-          filenames={monetTestData.files.map((filename) =>
-            filename.replace("jpg", "png")
-          )}
-        />
-        <Spacer y={2} />
+    <>
+      <Head>
+        <title>Test Monet to Photo Predictions (Author's)</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container sm>
+        <AppHeader />
+        <Container>
+          <Row align="center">
+            <Text h3>Test Monet to Photo Predictions (Author's)</Text>
+          </Row>
+          <DatasetGrid
+            dir="assets/predictions/monet/test/photo/authors"
+            filenames={monetTestData.files.map((filename) =>
+              filename.replace("jpg", "png")
+            )}
+          />
+          <Spacer y={2} />
+        </Container>
       </Container>
-    </Container>
+    </>
   );
 };
 
-export default PhotoTestToMonetAuthorsDatasetPage;
+export default MonetTestToPhotoAuthorsDatasetPage;
