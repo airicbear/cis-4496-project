@@ -146,6 +146,14 @@ const Home: NextPage = () => {
                   fontSize="12px"
                 />
               </Grid>
+              <Grid xs={6} sm={3}>
+                <CardLink
+                  img="/assets/predictions/photo/test/ukiyoe/authors/2014-08-01 17:41:55.png"
+                  title="Author's Test Photo → Ukiyoe"
+                  url="/predictions/photo/test/ukiyoe/authors"
+                  fontSize="12px"
+                />
+              </Grid>
             </Grid.Container>
           </Collapse>
           <Collapse title="Utilities">
