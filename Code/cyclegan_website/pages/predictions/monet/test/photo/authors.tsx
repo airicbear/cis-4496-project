@@ -9,7 +9,7 @@ const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Test Monet to Photo Predictions (Author's)</title>
+        <title>Author's Test Monet to Photo Predictions</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -17,7 +17,7 @@ const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
         <AppHeader />
         <Container>
           <Row align="center">
-            <Text h3>Test Monet to Photo Predictions (Author's)</Text>
+            <Text h3>Author's Test Monet to Photo Predictions</Text>
           </Row>
           <DatasetGrid
             dir="assets/predictions/monet/test/photo/authors"
