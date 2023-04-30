@@ -3,23 +3,31 @@ import { NextPage } from "next";
 import AppHeader from "../../../../../../../components/AppHeader";
 import DatasetGrid from "../../../../../../../components/DatasetGrid";
 import { photoTestData } from "../../../../../../../consts/photoTestData";
+import Head from "next/head";
 
-const PhotoTestToMonetCompetitionFinalDatasetPage: NextPage = () => {
+const PhotoTestToMonetOursCompetitionFinalDatasetPage: NextPage = () => {
   return (
-    <Container sm>
-      <AppHeader />
-      <Container>
-        <Row align="center">
-          <Text h3>Test Photo to Monet Predictions (Competition, Final)</Text>
-        </Row>
-        <DatasetGrid
-          dir="assets/predictions/photo/test/monet/ours/competition/final"
-          filenames={photoTestData.files}
-        />
-        <Spacer y={2} />
+    <>
+      <Head>
+        <title>Test Photo to Monet Predictions (Competition, Final)</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container sm>
+        <AppHeader />
+        <Container>
+          <Row align="center">
+            <Text h3>Test Photo to Monet Predictions (Competition, Final)</Text>
+          </Row>
+          <DatasetGrid
+            dir="assets/predictions/photo/test/monet/ours/competition/final"
+            filenames={photoTestData.files}
+          />
+          <Spacer y={2} />
+        </Container>
       </Container>
-    </Container>
+    </>
   );
 };
 
-export default PhotoTestToMonetCompetitionFinalDatasetPage;
+export default PhotoTestToMonetOursCompetitionFinalDatasetPage;

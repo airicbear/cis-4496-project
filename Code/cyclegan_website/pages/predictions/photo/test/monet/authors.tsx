@@ -1,15 +1,15 @@
 import { Container, Row, Spacer, Text } from "@nextui-org/react";
 import { NextPage } from "next";
+import Head from "next/head";
 import AppHeader from "../../../../../components/AppHeader";
 import DatasetGrid from "../../../../../components/DatasetGrid";
-import { monetTestData } from "../../../../../consts/monetTestData";
-import Head from "next/head";
+import { photoTestData } from "../../../../../consts/photoTestData";
 
-const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
+const PhotoTestToMonetAuthorsDatasetPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Test Monet to Photo Predictions (Author's)</title>
+        <title>Test Photo to Monet Predictions (Author's)</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -17,11 +17,11 @@ const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
         <AppHeader />
         <Container>
           <Row align="center">
-            <Text h3>Test Monet to Photo Predictions (Author's)</Text>
+            <Text h3>Test Photo to Monet Predictions (Author's)</Text>
           </Row>
           <DatasetGrid
-            dir="assets/predictions/monet/test/photo/authors"
-            filenames={monetTestData.files.map((filename) =>
+            dir="assets/predictions/photo/test/monet/authors"
+            filenames={photoTestData.files.map((filename) =>
               filename.replace("jpg", "png")
             )}
           />
@@ -32,4 +32,4 @@ const MonetTestToPhotoAuthorsDatasetPage: NextPage = () => {
   );
 };
 
-export default MonetTestToPhotoAuthorsDatasetPage;
+export default PhotoTestToMonetAuthorsDatasetPage;
