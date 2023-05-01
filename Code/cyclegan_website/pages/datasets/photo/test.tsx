@@ -1,9 +1,7 @@
 import {
   Button,
-  Checkbox,
   Col,
   Container,
-  Input,
   Modal,
   Row,
   Spacer,
