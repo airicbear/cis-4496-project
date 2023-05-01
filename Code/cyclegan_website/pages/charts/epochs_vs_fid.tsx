@@ -9,50 +9,39 @@ import { createPlot } from "../../utils/createPlot";
 import { scatterPlot } from "../../utils/scatterPlot";
 
 const EpochsVsFidPage: NextPage = () => {
-  useEffect(() => {
-    // Set the dimensions and margins of the graph
-    const margin = { top: 30, right: 30, bottom: 60, left: 70 };
-    const width = 600 - margin.left - margin.right;
-    const height = 405 - margin.top - margin.bottom;
-
-    const monetPlotContainer = document.getElementById("monet_fid_dataviz");
-    if (monetPlotContainer) {
-      monetPlotContainer.innerHTML = "";
+  const makeScatterPlot = (
+    id: string,
+    width: number,
+    height: number,
+    margin: {
+      top: number;
+      right: number;
+      bottom: number;
+      left: number;
+    },
+    data: number[][],
+    title: string,
+    color: string
+  ) => {
+    const plotContainer = document.getElementById(id);
+    if (plotContainer) {
+      plotContainer.innerHTML = "";
     }
 
-    const ukiyoePlotContainer = document.getElementById("ukiyoe_fid_dataviz");
-    if (ukiyoePlotContainer) {
-      ukiyoePlotContainer.innerHTML = "";
-    }
-
-    const svgMonet = createPlot(
-      "#monet_fid_dataviz",
+    const svg = createPlot(
+      `#${id}`,
       width,
       height,
       margin,
-      "Epochs vs. FID for Monet",
+      title,
       "Epochs",
       "FID"
     );
 
-    const svgUkiyoe = createPlot(
-      "#ukiyoe_fid_dataviz",
-      width,
-      height,
-      margin,
-      "Epochs vs. FID for Ukiyo-e",
-      "Epochs",
-      "FID"
-    );
+    const fidList = data.map((d) => d[1]);
 
-    const monetFIDList = epochFidData.monet.map((d) => d[1]);
-    const ukiyoeFIDList = epochFidData.ukiyoe.map((d) => d[1]);
-
-    const monetMinFID = Math.min(...monetFIDList);
-    const monetMaxFID = Math.max(...monetFIDList);
-
-    const ukiyoeMinFID = Math.min(...ukiyoeFIDList);
-    const ukiyoeMaxFID = Math.max(...ukiyoeFIDList);
+    const minFID = Math.min(...fidList);
+    const maxFID = Math.max(...fidList);
 
     const colorDomain = ["monet", "ukiyoe", "cezanne", "vangogh"];
 
@@ -60,26 +49,50 @@ const EpochsVsFidPage: NextPage = () => {
     scatterPlot(
       width,
       height,
-      svgMonet,
-      epochFidData.monet,
-      "monet",
+      svg,
+      data,
+      color,
       colorDomain,
       schemeSet1,
       [0, 140],
-      [monetMinFID - 1, monetMaxFID + 1]
+      [minFID - 1, maxFID + 1]
     );
+  };
 
-    // Ukiyoe FID plot
-    scatterPlot(
+  useEffect(() => {
+    // Set the dimensions and margins of the graph
+    const margin = { top: 30, right: 30, bottom: 60, left: 70 };
+    const width = 600 - margin.left - margin.right;
+    const height = 405 - margin.top - margin.bottom;
+
+    makeScatterPlot(
+      "monet_fid_dataviz",
       width,
       height,
-      svgUkiyoe,
+      margin,
+      epochFidData.monet,
+      "Epochs vs. FID for Monet",
+      "monet"
+    );
+
+    makeScatterPlot(
+      "ukiyoe_fid_dataviz",
+      width,
+      height,
+      margin,
       epochFidData.ukiyoe,
-      "ukiyoe",
-      colorDomain,
-      schemeSet1,
-      [0, 140],
-      [ukiyoeMinFID - 1, ukiyoeMaxFID + 1]
+      "Epochs vs. FID for Ukiyo-e",
+      "ukiyoe"
+    );
+
+    makeScatterPlot(
+      "cezanne_fid_dataviz",
+      width,
+      height,
+      margin,
+      epochFidData.cezanne,
+      "Epochs vs. FID for Cezanne",
+      "cezanne"
     );
   });
 
@@ -104,6 +117,11 @@ const EpochsVsFidPage: NextPage = () => {
           <Row>
             <Col css={{ textAlign: "center" }}>
               <Container id="ukiyoe_fid_dataviz"></Container>
+            </Col>
+          </Row>
+          <Row>
+            <Col css={{ textAlign: "center" }}>
+              <Container id="cezanne_fid_dataviz"></Container>
             </Col>
           </Row>
           <Spacer y={2} />
