@@ -5,6 +5,7 @@ export const createPlot = (
   width: number,
   height: number,
   margin: { top: number; right: number; bottom: number; left: number },
+  title: string,
   xlabel: string,
   ylabel: string
 ) => {
@@ -14,6 +15,14 @@ export const createPlot = (
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg
+    .append("text")
+    .attr("class", "title")
+    .attr("x", width / 2)
+    .attr("y", -margin.top / 2)
+    .attr("text-anchor", "middle")
+    .text(title);
 
   svg
     .append("text")
