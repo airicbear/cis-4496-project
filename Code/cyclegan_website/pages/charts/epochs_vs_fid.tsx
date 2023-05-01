@@ -84,6 +84,16 @@ const EpochsVsFidPage: NextPage = () => {
       "Epochs vs. FID for Ukiyo-e",
       "ukiyoe"
     );
+
+    makeScatterPlot(
+      "cezanne_fid_dataviz",
+      width,
+      height,
+      margin,
+      epochFidData.cezanne,
+      "Epochs vs. FID for Cezanne",
+      "cezanne"
+    );
   });
 
   return (
@@ -107,6 +117,11 @@ const EpochsVsFidPage: NextPage = () => {
           <Row>
             <Col css={{ textAlign: "center" }}>
               <Container id="ukiyoe_fid_dataviz"></Container>
+            </Col>
+          </Row>
+          <Row>
+            <Col css={{ textAlign: "center" }}>
+              <Container id="cezanne_fid_dataviz"></Container>
             </Col>
           </Row>
           <Spacer y={2} />
