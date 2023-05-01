@@ -10,7 +10,10 @@ const VangoghTestDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Vangogh Test/Train Data Set</Text>
+          <Text h3>
+            Vangogh Test/Train Data Set ({vangoghTestTrainData.files.length}{" "}
+            images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/vangogh/test-train"

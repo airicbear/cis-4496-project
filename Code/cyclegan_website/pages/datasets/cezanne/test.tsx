@@ -10,7 +10,9 @@ const CezanneTestDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Cezanne Test Data Set</Text>
+          <Text h3>
+            Cezanne Test Data Set ({cezanneTestData.files.length} images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/cezanne/test"

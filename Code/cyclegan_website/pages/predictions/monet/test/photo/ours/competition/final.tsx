@@ -1,11 +1,23 @@
-import { Container, Row, Spacer, Text } from "@nextui-org/react";
+import { Button, Col, Container, Row, Spacer, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import AppHeader from "../../../../../../../components/AppHeader";
 import DatasetGrid from "../../../../../../../components/DatasetGrid";
 import { monetTestData } from "../../../../../../../consts/monetTestData";
 import Head from "next/head";
+import { useState } from "react";
+import PlotContainerModal from "../../../../../../../components/PlotContainerModal";
 
 const MonetTestToPhotoOursCompetitionFinalDatasetPage: NextPage = () => {
+  const [visible, setVisible] = useState(false);
+
+  const handler = () => {
+    setVisible(true);
+  };
+
+  const closeHandler = () => {
+    setVisible(false);
+  };
+
   return (
     <>
       <Head>
@@ -17,10 +29,25 @@ const MonetTestToPhotoOursCompetitionFinalDatasetPage: NextPage = () => {
         <AppHeader />
         <Container>
           <Row align="center">
-            <Text h3>
-              Our Test Monet to Photo Predictions (Competition, Final)
-            </Text>
+            <Col>
+              <Text h3>
+                Our Test Monet to Photo Predictions (Competition, Final) (
+                {monetTestData.files.length} images)
+              </Text>
+            </Col>
+            <Spacer x={2} />
+            <Col span={1.5}>
+              <Button onClick={handler} auto>
+                Plot RGB
+              </Button>
+            </Col>
           </Row>
+          <PlotContainerModal
+            visible={visible}
+            closeHandler={closeHandler}
+            files={monetTestData.files}
+            dir="/assets/predictions/monet/test/photo/ours/competition/final"
+          />
           <DatasetGrid
             dir="assets/predictions/monet/test/photo/ours/competition/final"
             filenames={monetTestData.files}

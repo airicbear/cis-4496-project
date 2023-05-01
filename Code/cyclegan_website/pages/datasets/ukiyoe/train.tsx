@@ -10,7 +10,9 @@ const UkiyoeTrainDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Ukiyoe Train Data Set</Text>
+          <Text h3>
+            Ukiyoe Train Data Set ({ukiyoeTrainData.files.length} images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/ukiyoe/train"

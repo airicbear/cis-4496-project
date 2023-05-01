@@ -17,7 +17,10 @@ const PhotoTestToUkiyoeAuthorsDatasetPage: NextPage = () => {
         <AppHeader />
         <Container>
           <Row align="center">
-            <Text h3>Author's Test Photo to Ukiyoe Predictions</Text>
+            <Text h3>
+              Author's Test Photo to Ukiyoe Predictions (
+              {photoTestData.files.length} images)
+            </Text>
           </Row>
           <DatasetGrid
             dir="assets/predictions/photo/test/ukiyoe/authors"

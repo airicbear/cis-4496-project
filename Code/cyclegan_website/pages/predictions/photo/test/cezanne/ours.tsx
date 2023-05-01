@@ -17,7 +17,10 @@ const PhotoTestToCezanneOursGeneralDatasetPage: NextPage = () => {
         <AppHeader />
         <Container>
           <Row align="center">
-            <Text h3>Our Test Photo to Cezanne Predictions</Text>
+            <Text h3>
+              Our Test Photo to Cezanne Predictions (
+              {photoTestData.files.length} images)
+            </Text>
           </Row>
           <DatasetGrid
             dir="assets/predictions/photo/test/cezanne/ours"
