@@ -9,7 +9,10 @@ const PhotoTestToCezanneAuthorsDatasetPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Author's Test Photo to Cezanne Predictions</title>
+        <title>
+          Author's Test Photo to Cezanne Predictions (
+          {photoTestData.files.length} images)
+        </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

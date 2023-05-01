@@ -10,7 +10,9 @@ const UkiyoeTestDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Ukiyoe Test Data Set</Text>
+          <Text h3>
+            Ukiyoe Test Data Set ({ukiyoeTestData.files.length} images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/ukiyoe/test"
