@@ -225,6 +225,13 @@ const Home: NextPage = () => {
               </Grid>
               <Grid xs={6} sm={4}>
                 <CardLink
+                  img="/assets/images/LearningRateVsMiFID.png"
+                  title="Learning Rate vs MiFID"
+                  url="/charts/learning_rate_vs_mifid"
+                />
+              </Grid>
+              <Grid xs={6} sm={4}>
+                <CardLink
                   img="/assets/images/EpochsVsFID.png"
                   title="Epochs vs FID"
                   url="/charts/epochs_vs_fid"
