@@ -40,7 +40,7 @@ const EpochsVsFidPage: NextPage = () => {
       width,
       height,
       margin,
-      "Epochs vs. FID for Ukiyoe",
+      "Epochs vs. FID for Ukiyo-e",
       "Epochs",
       "FID"
     );
