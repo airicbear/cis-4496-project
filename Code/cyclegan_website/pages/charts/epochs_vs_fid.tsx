@@ -45,7 +45,6 @@ const EpochsVsFidPage: NextPage = () => {
 
     const colorDomain = ["monet", "ukiyoe", "cezanne", "vangogh"];
 
-    // Monet FID plot
     scatterPlot(
       width,
       height,
@@ -94,6 +93,16 @@ const EpochsVsFidPage: NextPage = () => {
       "Epochs vs. FID for Cezanne",
       "cezanne"
     );
+
+    makeScatterPlot(
+      "vangogh_fid_dataviz",
+      width,
+      height,
+      margin,
+      epochFidData.vangogh,
+      "Epochs vs. FID for Van Gogh",
+      "vangogh"
+    );
   });
 
   return (
@@ -122,6 +131,11 @@ const EpochsVsFidPage: NextPage = () => {
           <Row>
             <Col css={{ textAlign: "center" }}>
               <Container id="cezanne_fid_dataviz"></Container>
+            </Col>
+          </Row>
+          <Row>
+            <Col css={{ textAlign: "center" }}>
+              <Container id="vangogh_fid_dataviz"></Container>
             </Col>
           </Row>
           <Spacer y={2} />
