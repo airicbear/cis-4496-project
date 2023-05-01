@@ -218,6 +218,13 @@ const Home: NextPage = () => {
             <Grid.Container gap={2} justify="flex-start">
               <Grid xs={6} sm={4}>
                 <CardLink
+                  img="/assets/images/EpochsVsMiFID.png"
+                  title="Epochs vs MiFID"
+                  url="/charts/epochs_vs_mifid"
+                />
+              </Grid>
+              <Grid xs={6} sm={4}>
+                <CardLink
                   img="/assets/images/EpochsVsFID.png"
                   title="Epochs vs FID"
                   url="/charts/epochs_vs_fid"
