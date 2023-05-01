@@ -37,6 +37,7 @@ const PlotRGBDistributionPage: NextPage = () => {
       width,
       height,
       margin,
+      "RGB Distribution",
       "RGB Value",
       "Frequency"
     );
@@ -125,6 +126,7 @@ const PlotRGBDistributionPage: NextPage = () => {
             </form>
           </Col>
         </Row>
+        <Spacer y={2} />
         <Row>
           <Col css={{ textAlign: "center" }}>
             <Container id="my_dataviz"></Container>

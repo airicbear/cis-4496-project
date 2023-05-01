@@ -198,6 +198,17 @@ const Home: NextPage = () => {
               </Grid>
             </Grid.Container>
           </Collapse>
+          <Collapse title="Charts">
+            <Grid.Container gap={2} justify="flex-start">
+              <Grid xs={6} sm={4}>
+                <CardLink
+                  img="/assets/images/EpochsVsFID.png"
+                  title="Epochs vs FID"
+                  url="/charts/epochs_vs_fid"
+                />
+              </Grid>
+            </Grid.Container>
+          </Collapse>
         </Collapse.Group>
         <Spacer y={4} />
       </Container>
