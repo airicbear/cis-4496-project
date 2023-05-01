@@ -1,5 +1,5 @@
 import { Col, Container, Row, Spacer, Text } from "@nextui-org/react";
-import { schemeSet1, schemeSet2 } from "d3";
+import { schemeSet1 } from "d3";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -15,14 +15,18 @@ const EpochsVsFidPage: NextPage = () => {
     const width = 600 - margin.left - margin.right;
     const height = 405 - margin.top - margin.bottom;
 
-    const plotContainer = document.getElementById("my_dataviz");
-    if (plotContainer) {
-      plotContainer.innerHTML = "";
+    const monetPlotContainer = document.getElementById("monet_fid_dataviz");
+    if (monetPlotContainer) {
+      monetPlotContainer.innerHTML = "";
     }
 
-    // Append the svg object to the body of the page
-    const svg = createPlot(
-      "#my_dataviz",
+    const ukiyoePlotContainer = document.getElementById("ukiyoe_fid_dataviz");
+    if (ukiyoePlotContainer) {
+      ukiyoePlotContainer.innerHTML = "";
+    }
+
+    const svgMonet = createPlot(
+      "#monet_fid_dataviz",
       width,
       height,
       margin,
@@ -31,20 +35,51 @@ const EpochsVsFidPage: NextPage = () => {
       "FID"
     );
 
-    const totalFreq = epochFidData.monet.map((d) => d[1]);
-    const maxFreq = Math.max(...totalFreq);
+    const svgUkiyoe = createPlot(
+      "#ukiyoe_fid_dataviz",
+      width,
+      height,
+      margin,
+      "Epochs vs. FID for Ukiyo-e",
+      "Epochs",
+      "FID"
+    );
+
+    const monetFIDList = epochFidData.monet.map((d) => d[1]);
+    const ukiyoeFIDList = epochFidData.ukiyoe.map((d) => d[1]);
+
+    const monetMinFID = Math.min(...monetFIDList);
+    const monetMaxFID = Math.max(...monetFIDList);
+
+    const ukiyoeMinFID = Math.min(...ukiyoeFIDList);
+    const ukiyoeMaxFID = Math.max(...ukiyoeFIDList);
+
     const colorDomain = ["monet", "ukiyoe", "cezanne", "vangogh"];
 
+    // Monet FID plot
     scatterPlot(
       width,
       height,
-      svg,
+      svgMonet,
       epochFidData.monet,
       "monet",
       colorDomain,
       schemeSet1,
       [0, 140],
-      [102, maxFreq + 1]
+      [monetMinFID - 1, monetMaxFID + 1]
+    );
+
+    // Ukiyoe FID plot
+    scatterPlot(
+      width,
+      height,
+      svgUkiyoe,
+      epochFidData.ukiyoe,
+      "ukiyoe",
+      colorDomain,
+      schemeSet1,
+      [0, 140],
+      [ukiyoeMinFID - 1, ukiyoeMaxFID + 1]
     );
   });
 
@@ -63,7 +98,12 @@ const EpochsVsFidPage: NextPage = () => {
           </Row>
           <Row>
             <Col css={{ textAlign: "center" }}>
-              <Container id="my_dataviz"></Container>
+              <Container id="monet_fid_dataviz"></Container>
+            </Col>
+          </Row>
+          <Row>
+            <Col css={{ textAlign: "center" }}>
+              <Container id="ukiyoe_fid_dataviz"></Container>
             </Col>
           </Row>
           <Spacer y={2} />
