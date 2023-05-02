@@ -10,7 +10,9 @@ const CezanneTrainDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Cezanne Train Data Set</Text>
+          <Text h3>
+            Cezanne Train Data Set ({cezanneTrainData.files.length} images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/cezanne/train"

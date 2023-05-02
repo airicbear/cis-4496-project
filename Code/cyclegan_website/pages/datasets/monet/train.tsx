@@ -10,7 +10,9 @@ const MonetTrainDatasetPage: NextPage = () => {
       <AppHeader />
       <Container>
         <Row align="center">
-          <Text h3>Monet Train Data Set</Text>
+          <Text h3>
+            Monet Train Data Set ({monetTrainData.files.length} images)
+          </Text>
         </Row>
         <DatasetGrid
           dir="assets/datasets/monet/train"
